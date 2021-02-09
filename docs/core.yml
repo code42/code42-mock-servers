@@ -307,17 +307,17 @@ paths:
               schema:
                 type: object
   /api/Diagnostic:
-      tags:
-      - customer
-      summary: Get server diagnostics
-      operationId: Diagnostic_Get
-      responses:
-        200:
-          description: A successful response
-          content:
-            application/json:
-              schema:
-                type: object
+    tags:
+    - customer
+    summary: Get server diagnostics
+    operationId: Diagnostic_Get
+    responses:
+      200:
+        description: A successful response
+        content:
+          application/json:
+            schema:
+              type: object
   /c42api/v3/customer/my:
     get:
       tags:
@@ -333,7 +333,7 @@ paths:
                 $ref: '#/components/schemas/CustomerResponse_core'
 
   # FILE DOWNLOAD
-  
+
   /c42api/v3/FileDownloadToken:
     get:
       tags:
@@ -840,7 +840,7 @@ paths:
       responses:
         200:
           description: Access information has been returned.
-          content: 
+          content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SecurityEventsLocationResponse_core'
@@ -1381,33 +1381,33 @@ components:
     SecurityEventsLocationResponse_core:
       type: object
       properties:
-        data: 
+        data:
           type: object
-          properties: 
-            userUid: 
+          properties:
+            userUid:
               type: string
-            securityPlanLocationsByDestination: 
+            securityPlanLocationsByDestination:
               type: array
-              items: 
+              items:
                 type: object
-                properties: 
-                  destinationGuid: 
+                properties:
+                  destinationGuid:
                     type: string
-                  securityPlanLocationsByNode: 
+                  securityPlanLocationsByNode:
                     type: array
-                    items: 
+                    items:
                       type: object
-                      properties: 
-                        nodeGuid: 
+                      properties:
+                        nodeGuid:
                           type: string
-                        securityPlanUids: 
+                        securityPlanUids:
                           type: array
-                          items: 
+                          items:
                             type: string
-        error: 
+        error:
           type: string
           format: nullable
-        warnings: 
+        warnings:
           type: string
           format: nullable
     StorageAuthTokenRequest_core:
@@ -1423,49 +1423,49 @@ components:
     StorageAuthTokenResponse_core:
       type: object
       properties:
-        metadata: 
+        metadata:
           type: object
-          properties: 
-            timestamp: 
+          properties:
+            timestamp:
               type: string
-            params: 
+            params:
               type: object
-              properties:  
-        data: 
+              properties:
+        data:
           type: object
-          properties: 
-            loginToken: 
+          properties:
+            loginToken:
               type: string
-            serverUrl: 
+            serverUrl:
               type: string
               example: http://127.0.0.1:4205
     AuthTokenResponse_core:
       type: object
       properties:
-        metadata: 
+        metadata:
           type: object
-          properties: 
-            timestamp: 
+          properties:
+            timestamp:
               type: string
-            params: 
+            params:
               type: object
-              properties:  
-        data: 
+              properties:
+        data:
           type: array
           example:
           - tokenValue1
           - tokenValue2
-          items: 
+          items:
             type: string
     FileDownloadTokenResponse_core:
       type: object
       properties:
-        data: 
+        data:
           type: string
-        error: 
+        error:
           type: string
           format: nullable
-        warnings: 
+        warnings:
           type: string
           format: nullable
     ServerEnvResponse_core:
@@ -2736,29 +2736,29 @@ components:
     LegalHoldCustodianResponse_core:
       type: object
       properties:
-        legalHoldMembershipUid: 
+        legalHoldMembershipUid:
           type: string
-        active: 
+        active:
           type: boolean
-        creationDate: 
+        creationDate:
           type: string
-        legalHold: 
+        legalHold:
           type: object
-          properties: 
-            legalHoldUid: 
+          properties:
+            legalHoldUid:
               type: string
-            name: 
+            name:
               type: string
-        user: 
+        user:
           type: object
-          properties: 
-            userUid: 
+          properties:
+            userUid:
               type: string
-            username: 
+            username:
               type: string
-            email: 
+            email:
               type: string
-            userExtRef: 
+            userExtRef:
               type: string
               format: nullable
   securitySchemes:

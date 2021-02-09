@@ -307,17 +307,18 @@ paths:
               schema:
                 type: object
   /api/Diagnostic:
-    tags:
-    - customer
-    summary: Get server diagnostics
-    operationId: Diagnostic_Get
-    responses:
-      200:
-        description: A successful response
-        content:
-          application/json:
-            schema:
-              type: object
+    get:
+      tags:
+      - customer
+      summary: Get server diagnostics
+      operationId: Diagnostic_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
   /c42api/v3/customer/my:
     get:
       tags:
@@ -342,6 +343,7 @@ paths:
       operationId: FileDownloadToken_Get
       responses:
         200:
+          description: A successful response
           content:
             application/json:
               schema:
@@ -355,6 +357,7 @@ paths:
       operationId: GetFile_Get
       responses:
         200:
+          description: A successful response
           content:
             text/plain:
               example: '123'
@@ -1430,7 +1433,6 @@ components:
               type: string
             params:
               type: object
-              properties:
         data:
           type: object
           properties:
@@ -1439,24 +1441,6 @@ components:
             serverUrl:
               type: string
               example: http://127.0.0.1:4205
-    AuthTokenResponse_core:
-      type: object
-      properties:
-        metadata:
-          type: object
-          properties:
-            timestamp:
-              type: string
-            params:
-              type: object
-              properties:
-        data:
-          type: array
-          example:
-          - tokenValue1
-          - tokenValue2
-          items:
-            type: string
     FileDownloadTokenResponse_core:
       type: object
       properties:

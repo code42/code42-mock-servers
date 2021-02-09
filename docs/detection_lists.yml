@@ -1,0 +1,1221 @@
+openapi: 3.0.1
+info:
+  title: Api Documentation
+  description: Api Documentation
+  version: 1.0.0
+servers:
+- url: /
+- name: Detection Lists
+paths:
+  /svc/api/v2/departingemployee/get:
+    post:
+      tags:
+      - Detection Lists
+      summary: Get a departing employee
+      operationId: DepartingEmployeeControllerV2_GetEmployee
+      requestBody:
+        description: Parameters used to search for a specific departing employee.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetDepartingEmployeeV2Query-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartingEmployeeV2-detection-lists'
+  
+  /svc/api/v2/departingemployee/search:
+    post:
+      tags:
+      - Detection Lists
+      summary: Search for departing employees
+      operationId: DepartingEmployeeControllerV2_Search
+      requestBody:
+        description: Parameters used to return a paginated list of departing employees.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartingEmployeeSearchV2Query-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartingEmployeeSearchResponseV2-detection-lists'
+
+  /svc/api/v2/departingemployee/add:
+    post:
+      tags:
+      - Detection Lists
+      summary: Add a departing employee
+      operationId: DepartingEmployeeControllerV2_AddEmployee
+      requestBody:
+        description: The employee's departure details needed.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddDepartingEmployeeV2Command-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartingEmployeeV2-detection-lists'
+
+  /svc/api/v2/departingemployee/update:
+    post:
+      tags:
+      - Detection Lists
+      summary: Update an employee's departure date
+      operationId: DepartingEmployeeControllerV2_UpdateDepartureDate
+      requestBody:
+        description: Departing employee information.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDepartureDateV2Command-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartingEmployeeV2-detection-lists'
+
+  /svc/api/v2/departingemployee/setalertstate:
+    post:
+      tags:
+      - Detection Lists
+      summary: Set alert state for departing employees
+      operationId: DepartingEmployeeControllerV2_SetAlertState
+      requestBody:
+        description: Desired alert settings for the tenant.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartingEmployeeSetAlertStateV2Command-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                type: boolean
+
+  /svc/api/v2/departingemployee/remove:
+    post:
+      tags:
+      - Detection Lists
+      summary: Remove a departing employee
+      operationId: DepartingEmployeeControllerV2_RemoveUser
+      requestBody:
+        description: A RemoveDepartingEmployeeV2Command.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveDepartingEmployeeV2Command-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                type: boolean
+
+  /svc/api/v2/highriskemployee/add:
+    post:
+      tags:
+      - Detection Lists
+      summary: Add a high risk employee
+      operationId: HighRiskEmployeeControllerV2_AddEmployee
+      requestBody:
+        description: The employee's details.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddHighRiskEmployeeV2Command-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HighRiskEmployeeV2-detection-lists'
+
+  /svc/api/v2/highriskemployee/get:
+    post:
+      tags:
+      - Detection Lists
+      summary: Get a high risk employee
+      operationId: HighRiskEmployeeControllerV2_GetEmployee
+      requestBody:
+        description: Parameters used to search for a specific high risk employee.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetHighRiskEmployeeV2Query-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HighRiskEmployeeV2-detection-lists'
+
+  /svc/api/v2/highriskemployee/search:
+    post:
+      tags:
+      - Detection Lists
+      summary: Search for high risk employees
+      operationId: HighRiskEmployeeControllerV2_Search
+      requestBody:
+        description: Parameters used to return a paginated list of high risk employees.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HighRiskEmployeeSearchV2Query-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HighRiskSearchResponseV2-detection-lists'
+
+  /svc/api/v2/highriskemployee/setalertstate:
+    post:
+      tags:
+      - Detection Lists
+      summary: Set alert state for high risk employees
+      operationId: HighRiskEmployeeControllerV2_SetAlertState
+      requestBody:
+        description: Desired alert settings for the tenant.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HighRiskSetAlertStateV2Command-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                type: boolean
+
+  /svc/api/v2/highriskemployee/remove:
+    post:
+      tags:
+      - Detection Lists
+      summary: Remove a high risk employee
+      operationId: HighRiskEmployeeControllerV2_RemoveUser
+      requestBody:
+        description: A RemoveHighRiskEmployeeV2Command.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveHighRiskEmployeeV2Command-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                type: boolean
+
+  /svc/api/v2/user/create:
+    post:
+      tags:
+      - Detection Lists
+      summary: Create a detection lists profile
+      operationId: UserControllerV2_Create
+      requestBody:
+        description: A CreateUserV2Command.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserV2Command-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserV2-detection-lists'
+
+  /svc/api/v2/user/getbyusername:
+    post:
+      tags:
+      - Detection Lists
+      summary: Get a user by username
+      operationId: UserControllerV2_GetByUsername
+      requestBody:
+        description: A GetUserByUsernameV2Query.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetUserByUsernameV2Query-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserV2-detection-lists'
+
+  /svc/api/v2/user/getbyid:
+    post:
+      tags:
+      - Detection Lists
+      summary: Get a user by id
+      operationId: UserControllerV2_GetByUserId
+      requestBody:
+        description: A GetUserByIdV2Query.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetUserByIdV2Query-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserV2-detection-lists'
+
+  /svc/api/v2/user/addriskfactors:
+    post:
+      tags:
+      - Detection Lists
+      summary: Add risk factors to a user
+      operationId: UserControllerV2_AddRiskFactors
+      requestBody:
+        description: A AddRiskFactorsV2Command.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddRiskFactorsV2Command-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserV2-detection-lists'
+
+  /svc/api/v2/user/removeriskfactors:
+    post:
+      tags:
+      - Detection Lists
+      summary: Remove risk factors from a user
+      operationId: UserControllerV2_RemoveRiskFactors
+      requestBody:
+        description: A RemoveRiskFactorsV2Command.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveRiskFactorsV2Command-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserV2-detection-lists'
+
+  /svc/api/v2/user/addcloudusernames:
+    post:
+      tags:
+      - Detection Lists
+      summary: Add cloud usernames to a user
+      operationId: UserControllerV2_AddCloudUsernames
+      requestBody:
+        description: A AddCloudUsernamesV2Command.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCloudUsernamesV2Command-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserV2-detection-lists'
+
+  /svc/api/v2/user/removecloudusernames:
+    post:
+      tags:
+      - Detection Lists
+      summary: Remove cloud usernames from a user
+      operationId: UserControllerV2_RemoveCloudUsernames
+      requestBody:
+        description: A RemoveCloudUsernamesV2Command.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveCloudUsernamesV2Command-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserV2-detection-lists'
+
+  /svc/api/v2/user/updatenotes:
+    post:
+      tags:
+      - Detection Lists
+      summary: Update notes for a user
+      operationId: UserControllerV2_UpdateNotes
+      requestBody:
+        description: A UpdateNotesV2Command.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNotesV2Command-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserV2-detection-lists'
+
+  /svc/api/v2/user/refresh:
+    post:
+      tags:
+      - Detection Lists
+      summary: Refresh SCIM attributes for a user
+      operationId: UserControllerV2_RefreshUser
+      requestBody:
+        description: A RefreshUserAttributesV2Command.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshUserAttributesV2Command-detection-lists'
+        required: true
+      responses:
+        200:
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserV2-detection-lists'
+
+components:
+  schemas:
+    DepartingEmployeeV2-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DetectionListItem-detection-lists'
+      - type: object
+        properties:
+          departureDate:
+            $ref: '#/components/schemas/DepartureDate-detection-lists'
+    DetectionListItem-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - createdAt
+        - status
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant for the user.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.
+            example: "12345"
+          userName:
+            type: string
+            description: The user's Code42 username.
+            example: Sample.User1@samplecase.com
+          displayName:
+            type: string
+            description: Display friendly name of the user, if available.
+            example: Sample User1
+          notes:
+            type: string
+            description: Optional notes about the user.
+            example: This is an example of notes about Sample User1.
+          createdAt:
+            type: string
+            description: When this item was created.
+            format: date-time
+          status:
+            $ref: '#/components/schemas/ItemStatus-detection-lists'
+          cloudUsernames:
+            type: array
+            description: Cloud usernames (aliases) for the user.
+            example:
+            - Sample.User1@samplecase.com
+            - Sample.User1@gmail.com
+            items:
+              type: string
+          managerUid:
+            type: string
+            description: The user's manager's Code42 user id.
+            example: "12345"
+          managerUsername:
+            type: string
+            description: The user's manager's Code42 username.
+            example: manager.user1@samplecase.com
+          managerDisplayName:
+            type: string
+            description: Display friendly name of the user's manager, if available.
+            example: Manager Name
+          title:
+            type: string
+            description: The user's job title, if any.
+            example: Software Engineer
+          division:
+            type: string
+            description: The user's division, if any.
+            example: Engineering
+          department:
+            type: string
+            description: The user's department, if any.
+            example: Research and Development
+          employmentType:
+            type: string
+            description: The user's employment type, if any.
+            example: Full-time
+          city:
+            type: string
+            description: The user's city, if any.
+            example: Anytown
+          state:
+            type: string
+            description: The user's state, if any.
+            example: MN
+          country:
+            type: string
+            description: The user's country, if any.
+            example: US
+          totalBytes:
+            type: integer
+            description: 'Total number of bytes.  Note: this field is only returned
+              in the search action.'
+            format: int64
+            example: 4192
+          numEvents:
+            type: integer
+            description: 'Total number of events.  Note: this field is only returned
+              in the search action.'
+            format: int64
+            example: 7
+    ItemStatus-detection-lists:
+      type: string
+      description: Status of the item.
+      pattern: '^(?i)OPEN|RESOLVED$'
+
+    DomainValue-detection-lists:
+      type: object
+      x-abstract: true
+    GetDepartingEmployeeV2Query-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - tenantId
+        - userId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.  This id must be known to detection
+              list management.
+            example: "12345"
+    DepartingEmployeeSearchResponseV2-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - filterType
+        - pgNum
+        - pgSize
+        - srtDirection
+        - srtKey
+        - totalCount
+        type: object
+        properties:
+          items:
+            type: array
+            description: A paginated list of departing employees.
+            items:
+              $ref: '#/components/schemas/DepartingEmployeeV2-detection-lists'
+          totalCount:
+            type: integer
+            description: The total number of departing employees matching the search.
+            format: int64
+            example: 25
+          rollups:
+            type: array
+            description: Departing employee rollup totals.
+            items:
+              $ref: '#/components/schemas/DepartingEmployeeFilterRollupV2-detection-lists'
+          filterType:
+            $ref: '#/components/schemas/DepartingEmployeeSearchFilterV2-detection-lists'
+          pgSize:
+            type: integer
+            description: The number of items to return in one request.  Value must
+              be between 0 and 100.
+            format: int32
+            example: 20
+          pgNum:
+            type: integer
+            description: The page number to return.
+            format: int32
+            example: 1
+          srtKey:
+            $ref: '#/components/schemas/DepartingEmployeeFilteredSortKeyV2-detection-lists'
+          srtDirection:
+            $ref: '#/components/schemas/SortDirectionV2-detection-lists'
+    DepartingEmployeeFilterRollupV2-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - filterType
+        - totalCount
+        type: object
+        properties:
+          filterType:
+            $ref: '#/components/schemas/DepartingEmployeeSearchFilterV2-detection-lists'
+          totalCount:
+            type: integer
+            description: Total number of departing employees meeting the filter criteria.
+            format: int64
+            example: 246
+    DepartingEmployeeSearchFilterV2-detection-lists:
+      type: string
+      description: Type of departing employee to filter on.
+      pattern: '^(?i)OPEN|LEAVING_TODAY|EXFILTRATION_24_HOURS|EXFILTRATION_30_DAYS$'
+
+    DepartingEmployeeFilteredSortKeyV2-detection-lists:
+      type: string
+      description: Field used for sorting list.
+      patttern: '^(?i)DISPLAY_NAME|DEPARTURE_DATE|CREATED_AT|TOTAL_BYTES|NUM_EVENTS$'
+
+    SortDirectionV2-detection-lists:
+      type: string
+      description: Sorting direction.
+      pattern: '^(?i)ASC|DESC$'
+
+    DepartingEmployeeSearchV2Query-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - filterType
+        - pgNum
+        - pgSize
+        - tenantId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          filterType:
+            $ref: '#/components/schemas/DepartingEmployeeSearchFilterV2-detection-lists'
+          pgSize:
+            type: integer
+            description: The number of items to return in one request.  Value must
+              be between 0 and 100.
+            format: int32
+            example: 20
+          pgNum:
+            type: integer
+            description: The page number to return.
+            format: int32
+            example: 1
+          srtKey:
+            $ref: '#/components/schemas/DepartingEmployeeFilteredSortKeyV2-detection-lists'
+          srtDirection:
+            $ref: '#/components/schemas/SortDirectionV2-detection-lists'
+    AddDepartingEmployeeV2Command-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - tenantId
+        - userId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            required: true
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.  This id must be known to detection
+              list management.
+            required: true
+            example: "12345"
+          departureDate:
+            $ref: '#/components/schemas/DepartureDate-detection-lists'
+    UpdateDepartureDateV2Command-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - tenantId
+        - userId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.  This id must be known to detection
+              list management.
+            example: "12345"
+          departureDate:
+            $ref: '#/components/schemas/DepartureDate-detection-lists'
+    DepartingEmployeeSetAlertStateV2Command-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - alertsEnabled
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant for which to toggle alerts.
+          alertsEnabled:
+            type: boolean
+            description: Flag determining whether or not alerts should be enabled.
+            example: true
+    RemoveDepartingEmployeeV2Command-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - tenantId
+        - userId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.  This id must be known to detection
+              list management.
+            example: "12345"
+    HighRiskEmployeeV2-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DetectionListItem-detection-lists'
+      - type: object
+        properties:
+          riskFactors:
+            type: array
+            description: Optional list of risk factors for the user.
+            items:
+              $ref: '#/components/schemas/RiskFactorV2-detection-lists'
+    RiskFactorV2-detection-lists:
+      type: string
+      description: ""
+      pattern: '^(?i)FLIGHT_RISK|PERFORMANCE_CONCERNS|POOR_SECURITY_PRACTICES|SUSPICIOUS_SYSTEM_ACTIVITY|ELEVATED_ACCESS_PRIVILEGES|HIGH_IMPACT_EMPLOYEE|CONTRACT_EMPLOYEE$'
+
+    AddHighRiskEmployeeV2Command-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - tenantId
+        - userId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.  This id must be known to detection
+              list management.
+            example: "12345"
+    GetHighRiskEmployeeV2Query-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - tenantId
+        - userId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.  This id must be known to detection
+              list management.
+            example: "12345"
+    HighRiskSearchResponseV2-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - filterType
+        - pgNum
+        - pgSize
+        - srtDirection
+        - srtKey
+        - totalCount
+        type: object
+        properties:
+          items:
+            type: array
+            description: A paginated list of high risk employees.
+            items:
+              $ref: '#/components/schemas/HighRiskEmployeeV2-detection-lists'
+          totalCount:
+            type: integer
+            description: The total number of high risk employees matching the search.
+            format: int64
+            example: 25
+          rollups:
+            type: array
+            description: High risk rollup totals.
+            items:
+              $ref: '#/components/schemas/HighRiskFilterRollupV2-detection-lists'
+          filterType:
+            $ref: '#/components/schemas/HighRiskSearchFilterV2-detection-lists'
+          riskFactors:
+            type: array
+            items:
+              $ref: '#/components/schemas/RiskFactorV2-detection-lists'
+          pgSize:
+            type: integer
+            description: The number of items to return in one request.  Value must
+              be between 0 and 100.
+            format: int32
+            example: 20
+          pgNum:
+            type: integer
+            description: The page number to return.
+            format: int32
+            example: 1
+          srtKey:
+            $ref: '#/components/schemas/HighRiskSortKeyV2-detection-lists'
+          srtDirection:
+            $ref: '#/components/schemas/SortDirectionV2-detection-lists'
+    HighRiskFilterRollupV2-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - filterType
+        - totalCount
+        type: object
+        properties:
+          filterType:
+            $ref: '#/components/schemas/HighRiskSearchFilterV2-detection-lists'
+          totalCount:
+            type: integer
+            description: Total number of high risk employees meeting the filter criteria.
+            format: int64
+            example: 246
+    HighRiskSearchFilterV2-detection-lists:
+      type: string
+      description: Type of high risk employee to filter on.
+      pattern: '^(?i)OPEN|EXFILTRATION_24_HOURS|EXFILTRATION_30_DAYS$'
+
+    HighRiskSortKeyV2-detection-lists:
+      type: string
+      description: Field used for sorting list.
+      pattern: '^(?i)DISPLAY_NAME|CREATED_AT|TOTAL_BYTES|NUM_EVENTS$'
+
+    HighRiskEmployeeSearchV2Query-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - filterType
+        - pgNum
+        - pgSize
+        - tenantId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          filterType:
+            $ref: '#/components/schemas/HighRiskSearchFilterV2-detection-lists'
+          riskFactors:
+            type: array
+            description: Optional list of risk factors for filtering users.  If provided,
+              users having any of the risk factors listed will be include.  If not
+              provided all high risk users will be included.
+            items:
+              $ref: '#/components/schemas/RiskFactorV2-detection-lists'
+          pgSize:
+            type: integer
+            description: The number of items to return in one request.  Value must
+              be between 0 and 100.
+            format: int32
+            example: 20
+          pgNum:
+            type: integer
+            description: The page number to return.
+            format: int32
+            example: 1
+          srtKey:
+            $ref: '#/components/schemas/HighRiskSortKeyV2-detection-lists'
+          srtDirection:
+            $ref: '#/components/schemas/SortDirectionV2-detection-lists'
+    HighRiskSetAlertStateV2Command-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - alertsEnabled
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant for which to toggle alerts.
+          alertsEnabled:
+            type: boolean
+            description: Flag determining whether or not alerts should be enabled.
+            example: true
+    RemoveHighRiskEmployeeV2Command-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - tenantId
+        - userId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.  This id must be known to detection
+              list management.
+            example: "12345"
+    UserV2-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant for the user.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.
+            example: "12345"
+          userName:
+            type: string
+            description: The user's Code42 username.
+            example: Sample.User1@samplecase.com
+          displayName:
+            type: string
+            description: Display friendly name of the user, if available.
+            example: Sample User1
+          notes:
+            type: string
+            description: Optional notes about the user.
+            example: This is an example of notes about Sample User1.
+          cloudUsernames:
+            type: array
+            description: Cloud usernames (aliases) for the user.
+            example:
+            - Sample.User1@samplecase.com
+            - Sample.User1@gmail.com
+            items:
+              type: string
+          managerUid:
+            type: string
+            description: The user's manager's Code42 user id.
+            example: "12345"
+          managerUsername:
+            type: string
+            description: The user's manager's Code42 username.
+            example: manager.user1@samplecase.com
+          managerDisplayName:
+            type: string
+            description: Display friendly name of the user's manager, if available.
+            example: Manager Name
+          title:
+            type: string
+            description: The user's job title, if any.
+            example: Software Engineer
+          division:
+            type: string
+            description: The user's division, if any.
+            example: Engineering
+          department:
+            type: string
+            description: The user's department, if any.
+            example: Research and Development
+          employmentType:
+            type: string
+            description: The user's employment type, if any.
+            example: Full-time
+          city:
+            type: string
+            description: The user's city, if any.
+            example: Anytown
+          state:
+            type: string
+            description: The user's state, if any.
+            example: MN
+          country:
+            type: string
+            description: The user's country, if any.
+            example: US
+          riskFactors:
+            type: array
+            description: Optional list of risk factors for the user.
+            example:
+            - FLIGHT_RISK
+            - HIGH_IMPACT_EMPLOYEE
+            items:
+              $ref: '#/components/schemas/RiskFactorV2-detection-lists'
+    CreateUserV2Command-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - tenantId
+        - userName
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          userName:
+            maxLength: 512
+            type: string
+            description: The user's Code42 username.
+            example: Sample.User1@samplecase.com
+          notes:
+            maxLength: 250
+            type: string
+            description: Optional notes about the user.
+            example: This is an example of notes about Sample User1'.
+          riskFactors:
+            type: array
+            description: Optional list of risk factors for the user.
+            example:
+            - FLIGHT_RISK
+            - HIGH_IMPACT_EMPLOYEE
+            items:
+              $ref: '#/components/schemas/RiskFactorV2-detection-lists'
+          cloudUsernames:
+            type: array
+            description: Optional List of Cloud username (aliases) for the user. An
+              additional cloudUsername will be created with the value of the userName
+              parameter for users created if not provided.
+            example:
+            - Sample.User1@gmail.com
+            items:
+              type: string
+    GetUserByUsernameV2Query-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - tenantId
+        - username
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          username:
+            maxLength: 512
+            type: string
+            description: The user's Code42 username.
+            example: Sample.User1@samplecase.com
+    GetUserByIdV2Query-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - tenantId
+        - userId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.  This id must be known to detection
+              list management.
+            example: "12345"
+    AddRiskFactorsV2Command-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - riskFactors
+        - tenantId
+        - userId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.  This id must be known to detection
+              list management.
+            example: "12345"
+          riskFactors:
+            type: array
+            description: Risk factors to add to user.
+            items:
+              $ref: '#/components/schemas/RiskFactorV2-detection-lists'
+    RemoveRiskFactorsV2Command-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - riskFactors
+        - tenantId
+        - userId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.  This id must be known to detection
+              list management.
+            example: "12345"
+          riskFactors:
+            type: array
+            description: Risk factors to remove from user.
+            items:
+              $ref: '#/components/schemas/RiskFactorV2-detection-lists'
+    AddCloudUsernamesV2Command-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - cloudUsernames
+        - tenantId
+        - userId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.  This id must be known to detection
+              list management.
+            example: "12345"
+          cloudUsernames:
+            type: array
+            description: List of Cloud usernames (aliases) to add to the user. The
+              result of these additions cannot cause total count of aliases to exceed
+              2 for the user.
+            example:
+            - Sample.User1@gmail.com
+            items:
+              type: string
+    RemoveCloudUsernamesV2Command-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - cloudUsernames
+        - tenantId
+        - userId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.  This id must be known to detection
+              list management.
+            example: "12345"
+          cloudUsernames:
+            type: array
+            description: List of Cloud usernames (aliases) to remove from the user.
+            example:
+            - Sample.User1@gmail.com
+            items:
+              type: string
+    UpdateNotesV2Command-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - tenantId
+        - userId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.  This id must be known to detection
+              list management.
+            example: "12345"
+          notes:
+            maxLength: 250
+            type: string
+            description: Optional notes about the user.
+            example: This is an example of notes about Sample User1'.
+    RefreshUserAttributesV2Command-detection-lists:
+      allOf:
+      - $ref: '#/components/schemas/DomainValue-detection-lists'
+      - required:
+        - tenantId
+        - userId
+        type: object
+        properties:
+          tenantId:
+            type: string
+            description: The tenant identifier.
+            example: SampleTenant1
+          userId:
+            type: string
+            description: The user's Code42 user id.  This id must be known to detection
+              list management.
+            example: "12345"
+    DepartureDate-detection-lists:
+      title: DepartureDate
+      type: string
+      description: The date the employee departs.
+      format: date
+      example: 2019-11-27

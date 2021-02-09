@@ -1,0 +1,112 @@
+version: '3'
+services:
+
+  core:
+    image: c42/mock-microservice-endpoints:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mock_core
+    restart: always
+    ports:
+      - "4200:4200"
+    command: mock docs/core.yml -p 4200 -h 0.0.0.0
+
+  alerts:
+    image: c42/mock-microservice-endpoints:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mock_alerts
+    restart: always
+    ports:
+      - "4201:4201"
+    command: mock docs/alerts.yml -p 4201 -h 0.0.0.0
+
+  alert_rules:
+    image: c42/mock-microservice-endpoints:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mock_alert_rules
+    restart: always
+    ports:
+      - "4202:4202"
+    command: mock docs/alert_rules.yml -p 4202 -h 0.0.0.0
+
+  detection_lists:
+    image: c42/mock-microservice-endpoints:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mock_detection_lists
+    restart: always
+    ports:
+      - "4203:4203"
+    command: mock docs/detection_lists.yml -p 4203 -h 0.0.0.0
+
+  cases:
+    image: c42/mock-microservice-endpoints:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mock_cases
+    restart: always
+    ports:
+      - "4204:4204"
+    command: mock docs/cases.yml -p 4204 -h 0.0.0.0
+
+  storage:
+    image: c42/mock-microservice-endpoints:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mock_storage
+    restart: always
+    ports:
+      - "4205:4205"
+    command: mock docs/storage.yml -p 4205 -h 0.0.0.0
+
+  connected_server:
+    image: c42/mock-microservice-endpoints:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mock_connected_server
+    restart: always
+    ports:
+      - "4206:4206"
+    command: mock docs/connected_server.yml -p 4206 -h 0.0.0.0
+  
+  audit_logs:
+    image: c42/mock-microservice-endpoints:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mock_audit_logs
+    restart: always
+    ports:
+      - "4207:4207"
+    command: mock docs/audit_logs.yml -p 4207 -h 0.0.0.0
+
+  file-events:
+    image: c42/mock-microservice-endpoints:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mock_file_events
+    restart: always
+    ports:
+      - "4208:4208"
+    command: mock docs/file-events.yml -p 4208 -h 0.0.0.0
+
+  preservation-data-service:
+    image: c42/mock-microservice-endpoints:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mock_preservation_data_service
+    restart: always
+    ports:
+      - "4209:4209"
+    command: mock docs/preservation-data-service.yml -p 4209 -h 0.0.0.0

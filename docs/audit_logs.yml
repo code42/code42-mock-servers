@@ -1,0 +1,51 @@
+openapi: 3.0.1
+info:
+  title: Api Documentation
+  description: Api Documentation
+  version: 1.0.0
+servers:
+- url: /
+tags:
+- name: AuditLogs
+  description: A collection of data for an insider threat investigation.
+paths:
+  /rpc/search/search-audit-log:
+    post:
+      tags:
+      - AuditLogs
+      summary: Search audit logs
+      operationId: AuditLogsSearch_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditLogResponse'
+components:
+  schemas:
+    AuditLogResponse:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              type$:
+                type: string
+              actorId:
+                type: string
+                example: '123ActorId123'
+              actorName:
+                type: string
+              actorAgent:
+                type: string
+              actorIpAddress:
+                type: string
+                example: 6.555.66.55
+              timestamp:
+                type: string
+                format: date-time
+              actorType:
+                type: string

@@ -1,0 +1,412 @@
+openapi: 3.0.1
+info:
+  title: Api Documentation
+  description: Api Documentation
+  version: 1.0.0
+servers:
+- url: /
+tags:
+- name: Storage Archive
+  description: A collection of data for storage archive actions.
+
+paths:
+  /api/AuthToken:
+    post:
+      tags:
+      - archive
+      summary: Get a storage authentication token
+      operationId: AuthToken_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                    example: ["token1", "token2"]
+  /api/WebRestoreSession:
+    post:
+      tags:
+      - archive
+      summary: Create a web restore session
+      operationId: WebRestoreSession_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  webRestoreSessionId:
+                    type: string
+                    example: "123WebRestoreSessionId123"
+  /api/WebRestoreTreeNode:
+    get:
+      tags:
+      - archive
+      summary: Get a web restore tree node
+      operationId: WebRestoreTreeNode_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebRestoreTreeNodeResponse_core'
+  /api/WebRestoreFileSizePolling:
+    post:
+      tags:
+      - archive
+      summary: Create a file size polling job
+      operationId: WebRestoreFileSizePolling_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebRestoreFileSizePollingPostResponse_core'
+    get:
+      tags:
+      - archive
+      summary: Get a file size polling job
+      operationId: WebRestoreFileSizePolling_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebRestoreFileSizePollingGetResponse_core'
+    delete:
+      tags:
+      - archive
+      summary: Delete a file size polling job
+      operationId: WebRestoreFileSizePolling_Delete
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v9/restore/web:
+    post:
+      tags:
+      - archive
+      summary: Submit a web restore job
+      operationId: WebRestoreJob_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebRestoreJobCreateResponse_core'
+  /api/WebRestoreJob:
+    delete:
+      tags:
+      - archive
+      summary: Cancel a web restore job
+      operationId: WebRestoreJob_Delete
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/WebRestoreJob/{jobId}:
+    parameters:
+    - name: jobId
+      in: path
+      description: The ID of the web restore job.
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - archive
+      summary: Get a restore job status
+      operationId: WebRestoreJob_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebRestoreJobGetResponse_core'
+
+  /api/WebRestoreJobResult/{jobId}:
+    parameters:
+    - name: jobId
+      in: path
+      description: The ID of the web restore job.
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - archive
+      summary: Get the file from a web restore job
+      operationId: WebRestoreResult_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/octet-stream:
+              example: these are some file contents
+
+  /api/SecurityDetectionEvent:
+    get:
+      tags:
+        - archive
+      summary: Get a security detection event
+      operationId: SecurityDetectionEvent_Get
+      parameters:
+      - name: userUid
+        in: path
+        schema:
+          type: string
+      - name: planUid 
+        in: path
+        schema:
+          type: string
+      - name: cursor
+        in: path
+        schema:
+          type: string
+      - name: incFiles
+        in: path
+        schema:
+          type: boolean
+      - name: eventType
+        in: path
+        schema:
+          type: string
+      - name: minTs
+        in: path
+        schema:
+          type: string
+      - name: maxTs
+        in: path
+        schema:
+          type: string
+      - name: summarize
+        in: path
+        schema:
+          type: string
+      responses:
+        200:
+          description: A successful response
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityDetectionEventResponse_core'
+components:
+  schemas:
+    WebRestoreTreeNodeResponse_core:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            timestamp:
+              type: string
+            params:
+              type: object
+              properties:
+                webRestoreSessionId:
+                  type: string
+                  example: "123WebRestoreSessionId123"
+                backupSetId:
+                  type: string
+                  example: "123BackupSetId123"
+                guid:
+                  type: string
+                type:
+                  type: string
+                fileId:
+                  type: string
+                  example: '123FileId123'
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              filename:
+                type: string
+                example: C:/
+              path:
+                type: string
+                example: C:/
+              id:
+                type: string
+                example: '123FileId123'
+              lastBackupMs:
+                type: integer
+                format: int64
+              lastBackup:
+                type: string
+              lastModifiedMs:
+                type: integer
+                format: int64
+              lastModified:
+                type: string
+              deleted:
+                type: boolean
+              hidden:
+                type: boolean
+              type:
+                type: string
+              date:
+                type: string
+    WebRestoreFileSizePollingPostResponse_core:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            timestamp:
+              type: string
+            params:
+              type: object
+              properties:
+                _:
+                  type: string
+        data:
+          type: object
+          properties:
+            fileId:
+              type: string
+              example: '123FileId123'
+            jobId:
+              type: integer
+              format: int32
+              example: '123JobId123'
+    WebRestoreFileSizePollingGetResponse_core:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            timestamp:
+              type: string
+            params:
+              type: object
+              properties:
+                jobId:
+                  type: string
+                  example: '123JobId123'
+                guid:
+                  type: string
+                _:
+                  type: string
+        data:
+          type: object
+          properties:
+            size:
+              type: integer
+              format: int32
+            numFiles:
+              type: integer
+              format: int32
+            numDirs:
+              type: integer
+              format: int32
+            status:
+              type: string
+              example: "done"
+    WebRestoreJobCreateResponse_core:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            date:
+              type: string
+            headers:
+              type: array
+              items:
+                type: object
+        data:
+          type: object
+          properties:
+            jobId:
+              type: string
+              example: '123JobId123'
+            sourceComputerGuid:
+              type: string
+            name:
+              type: string
+            userId:
+              type: string
+            done:
+              type: boolean
+            canceled:
+              type: boolean
+            creationDate:
+              type: string
+            expirationDate:
+              type: string
+            bytesZipped:
+              type: integer
+              format: int32
+    WebRestoreJobGetResponse_core:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            timestamp:
+              type: string
+            params:
+              type: object
+              properties:
+                _:
+                  type: string
+        data:
+          type: object
+          properties:
+            jobId:
+              type: string
+            sourceId:
+              type: string
+            name:
+              type: string
+            userId:
+              type: integer
+              format: int32
+            done:
+              type: boolean
+              example: true
+            canceled:
+              type: boolean
+            creationDate:
+              type: integer
+              format: int64
+            expirationDate:
+              type: integer
+              format: int64
+            bytesZipped:
+              type: integer
+              format: int32
+            zipResult:
+              type: boolean
+            percentComplete:
+              type: integer
+              format: int32
+            status:
+              type: string
+              example: done
+    SecurityDetectionEventResponse_core:
+      type: object
+      properties:
+        cursor: 
+          type: string  

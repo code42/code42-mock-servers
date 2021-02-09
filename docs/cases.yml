@@ -1,0 +1,594 @@
+openapi: 3.0.1
+info:
+  title: Api Documentation
+  description: Api Documentation
+  version: 1.0.0
+servers:
+- url: /
+tags:
+- name: Cases
+  description: A collection of data for an insider threat investigation.
+paths:
+  /api/v1/case:
+    get:
+      tags:
+      - Cases
+      summary: Get all cases for a tenant
+      operationId: getCasesUsingGET
+      parameters:
+      - name: assignee
+        in: query
+        description: User UID of an assignee of a case on which to filter.
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: createdAt
+        in: query
+        description: 'Filter cases created between the supplied start and end times.
+          Must use ISO time interval, for example: 2020-08-31T11:00:00Z/2020-09-01T15:30:00Z'
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: isAssigned
+        in: query
+        description: Filter cases with an assignee (true) or without (false)
+        allowEmptyValue: false
+        schema:
+          type: boolean
+      - name: lastModifiedBy
+        in: query
+        description: User UID of the user who most recently modified the case.
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Name of a case on which to filter; will include partial matches
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: pgNum
+        in: query
+        description: Page number for results, starting at 1.
+        allowEmptyValue: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+      - name: pgSize
+        in: query
+        description: Max number of results to return for a page.
+        allowEmptyValue: false
+        schema:
+          type: integer
+          format: int32
+          default: 2147483647
+      - name: srtDir
+        in: query
+        description: The direction on which to sort the response, based on the corresponding
+          key.
+        allowEmptyValue: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          items:
+            type: string
+            enum:
+            - asc
+            - desc
+          enum:
+          - asc
+          - desc
+      - name: srtKey
+        in: query
+        description: One or more values on which the response will be sorted.
+        allowEmptyValue: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          items:
+            type: string
+            enum:
+            - name
+            - number
+            - createdAt
+            - updatedAt
+            - status
+            - assigneeUsername
+            - subjectUsername
+          enum:
+          - name
+          - number
+          - createdAt
+          - updatedAt
+          - status
+          - assigneeUsername
+          - subjectUsername
+      - name: status
+        in: query
+        description: One or more case statuses on which to filter.
+        allowEmptyValue: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          items:
+            type: string
+            enum:
+            - OPEN
+            - CLOSED
+          enum:
+          - OPEN
+          - CLOSED
+      - name: subject
+        in: query
+        description: User UID of a subject of a case on which to filter.
+        allowEmptyValue: false
+        schema:
+          type: string
+      - name: updatedAt
+        in: query
+        description: 'Filter cases last updated between the supplied start and end
+          times. Must use ISO time interval, for example: 2020-08-31T11:00:00Z/2020-09-01T15:30:00Z'
+        allowEmptyValue: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: 'Success: Response containing cases matching provided filters.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MultiCaseResponse-cases'
+    post:
+      tags:
+      - Cases
+      summary: Create a case
+      operationId: createCaseUsingPOST
+      responses:
+        200:
+          description: 'Success: Response containing created case.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleCaseResponse-cases'
+  /api/v1/case/{caseNumber}:
+    get:
+      tags:
+      - Cases
+      summary: Get a single case for a tenant
+      operationId: getCaseUsingGET
+      parameters:
+      - name: caseNumber
+        in: path
+        description: Unique numeric identifier for the case.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: 'Success: Response containing the matching case.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleCaseResponse-cases'
+      deprecated: false
+    put:
+      tags:
+      - Cases
+      summary: Update a case
+      operationId: updateCaseUsingPUT
+      parameters:
+      - name: caseNumber
+        in: path
+        description: Unique numeric identifier for the case.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCaseRequest-cases'
+        required: true
+      responses:
+        200:
+          description: 'Success: Response containing updated case.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleCaseResponse-cases'
+  /api/v1/case/{caseNumber}/export:
+    get:
+      tags:
+      - Cases
+      summary: Download case summary as a PDF file
+      operationId: pdfExportUsingGET
+      parameters:
+      - name: caseNumber
+        in: path
+        description: Unique numeric identifier for the case.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: language
+        in: query
+        description: Specifies the locale for the PDF export. Defaults to English
+          if no value is supplied.
+        allowEmptyValue: false
+        schema:
+          type: string
+        example: de
+      responses:
+        200:
+          description: 'Success: Streaming response containing PDF file.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamingResponseBody-cases'
+  /api/v1/case/{caseNumber}/fileevent:
+    get:
+      tags:
+      - Cases
+      summary: Get all events associated with a case (abbreviated view)
+      operationId: getEventsByCaseUsingGET
+      parameters:
+      - name: caseNumber
+        in: path
+        description: Unique numeric identifier for the case.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: 'Success: Response containing abbreviated view of events associated
+           with the case.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MultipleEventsResponse-cases'
+  /api/v1/case/{caseNumber}/fileevent/export:
+    get:
+      tags:
+      - Cases
+      summary: Export file events for a case as a CSV file
+      operationId: csvExportUsingGET
+      parameters:
+      - name: caseNumber
+        in: path
+        description: Unique numeric identifier for the case.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: 'Success: Streaming response containing CSV file.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamingResponseBody-cases'
+  /api/v1/case/{caseNumber}/fileevent/{eventId}:
+    get:
+      tags:
+      - Cases
+      summary: Get the full JSON for a single event
+      operationId: getEventUsingGET
+      parameters:
+      - name: caseNumber
+        in: path
+        description: Unique numeric identifier for the case.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: eventId
+        in: path
+        description: The unique identifier for the event.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: 'Success: Response containing the full JSON for the event.'
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+      - Cases
+      summary: Add an event to a case
+      operationId: addEventToCaseUsingPOST
+      parameters:
+      - name: caseNumber
+        in: path
+        description: Unique numeric identifier for the case.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: eventId
+        in: path
+        description: The unique identifier for the event.
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: 'Success: Event added to the case.'
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      tags:
+      - Cases
+      summary: Delete an event from a case
+      operationId: deleteEventUsingDELETE
+      parameters:
+      - name: caseNumber
+        in: path
+        description: Unique numeric identifier for the case.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: eventId
+        in: path
+        description: The unique identifier for the event.
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: 'Success: Event deleted from the case.'
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    EventResponse-cases:
+      title: EventResponse
+      type: object
+      properties:
+        eventId:
+          type: string
+          description: The unique identifier for the event.
+          example: 0_147e9445-2f30-4a91-8b2a-9455332e880a_973435567569502913_986467523038446097_163
+        eventTimestamp:
+          type: string
+          description: Date and time that the Code42 service on the device detected
+            an event; based on the device’s system clock and reported in Coordinated
+            Universal Time (UTC).
+          format: date-time
+          example: 2020-12-23T14:24:44.593Z
+        exposure:
+          type: array
+          description: Lists indicators that the data may be exposed.
+          example:
+          - OutsideTrustedDomains
+          - IsPublic
+          items:
+            type: string
+        fileName:
+          type: string
+          description: The name of the file, including the file extension.
+          example: example.docx
+        filePath:
+          type: string
+          description: The file location on the user's device; a path forward or backslash
+            should be included at the end of the filepath. Possibly null if the file
+            event occurred on a cloud provider.
+          example: /Users/casey/Documents/
+    MultiCaseResponse-cases:
+      title: MultiCaseResponse
+      type: object
+      properties:
+        cases:
+          type: array
+          description: List of cases in the response
+          items:
+            $ref: '#/components/schemas/SingleSlimCaseResponse-cases'
+        totalCount:
+          type: integer
+          description: Total number of cases matching the provided filters
+          format: int64
+          example: 42
+    MultipleEventsResponse-cases:
+      title: MultipleEventsResponse
+      type: object
+      properties:
+        events:
+          type: array
+          description: List of events in the response.
+          items:
+            $ref: '#/components/schemas/EventResponse-cases'
+    SingleCaseResponse-cases:
+      title: SingleCaseResponse
+      type: object
+      properties:
+        assignee:
+          type: string
+          description: The user UID of the administrator assigned to investigate the
+            case.
+          example: "273411254592236320"
+        assigneeUsername:
+          type: string
+          description: The username of the administrator assigned to investigate the
+            case.
+          example: admin@example.com
+        createdAt:
+          type: string
+          description: Time at which the case was created.
+          format: date-time
+          example: 2020-10-27T15:16:05.369203Z
+        createdByUserUid:
+          type: string
+          description: User UID of the user who created the case.
+          example: "806150685834341100"
+        createdByUsername:
+          type: string
+          description: Username of the user who created the case.
+          example: adrian@example.com
+        description:
+          type: string
+          description: Brief description providing context for a case.
+          example: Sample description
+        findings:
+          type: string
+          description: Markdown formatted text summarizing the findings for a case.
+          example: Sample findings
+        lastModifiedByUserUid:
+          type: string
+          description: User UID of the user who last modified the case.
+          example: "806150685834341100"
+        lastModifiedByUsername:
+          type: string
+          description: Username of the user who last modified the case.
+          example: adrian@example.com
+        name:
+          type: string
+          description: The unique name given to the case.
+          example: Sample case name
+        number:
+          type: integer
+          description: Unique numeric identifier for the case.
+          format: int64
+          example: 577
+        status:
+          type: string
+          description: |-
+            Indicates the status of the case.
+            OPEN: The case is active and all aspects of the case are editable.
+            CLOSED: The case is resolved. Closed cases cannot be re-opened or modified. Case data for closed cases is retained indefinitely.
+          example: OPEN
+          enum:
+          - OPEN
+          - CLOSED
+        subject:
+          type: string
+          description: The user UID of the subject being investigated in this case.
+          example: "421380797518239200"
+        subjectUsername:
+          type: string
+          description: The username of the subject being investigated in this case.
+          example: casey@example.com
+        updatedAt:
+          type: string
+          description: Time at which the case was last updated.
+          format: date-time
+          example: 2020-10-27T15:20:26.311894Z
+    SingleSlimCaseResponse-cases:
+      title: SingleSlimCaseResponse
+      type: object
+      properties:
+        assignee:
+          type: string
+          description: The user UID of the administrator assigned to investigate the
+            case.
+          example: "273411254592236320"
+        assigneeUsername:
+          type: string
+          description: The username of the administrator assigned to investigate the
+            case.
+          example: admin@example.com
+        createdAt:
+          type: string
+          description: Time at which the case was created.
+          format: date-time
+          example: 2020-10-27T15:16:05.369203Z
+        createdByUserUid:
+          type: string
+          description: User UID of the user who created the case.
+          example: "806150685834341100"
+        createdByUsername:
+          type: string
+          description: Username of the user who created the case.
+          example: adrian@example.com
+        lastModifiedByUserUid:
+          type: string
+          description: User UID of the user who last modified the case.
+          example: "806150685834341100"
+        lastModifiedByUsername:
+          type: string
+          description: Username of the user who last modified the case.
+          example: adrian@example.com
+        name:
+          type: string
+          description: The unique name given to the case.
+          example: Sample case name
+        number:
+          type: integer
+          description: Unique numeric identifier for the case.
+          format: int64
+          example: 1
+        status:
+          type: string
+          description: |-
+            Indicates the status of the case.
+            OPEN: The case is active and all aspects of the case are editable.
+            CLOSED: The case is resolved. Closed cases cannot be re-opened or modified. Case data for closed cases is retained indefinitely.
+          example: OPEN
+          enum:
+          - OPEN
+          - CLOSED
+        subject:
+          type: string
+          description: The user UID of the subject being investigated in this case.
+          example: "421380797518239200"
+        subjectUsername:
+          type: string
+          description: The username of the subject being investigated in this case.
+          example: casey@example.com
+        updatedAt:
+          type: string
+          description: Time at which the case was last updated.
+          format: date-time
+          example: 2020-10-27T15:20:26.311894Z
+    StreamingResponseBody-cases:
+      title: StreamingResponseBody
+      type: object
+    UpdateCaseRequest-cases:
+      title: UpdateCaseRequest
+      type: object
+      properties:
+        assignee:
+          type: string
+          description: The user UID of the administrator assigned to investigate the
+            case.
+          example: "273411254592236320"
+        description:
+          type: string
+          description: Brief description providing context for a case.
+          example: Sample description
+        findings:
+          type: string
+          description: Markdown formatted text summarizing the findings for a case.
+          example: Sample findings
+        name:
+          type: string
+          description: The unique name given to the case.
+          example: Sample case name
+        status:
+          type: string
+          description: |-
+            Indicates the status of the case.
+            OPEN: The case is active and all aspects of the case are editable.
+            CLOSED: The case is resolved. Closed cases cannot be re-opened or modified. Case data for closed cases is retained indefinitely.
+          example: OPEN
+          enum:
+          - OPEN
+          - CLOSED
+        subject:
+          type: string
+          description: The user UID of the subject being investigated in this case.
+          example: "421380797518239200"

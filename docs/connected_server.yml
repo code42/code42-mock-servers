@@ -1,0 +1,84 @@
+openapi: 3.0.1
+info:
+  title: Api Documentation
+  description: Api Documentation
+  version: 1.0.0
+servers:
+- url: /
+tags:
+- name: Storage Archive
+  description: A collection of data for storage archive actions.
+
+paths:
+  /api/WebRestoreSession:
+    post:
+      tags:
+      - archive
+      summary: Create a web restore session for a connected device
+      operationId: ConnectedWebRestoreSession_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  webRestoreSessionId:
+                    type: string
+                    example: "123WebRestoreSessionId123"
+  /api/v9/restore/push:
+    post:
+      tags:
+      - archive
+      summary: Start a push restore
+      operationId: PushRestore_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PushRestoreResponse_core'
+
+components:
+  schemas:
+    PushRestoreResponse_core:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            date:
+              type: string
+            headers:
+              type: array
+              items:
+                type: string
+            licenseStatus:
+              type: string
+        data:
+          type: object
+          properties:
+            jobId:
+              type: string
+            sourceComputerGuid:
+              type: string
+            userId:
+              type: string
+            done:
+              type: boolean
+            canceled:
+              type: boolean
+            acceptingGuid:
+              type: string
+            providerDestination:
+              type: boolean
+            originalEndpointOsName:
+              type: string
+            originalEndpointOsVersion:
+              type: string
+            acceptingEndpointOsName:
+              type: string
+            acceptingEndpointOsVersion:
+              type: string

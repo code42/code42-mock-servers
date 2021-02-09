@@ -1,0 +1,813 @@
+openapi: 3.0.1
+info:
+  title: File Exfiltration Detection Rules API
+  description: The mocks for alert rules.
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /svc/api/v1/Rules/update-is-enabled:
+    post:
+      tags:
+      - AlertRules
+      summary: Enable or disable a list of rules
+      operationId: Rules_UpdateIsEnabled
+      requestBody:
+        description: The update is enabled command.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateIsEnabledCommand-alert-rules'
+        required: true
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /svc/api/v1/Rules/add-users:
+    post:
+      tags:
+      - AlertRules
+      summary: Add users to a rule's watch list
+      operationId: Rules_AddUsersToRule
+      requestBody:
+        description: The command to add users to the rule watch list.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddUsersToRuleCommand-alert-rules'
+        required: true
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /svc/api/v1/Rules/remove-users:
+    post:
+      tags:
+      - AlertRules
+      summary: Remove users from a rule's watch list
+      operationId: Rules_RemoveUsersFromRule
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /svc/api/v1/Rules/remove-user-aliases:
+    post:
+      tags:
+      - AlertRules
+      summary: Remove user aliases from a rule's watch list
+      operationId: Rules_RemoveUserAliasesFromRule
+      requestBody:
+        description: The command to remove users from the rule watch list.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveUserAliasesFromRuleCommand-alert-rules'
+        required: true
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: command
+  /svc/api/v1/Rules/remove-all-users:
+    post:
+      tags:
+      - AlertRules
+      summary: Remove all users from a rule's watch list
+      operationId: Rules_RemoveAllUsersFromRule
+      requestBody:
+        description: The command to remove all users from the rule watch list.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveAllUsersFromRuleCommand-alert-rules'
+        required: true
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /svc/api/v1/rules/query-users:
+    post:
+      tags:
+      - AlertRules
+      summary: Get users assigned to a given rule
+      operationId: Rules_QueryUsersOnRule
+      requestBody:
+        description: The query to run.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetUsersInRuleQuery-alert-rules'
+        required: true
+      responses:
+        200:
+          description: 'Success: Response containing a list of users included in the
+            rule.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersInRuleResponse-alert-rules'
+  /svc/api/v1/Rules/query-cloud-share-permissions-rule:
+    post:
+      tags:
+      - AlertRules
+      summary: Get details about a set of Cloud Share Permissions rules
+      operationId: Rules_QueryCloudSharePermissionsRule
+      requestBody:
+        description: The query to run.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetCloudSharePermissionsRuleDetailsQuery-alert-rules'
+        required: true
+      responses:
+        200:
+          description: 'Success: Response containing rule details for given rule id.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudSharePermissionsRuleDetailsResponse-alert-rules'
+  /svc/api/v1/Rules/query-endpoint-exfiltration-rule:
+    post:
+      tags:
+      - AlertRules
+      summary: Get details about a set of Endpoint Exfiltration rules
+      operationId: Rules_QueryEndpointExfiltrationRule
+      requestBody:
+        description: The query to run.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetEndpointExfiltrationRuleDetailsQuery-alert-rules'
+        required: true
+      responses:
+        200:
+          description: 'Success: Response containing rule details for given rule id.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointExfiltrationRuleDetailsResponse-alert-rules'
+  /svc/api/v1/Rules/query-file-type-mismatch-rule:
+    post:
+      tags:
+      - AlertRules
+      summary: Get details about a set of File Type Mismatch rules
+      operationId: Rules_QueryFileTypeMismatchRule
+      requestBody:
+        description: The query to run.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetFileTypeMismatchRuleDetailsQuery-alert-rules'
+        required: true
+      responses:
+        200:
+          description: 'Success: Response containing rule details for given rule id.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileTypeMismatchRuleDetailsResponse-alert-rules'
+  /svc/api/v1/Rules/query-file-name-rule:
+    post:
+      tags:
+      - AlertRules
+      summary: Get details about a set of File Name rules
+      operationId: Rules_QueryFileNameRule
+      requestBody:
+        description: The query to run.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetFileNameRuleDetailsQuery-alert-rules'
+        required: true
+      responses:
+        200:
+          description: 'Success: Response containing rule details for given rule id.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileNameRuleDetailsResponse-alert-rules'
+components:
+  schemas:
+    UpdateIsEnabledCommand-alert-rules:
+      type: object
+      required:
+        - isEnabled
+        - ruleIds
+        - tenantId
+      properties:
+        tenantId:
+          maxLength: 100
+          type: string
+          description: The unique identifier representing the tenant.
+          example: MyExampleTenant
+        ruleIds:
+          type: array
+          description: The unique identifiers representing the rules you want to
+            act upon.
+          example:
+          - ExampleRuleId1
+          - ExampleRuleId2
+          items:
+            type: string
+        isEnabled:
+          type: boolean
+          description: What to set the rule's enabled activity to.  Either TRUE
+            or FALSE.
+          example: true
+    AddUsersToRuleCommand-alert-rules:
+      required:
+        - ruleId
+        - tenantId
+        - userList
+      type: object
+      properties:
+        tenantId:
+          maxLength: 100
+          type: string
+          description: The unique identifier representing the tenant.
+          example: MyExampleTenant
+        ruleId:
+          maxLength: 40
+          type: string
+          description: The unique identifier representing the rule you want to act
+            upon.
+          example: ExampleRuleId
+        userList:
+          type: array
+          description: List of users to add to the rule.
+          items:
+            $ref: '#/components/schemas/UserBag-alert-rules'
+    UserBag-alert-rules:
+      required:
+        - userAliasList
+        - userIdFromAuthority
+      type: object
+      properties:
+        userIdFromAuthority:
+          type: string
+          description: User ID from authority.
+          example: userIdFromAuthority
+        userAliasList:
+          type: array
+          description: List of user aliases corresponding to the user ID from the
+            authority.
+          example:
+          - userAlias1
+          - userAlias2
+          items:
+            type: string
+    RemoveUsersFromRuleCommand-alert-rules:
+      required:
+        - ruleId
+        - tenantId
+        - userIdList
+      type: object
+      properties:
+        tenantId:
+          maxLength: 100
+          type: string
+          description: The unique identifier representing the tenant.
+          example: MyExampleTenant
+        ruleId:
+          maxLength: 40
+          type: string
+          description: The unique identifier representing the rule you want to act
+            upon.
+          example: ExampleRuleId
+        userIdList:
+          type: array
+          description: List of user id (from authority) to remove from the rule.  Will
+            remove all associated aliases
+          example:
+          - userIdFromAuthority
+          items:
+            type: string
+    RemoveUserAliasesFromRuleCommand-alert-rules:
+      required:
+        - ruleId
+        - tenantId
+        - userList
+      type: object
+      properties:
+        tenantId:
+          maxLength: 100
+          type: string
+          description: The unique identifier representing the tenant.
+          example: MyExampleTenant
+        ruleId:
+          maxLength: 40
+          type: string
+          description: The unique identifier representing the rule you want to act
+            upon.
+          example: ExampleRuleId
+        userList:
+          type: array
+          description: List of users to add to the rule.
+          items:
+            $ref: '#/components/schemas/UserBag-alert-rules'
+    RemoveAllUsersFromRuleCommand-alert-rules:
+      required:
+        - ruleId
+        - tenantId
+      type: object
+      properties:
+        tenantId:
+          maxLength: 100
+          type: string
+          description: The unique identifier representing the tenant.
+          example: MyExampleTenant
+        ruleId:
+          maxLength: 40
+          type: string
+          description: The unique identifier representing the rule you want to act
+            upon.
+          example: ExampleRuleId
+    UsersInRuleResponse-alert-rules:
+      required:
+        - usersToAlertOn
+      type: object
+      properties:
+        users:
+          type: array
+          description: |-
+            List of users to being watched in the rule.
+            Note that a userIdFromAuthority value of "Null UserIdFromAuthority.  These usernames must be edited in the web app."indicates that the user alias must be edited via the Code42 console or the Code42 CLI.
+          items:
+            $ref: '#/components/schemas/UserBag-alert-rules'
+        usersToAlertOn:
+          $ref: '#/components/schemas/UsersToAlertOn-alert-rules'
+    UsersToAlertOn-alert-rules:
+      pattern: ^[Aa][Ll][Ll]_[Uu][Ss][Ee][Rr][Ss]|[Aa][Ll][Ll]_[Uu][Ss][Ee][Rr][Ss]_[Nn][Oo][Tt]_[Ss][Pp][Ee][Cc][Ii][Ff][Ii][Ee][Dd]|[Ss][Pp][Ee][Cc][Ii][Ff][Ii][Ee][Dd]_[Uu][Ss][Ee][Rr][Ss]$
+      type: string
+      description: Possible users list config values for a rule.
+      example: ALL_USERS
+    GetUsersInRuleQuery-alert-rules:
+      required:
+        - ruleId
+        - tenantId
+      type: object
+      properties:
+        tenantId:
+          maxLength: 100
+          type: string
+          description: The unique identifier representing the tenant.
+          example: MyExampleTenant
+        ruleId:
+          maxLength: 40
+          type: string
+          description: The unique identifier representing the rule you want to act
+            upon.
+          example: ExampleRuleId
+    CloudSharePermissionsRuleDetailsResponse-alert-rules:
+      type: object
+      properties:
+        rules:
+          type: array
+          description: List of rule details returned from the query.
+          items:
+            $ref: '#/components/schemas/CloudSharePermissionsRuleDetails-alert-rules'
+    CloudSharePermissionsRuleDetails-alert-rules:
+      allOf:
+      - $ref: '#/components/schemas/CloudSharePermissionsRule-alert-rules'
+      - required:
+        - createdAt
+        - isSystem
+        - modifiedAt
+        type: object
+        properties:
+          createdAt:
+            type: string
+            description: The timestamp when the rule was created.
+            example: "2020-02-18T01:00:45.006683Z"
+          createdBy:
+            type: string
+            description: Username of the individual who created the rule.
+            example: UserWhoCreatedTheRule
+          modifiedAt:
+            type: string
+            description: Timestamp of when the rule was last modified.
+            example: "2020-02-19T01:57:45.006683Z"
+          modifiedBy:
+            type: string
+            description: Username of the individual who last modified the rule.
+            example: UserWhoMostRecentlyModifiedTheRule
+          isSystem:
+            type: boolean
+            description: Boolean indicator of if the rule is a system rule.
+            example: false
+    CloudSharePermissionsRule-alert-rules:
+      allOf:
+      - $ref: '#/components/schemas/CloudSharePermissionsCriteria-alert-rules'
+      - type: object
+        properties:
+          id:
+            type: string
+            description: Unique of the rule.
+            example: RuleId
+    CloudSharePermissionsCriteria-alert-rules:
+      allOf:
+      - $ref: '#/components/schemas/ExfiltrationRule-alert-rules'
+      - type: object
+        properties:
+          watchGoogleDrive:
+            $ref: '#/components/schemas/WatchGoogleDrive-alert-rules'
+          watchMicrosoftOneDrive:
+            $ref: '#/components/schemas/WatchMicrosoftOneDrive-alert-rules'
+          watchBox:
+            $ref: '#/components/schemas/WatchBox-alert-rules'
+    WatchGoogleDrive-alert-rules:
+      required:
+      - publicOnTheWeb
+      - publicViaLink
+      type: object
+      properties:
+        publicOnTheWeb:
+          type: boolean
+          description: Boolean indicating whether to alert on public on the web
+            shares.
+          example: true
+        publicViaLink:
+          type: boolean
+          description: Boolean indicating whether to alert on public via link shares.
+          example: false
+        outsideTrustedDomains:
+          type: boolean
+          description: Boolean indicating whether to alert on outside trusted domains
+            shares.
+          example: true
+    WatchMicrosoftOneDrive-alert-rules:
+      required:
+      - publicViaLink
+      type: object
+      properties:
+        publicViaLink:
+          type: boolean
+          description: Boolean indicating whether to alert on public via link shares.
+          example: false
+        outsideTrustedDomains:
+          type: boolean
+          description: Boolean indicating whether to alert on outside trusted domains
+            shares.
+          example: true
+    WatchBox-alert-rules:
+      required:
+        - publicViaLink
+      type: object
+      properties:
+        publicViaLink:
+          type: boolean
+          description: Boolean indicating whether to alert on public via link shares.
+          example: false
+        outsideTrustedDomains:
+          type: boolean
+          description: Boolean indicating whether to alert on outside trusted domains
+            shares.
+          example: true
+    ExfiltrationRule-alert-rules:
+      required:
+        - isEnabled
+        - severity
+        - tenantId
+      type: object
+      properties:
+        tenantId:
+          maxLength: 100
+          type: string
+          description: The unique identifier representing the tenant.
+          example: MyExampleTenant
+        name:
+          type: string
+          description: The name of the rule.
+          example: Removable Media Exfiltration Rule
+        description:
+          type: string
+          description: The description of the rule.
+          example: Alert me on all removable media exfiltration.
+        severity:
+          $ref: '#/components/schemas/SeverityRating-alert-rules'
+        isEnabled:
+          type: boolean
+          description: Boolean indicating if the rule is currently enabled.
+          example: true
+        fileBelongsTo:
+          $ref: '#/components/schemas/FileBelongsTo-alert-rules'
+        notificationConfig:
+          $ref: '#/components/schemas/NotificationConfig-alert-rules'
+        fileCategoryWatch:
+          $ref: '#/components/schemas/FileCategoryWatch-alert-rules'
+        ruleSource:
+          type: string
+          description: Indicates source of rule creation.  Either alerting or lens
+            application name.
+          example: Departing Employee
+    SeverityRating-alert-rules:
+      pattern: ^[Ll][Oo][Ww]|[Mm][Ee][Dd][Ii][Uu][Mm]|[Hh][Ii][Gg][Hh]$
+      type: string
+      description: Possible severity values for a rule.
+      example: LOW
+    FileBelongsTo-alert-rules:
+      required:
+        - usersToAlertOn
+      type: object
+      properties:
+        usersToAlertOn:
+          $ref: '#/components/schemas/UsersToAlertOn-alert-rules'
+        userList:
+          type: array
+          description: List of users who's activity is specified as either watching
+            or excluding from watching.
+          example:
+          - user1
+          - user2
+          items:
+            type: string
+    NotificationConfig-alert-rules:
+      required:
+        - enabled
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Boolean indicating if the notifications are turned on.
+          example: true
+        notificationInfo:
+          type: array
+          description: Config information for notifications.
+          items:
+            $ref: '#/components/schemas/NotificationInfo-alert-rules'
+    NotificationInfo-alert-rules:
+      required:
+        - notificationType
+      type: object
+      properties:
+        notificationType:
+          $ref: '#/components/schemas/NotificationType-alert-rules'
+        notificationAddress:
+          type: string
+          description: Address notifications are configured to send to.
+          example: myUsername@company.com
+    NotificationType-alert-rules:
+      pattern: ^[Ee][Mm][Aa][Ii][Ll]$
+      type: string
+      description: Type of notification.
+      example: EMAIL
+    FileCategoryWatch-alert-rules:
+      required:
+        - watchAllFiles
+      type: object
+      properties:
+        watchAllFiles:
+          type: boolean
+          description: Boolean indicating if rule is watching all file categories.
+          example: false
+        fileCategoryList:
+          type: array
+          description: List of file categories to watch.
+          items:
+            $ref: '#/components/schemas/FileCategory-alert-rules'
+    FileCategory-alert-rules:
+      pattern: ^[Aa][Rr][Cc][Hh][Ii][Vv][Ee]|[Aa][Uu][Dd][Ii][Oo]|[Dd][Oo][Cc][Uu][Mm][Ee][Nn][Tt]|[Ee][Xx][Ee][Cc][Uu][Tt][Aa][Bb][Ll][Ee]|[Ii][Mm][Aa][Gg][Ee]|[Pp][Dd][Ff]|[Pp][Rr][Ee][Ss][Ee][Nn][Tt][Aa][Tt][Ii][Oo][Nn]|[Ss][Cc][Rr][Ii][Pp][Tt]|[Ss][Oo][Uu][Rr][Cc][Ee][Cc][Oo][Dd][Ee]|[Ss][Pp][Rr][Ee][Aa][Dd][Ss][Hh][Ee][Ee][Tt]|[Vv][Ii][Dd][Ee][Oo]|[Vv][Ii][Rr][Tt][Uu][Aa][Ll][Dd][Ii][Ss][Kk][Ii][Mm][Aa][Gg][Ee]$
+      type: string
+      description: Type of file category.
+      example: ARCHIVE
+    GetCloudSharePermissionsRuleDetailsQuery-alert-rules:
+      required:
+        - ruleIds
+        - tenantId
+      type: object
+      properties:
+        tenantId:
+          maxLength: 100
+          type: string
+          description: The unique identifier representing the tenant.
+          example: MyExampleTenant
+        ruleIds:
+          type: array
+          description: The unique identifiers representing the rules you want to
+            act upon.
+          example:
+          - ExampleRuleId1
+          - ExampleRuleId2
+          items:
+            type: string
+    EndpointExfiltrationRuleDetailsResponse-alert-rules:
+      type: object
+      properties:
+        rules:
+          type: array
+          description: List of rule details returned from the query.
+          items:
+            $ref: '#/components/schemas/EndpointExfiltrationRuleDetails-alert-rules'
+    EndpointExfiltrationRuleDetails-alert-rules:
+      required:
+        - createdAt
+        - isSystem
+        - modifiedAt
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: The timestamp when the rule was created.
+          example: "2020-02-18T01:00:45.006683Z"
+        createdBy:
+          type: string
+          description: Username of the individual who created the rule.
+          example: UserWhoCreatedTheRule
+        modifiedAt:
+          type: string
+          description: Timestamp of when the rule was last modified.
+          example: "2020-02-19T01:57:45.006683Z"
+        modifiedBy:
+          type: string
+          description: Username of the individual who last modified the rule.
+          example: UserWhoMostRecentlyModifiedTheRule
+        isSystem:
+          type: boolean
+          description: Boolean indicator of if the rule is a system rule.
+          example: false
+    GetEndpointExfiltrationRuleDetailsQuery-alert-rules:
+      required:
+        - ruleIds
+        - tenantId
+      type: object
+      properties:
+        tenantId:
+          maxLength: 100
+          type: string
+          description: The unique identifier representing the tenant.
+          example: MyExampleTenant
+        ruleIds:
+          type: array
+          description: The unique identifiers representing the rules you want to
+            act upon.
+          example:
+          - ExampleRuleId1
+          - ExampleRuleId2
+          items:
+            type: string
+    FileTypeMismatchRuleDetailsResponse-alert-rules:
+      type: object
+      properties:
+        rules:
+          type: array
+          description: List of rule details returned from the query.
+          items:
+            $ref: '#/components/schemas/FileTypeMismatchRuleDetails-alert-rules'
+    FileTypeMismatchRuleDetails-alert-rules:
+      allOf:
+      - $ref: '#/components/schemas/FileTypeMismatchRule-alert-rules'
+      - required:
+        - createdAt
+        - isSystem
+        - modifiedAt
+        type: object
+        properties:
+          createdAt:
+            type: string
+            description: The timestamp when the rule was created.
+            example: "2020-02-18T01:00:45.006683Z"
+          createdBy:
+            type: string
+            description: Username of the individual who created the rule.
+            example: UserWhoCreatedTheRule
+          modifiedAt:
+            type: string
+            description: Timestamp of when the rule was last modified.
+            format: date-time
+            example: "2020-02-19T01:57:45.006683Z"
+          modifiedBy:
+            type: string
+            description: Username of the individual who last modified the rule.
+            example: UserWhoMostRecentlyModifiedTheRule
+          isSystem:
+            type: boolean
+            description: Boolean indicator of if the rule is a system rule.
+            example: false
+    FileTypeMismatchRule-alert-rules:
+      allOf:
+      - $ref: '#/components/schemas/FileTypeMismatchCriteria-alert-rules'
+      - type: object
+        properties:
+          id:
+            type: string
+            description: Unique of the rule.
+            example: RuleId
+    FileTypeMismatchCriteria-alert-rules:
+      allOf:
+      - $ref: '#/components/schemas/ExfiltrationRule-alert-rules'
+      - type: object
+    GetFileTypeMismatchRuleDetailsQuery-alert-rules:
+      required:
+        - ruleIds
+        - tenantId
+      type: object
+      properties:
+        tenantId:
+          maxLength: 100
+          type: string
+          description: The unique identifier representing the tenant.
+          example: MyExampleTenant
+        ruleIds:
+          type: array
+          description: The unique identifiers representing the rules you want to
+            act upon.
+          example:
+          - ExampleRuleId1
+          - ExampleRuleId2
+          items:
+            type: string
+    FileNameRuleDetailsResponse-alert-rules:
+      type: object
+      properties:
+        rules:
+          type: array
+          description: List of rule details returned from the query.
+          items:
+            $ref: '#/components/schemas/FileNameRuleDetails-alert-rules'
+    FileNameRuleDetails-alert-rules:
+      allOf:
+      - $ref: '#/components/schemas/FileNameRule-alert-rules'
+      - required:
+        - createdAt
+        - isSystem
+        - modifiedAt
+        type: object
+        properties:
+          createdAt:
+            type: string
+            description: The timestamp when the rule was created.
+            example: "2020-02-18T01:00:45.006683Z"
+          createdBy:
+            type: string
+            description: Username of the individual who created the rule.
+            example: UserWhoCreatedTheRule
+          modifiedAt:
+            type: string
+            description: Timestamp of when the rule was last modified.
+            format: date-time
+            example: '2020-02-19T01:57:45.006683Z'
+          modifiedBy:
+            type: string
+            description: Username of the individual who last modified the rule.
+            example: UserWhoMostRecentlyModifiedTheRule
+          isSystem:
+            type: boolean
+            description: Boolean indicator of if the rule is a system rule.
+            example: false
+    FileNameRule-alert-rules:
+      allOf:
+      - $ref: '#/components/schemas/FileNameCriteria-alert-rules'
+      - type: object
+        properties:
+          id:
+            type: string
+            description: Unique of the rule.
+            example: RuleId
+    FileNameCriteria-alert-rules:
+      allOf:
+      - $ref: '#/components/schemas/ExfiltrationRule-alert-rules'
+      - type: object
+        properties:
+          fileNamePatterns:
+            type: array
+            description: List of file name patterns being watched by the rule.
+            example:
+            - Q?ProductPlan.*
+            - '*.cs'
+            items:
+              type: string
+    GetFileNameRuleDetailsQuery-alert-rules:
+      required:
+        - ruleIds
+        - tenantId
+      type: object
+      properties:
+        tenantId:
+          maxLength: 100
+          type: string
+          description: The unique identifier representing the tenant.
+          example: MyExampleTenant
+        ruleIds:
+          type: array
+          description: The unique identifiers representing the rules you want to
+            act upon.
+          example:
+          - ExampleRuleId1
+          - ExampleRuleId2
+          items:
+            type: string

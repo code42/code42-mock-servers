@@ -1,0 +1,77 @@
+openapi: 3.0.1
+info:
+  title: Api Documentation
+  description: Api Documentation
+  version: 1.0.0
+servers:
+- url: /
+tags:
+- name: Preservation Data Service
+paths:
+  /api/v1/FileVersionListing:
+    get:
+      tags:
+      - fileVersions
+      summary: Get file version listing
+      operationId: FileVersionListing_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  versions: 
+                    type: array
+                    items: 
+                      type: object
+                      properties:
+                        fileMD5:
+                          type: string
+                        fileSHA256:
+                          type: string
+                        versionTimestamp:
+                          type: string
+                        storageNodeURL:
+                          type: string
+                          example: http://127.0.0.1:4200
+                        archiveGuid:
+                          type: string
+                        fileId:
+                          type: string
+                  totalVersions: 
+                    type: integer
+                    format: int32
+  /api/v1/FileLocations:
+    get:
+      tags:
+      - FileLocations
+      summary: Get File Locations
+      operationId: FileLocations_Get
+      parameters:
+      - name: sha256
+        in: query
+        schema:
+          type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                definitions: 
+                  locations: 
+                    type: array
+                    items: 
+                      type: object
+                      properties: 
+                        deviceUid: 
+                          type: string
+                        filePath: 
+                          type: string
+                        fileName: 
+                          type: string
+

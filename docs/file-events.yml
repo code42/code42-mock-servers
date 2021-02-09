@@ -1,0 +1,1246 @@
+openapi: 3.0.1
+info:
+  title: Api Documentation
+  description: Api Documentation
+  version: 1.0.0
+servers:
+- url: /
+tags:
+- name: File Events
+  description: Security file events detected by Code42.
+paths:
+  /forensic-search/queryservice/api/v1/fileevent:
+    post:
+      tags:
+      - File Events
+      summary: Search for file events
+      operationId: searchEventsUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+        required: true
+      responses:
+        200:
+          description: 'Success: List of file events matching the query.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileEventResponse'
+      deprecated: false
+      x-codegen-request-body-name: request
+  /api/v1/fileevent/export:
+    post:
+      tags:
+      - File Events
+      summary: Export search results as a CSV file
+      operationId: exportUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportRequest'
+        required: true
+      responses:
+        200:
+          description: 'Success: CSV of file events matching the query.'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StreamingResponseBody'
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/StreamingResponseBody'
+      deprecated: false
+      x-codegen-request-body-name: request
+  /api/v1/fileevent/grouping:
+    post:
+      tags:
+      - File Events
+      summary: Group results by search term
+      description: Search file events, providing a group parameter to bucket results
+        into unique values and approximate counts for each value.
+      operationId: groupingUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupingRequest'
+        required: true
+      responses:
+        200:
+          description: 'Success: List of groups matching the query.'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GroupingResponse'
+      deprecated: false
+      x-codegen-request-body-name: request
+components:
+  schemas:
+    ExportRequest:
+      title: ExportRequest
+      required:
+      - defaultSortKey
+      - groups
+      type: object
+      properties:
+        columns:
+          type: array
+          description: Which columns to include in the output. If none is provided,
+            all available columnswill be output in an unspecified, not-guaranteed
+            order.
+          example:
+          - fileName
+          - filePath
+          items:
+            type: string
+            enum:
+            - eventId
+            - eventType
+            - eventTimestamp
+            - insertionTimestamp
+            - filePath
+            - fileName
+            - fileType
+            - fileCategory
+            - fileCategoryByBytes
+            - fileCategoryByExtension
+            - fileSize
+            - fileOwner
+            - md5Checksum
+            - sha256Checksum
+            - createTimestamp
+            - modifyTimestamp
+            - deviceUserName
+            - deviceUid
+            - userUid
+            - osHostName
+            - domainName
+            - publicIpAddress
+            - privateIpAddresses
+            - actor
+            - directoryId
+            - source
+            - url
+            - shared
+            - sharedWith
+            - sharingTypeAdded
+            - cloudDriveId
+            - detectionSourceAlias
+            - fileId
+            - exposure
+            - processOwner
+            - processName
+            - windowTitle
+            - tabUrl
+            - removableMediaVendor
+            - removableMediaName
+            - removableMediaSerialNumber
+            - removableMediaCapacity
+            - removableMediaBusType
+            - removableMediaMediaName
+            - removableMediaVolumeName
+            - removableMediaPartitionId
+            - syncDestination
+            - syncDestinationUsername
+            - emailDlpPolicyNames
+            - emailSubject
+            - emailSender
+            - emailFrom
+            - emailRecipients
+            - outsideActiveHours
+            - mimeTypeByBytes
+            - mimeTypeByExtension
+            - mimeTypeMismatch
+            - printJobName
+            - printerName
+            - printedFilesBackupPath
+            - remoteActivity
+            - trusted
+            - operatingSystemUser
+            - destinationCategory
+            - destinationName
+        defaultSortKey:
+          type: string
+          enum:
+          - eventId
+          - eventType
+          - eventTimestamp
+          - insertionTimestamp
+          - filePath
+          - fileName
+          - fileType
+          - fileCategory
+          - fileCategoryByBytes
+          - fileCategoryByExtension
+          - fileSize
+          - fileOwner
+          - md5Checksum
+          - sha256Checksum
+          - createTimestamp
+          - modifyTimestamp
+          - deviceUserName
+          - deviceUid
+          - userUid
+          - osHostName
+          - domainName
+          - publicIpAddress
+          - privateIpAddresses
+          - actor
+          - directoryId
+          - source
+          - url
+          - shared
+          - sharedWith
+          - sharingTypeAdded
+          - cloudDriveId
+          - detectionSourceAlias
+          - fileId
+          - exposure
+          - processOwner
+          - processName
+          - windowTitle
+          - tabUrl
+          - removableMediaVendor
+          - removableMediaName
+          - removableMediaSerialNumber
+          - removableMediaCapacity
+          - removableMediaBusType
+          - removableMediaMediaName
+          - removableMediaVolumeName
+          - removableMediaPartitionId
+          - syncDestination
+          - syncDestinationUsername
+          - emailDlpPolicyNames
+          - emailSubject
+          - emailSender
+          - emailFrom
+          - emailRecipients
+          - outsideActiveHours
+          - mimeTypeByBytes
+          - mimeTypeByExtension
+          - mimeTypeMismatch
+          - printJobName
+          - printerName
+          - printedFilesBackupPath
+          - remoteActivity
+          - trusted
+          - operatingSystemUser
+          - destinationCategory
+          - destinationName
+        groupClause:
+          type: string
+          description: Grouping clause for any specified groups.  Default is `AND`.
+          example: OR
+          enum:
+          - AND
+          - OR
+        groups:
+          type: array
+          description: One or more FilterGroups to be combined in a query.
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+        srtDir:
+          type: string
+          description: Sort direction.  Default is `desc`.
+          example: asc
+          enum:
+          - asc
+          - desc
+        srtKey:
+          type: string
+          description: Search term for sorting.
+          enum:
+          - eventId
+          - eventType
+          - eventTimestamp
+          - insertionTimestamp
+          - filePath
+          - fileName
+          - fileType
+          - fileCategory
+          - fileCategoryByBytes
+          - fileCategoryByExtension
+          - fileSize
+          - fileOwner
+          - md5Checksum
+          - sha256Checksum
+          - createTimestamp
+          - modifyTimestamp
+          - deviceUserName
+          - deviceUid
+          - userUid
+          - osHostName
+          - domainName
+          - publicIpAddress
+          - privateIpAddresses
+          - actor
+          - directoryId
+          - source
+          - url
+          - shared
+          - sharedWith
+          - sharingTypeAdded
+          - cloudDriveId
+          - detectionSourceAlias
+          - fileId
+          - exposure
+          - processOwner
+          - processName
+          - windowTitle
+          - tabUrl
+          - removableMediaVendor
+          - removableMediaName
+          - removableMediaSerialNumber
+          - removableMediaCapacity
+          - removableMediaBusType
+          - removableMediaMediaName
+          - removableMediaVolumeName
+          - removableMediaPartitionId
+          - syncDestination
+          - syncDestinationUsername
+          - emailDlpPolicyNames
+          - emailSubject
+          - emailSender
+          - emailFrom
+          - emailRecipients
+          - outsideActiveHours
+          - mimeTypeByBytes
+          - mimeTypeByExtension
+          - mimeTypeMismatch
+          - printJobName
+          - printerName
+          - printedFilesBackupPath
+          - remoteActivity
+          - trusted
+          - operatingSystemUser
+          - destinationCategory
+          - destinationName
+    FieldError:
+      title: FieldError
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error indicating why the field could not be determined.
+          example: Hash unavailable. Locked file.
+        field:
+          type: string
+          description: FileEvent field that could not be determined.
+          example: md5Checksum
+    FileEvent:
+      title: FileEvent
+      required:
+      - eventId
+      - eventType
+      - exposure
+      - fileName
+      - fileType
+      - privateIpAddresses
+      type: object
+      properties:
+        actor:
+          type: string
+          description: Name of the user reported by the cloud provider for the user
+            who performed this file activity.
+          example: casey@example.com
+        cloudDriveId:
+          type: string
+          description: Unique identifier reported by the cloud provider for the drive
+            containing the file at the time the event occurred.
+          example: RvBpZ48u2m
+        createTimestamp:
+          type: string
+          description: File creation timestamp as reported by the device's operating
+            system in Coordinated Universal Time (UTC); available for Mac and Windows
+            NTFS devices only.
+          format: date-time
+          example: '2020-10-27T15:16:05.369203Z'
+        destinationCategory:
+          type: string
+          description: 'General category of where data was sent for a file exposure
+            event. For example: Cloud Storage, Email, Social Media.'
+          example: Social Media
+        destinationName:
+          type: string
+          description: 'Specific target of where data was sent for a file exposure
+            event. For example: Google Drive, Outlook, Slack.'
+          example: LinkedIn
+        detectionSourceAlias:
+          type: string
+          description: Name provided by a Code42 Customer Cloud Administrator when
+            a Cloud Connector is initially configured.
+          example: R&D OneDrive
+        deviceUid:
+          type: string
+          description: Unique identifier for the device. Null if the file event occurred
+            on a cloud provider.
+          example: "24681"
+        deviceUserName:
+          type: string
+          description: The Code42 username used to sign in to the Code42 app on the
+            device. Null if the file event occurred on a cloud provider.
+          example: cody@example.com
+        directoryId:
+          type: array
+          description: Unique identifiers of the parent drives that contain the file;
+            searching on directoryId will return events for all of the files contained
+            in the parent drive.
+          example:
+          - "1234"
+          - 56d78
+          items:
+            type: string
+        domainName:
+          type: string
+          description: Fully qualified domain name (FQDN) for the user's device at
+            the time the event is recorded.  If the device is unable to resolve the
+            domain name of the host, it reports the IP address of the host.
+          example: localhost
+        emailDlpPolicyNames:
+          type: array
+          description: The name of the DLP policy that matched on the email's file
+            attachment.
+          example:
+          - External recipient
+          items:
+            type: string
+        emailFrom:
+          type: string
+          description: The owner of the email account that matched on a DLP rule.
+          example: ari@example.com
+        emailRecipients:
+          type: array
+          description: The CC and BCC recipients included on the email that matched
+            on a DLP rule.
+          example:
+          - cody@example.com
+          - theboss@example.com
+          items:
+            type: string
+        emailSender:
+          type: string
+          description: The individual who sent the email. This is often, but not always,
+            the owner of the email account that matched on a DLP rule.
+          example: ari@example.com
+        emailSubject:
+          type: string
+          description: The subject of the email that matched on a DLP rule.
+          example: Important business documents
+        eventId:
+          type: string
+          description: The unique identifier for the event.
+          example: 0_147e9445-2f30-4a91-8b2a-9455332e880a_973435567569502913_986467523038446097_163
+        eventTimestamp:
+          type: string
+          description: Date and time that the Code42 service on the device detected
+            an event; based on the device‚Äö√Ñ√¥s system clock and reported in Coordinated
+            Universal Time (UTC).
+          format: date-time
+          example: '2020-10-27T15:16:05.369203Z'
+        eventType:
+          type: string
+          description: Indicates the type of file event observed.
+          example: MODIFIED
+          enum:
+          - CREATED
+          - MODIFIED
+          - DELETED
+          - UNCHANGED
+          - READ_BY_APP
+          - UNSUPPORTED
+          - RULE_MATCH
+          - RESTORE
+          - OPEN
+          - DOWNLOADED
+          - PREVIEWED
+          - EMAILED
+          - PRINTED
+        exposure:
+          type: array
+          description: Lists indicators that the data may be exposed. Default is `[]`.
+          example:
+          - CloudStorage
+          items:
+            type: string
+        fieldErrors:
+          type: array
+          description: List fields with errors indicating why they could not be determined.
+          example:
+          - field: md5Checksum
+            error: Hash unavailable. Locked file.
+          items:
+            $ref: '#/components/schemas/FieldError'
+        fileCategory:
+          type: string
+          description: A categorization of the file that is inferred from MIME type.
+          example: AUDIO
+          enum:
+          - UNCATEGORIZED
+          - AUDIO
+          - IMAGE
+          - VIDEO
+          - ARCHIVE
+          - DOCUMENT
+          - PRESENTATION
+          - SPREADSHEET
+          - PDF
+          - EXECUTABLE
+          - SCRIPT
+          - SOURCE_CODE
+          - VIRTUAL_DISK_IMAGE
+        fileCategoryByBytes:
+          type: string
+          description: A categorization of the file based on its contents.
+          example: IMAGE
+        fileCategoryByExtension:
+          type: string
+          description: A categorization of the file based on its extension.
+          example: DOCUMENT
+        fileId:
+          type: string
+          description: Unique identifier reported by the cloud provider for the file
+            associated with the event.
+          example: PUL5zWLRrdudiJZ1OCWw
+        fileName:
+          type: string
+          description: The name of the file, including the file extension.
+          example: ReadMe.md
+        fileOwner:
+          type: string
+          description: The name of the user who owns the file as reported by the device's
+            file system.
+          example: ari.example
+        filePath:
+          type: string
+          description: The file location on the user's device; a forward or backslash
+            must be included at the end of the filepath. Possibly null if the file
+            event occurred on a cloud provider.
+          example: /Users/alix/Documents/
+        fileSize:
+          type: integer
+          description: Size of the file in bytes.
+          format: int64
+          example: 256
+        fileType:
+          type: string
+          description: The type of file detected; only FILE types are searchable.
+          example: FILE
+          enum:
+          - UNKNOWN
+          - FILE
+          - DIR
+          - WIN_NDS
+          - MAC_RSRC
+          - SYMLINK
+          - FIFO
+          - BLOCK_DEVICE
+          - CHAR_DEVICE
+          - BUNDLE
+        insertionTimestamp:
+          type: string
+          description: Date and time that the event was received for indexing by Code42;
+            timestamp is based on the Code42 server system clock and reported in Coordinated
+            Universal Time (UTC).
+          format: date-time
+          example: '2020-10-27T15:16:05.369203Z'
+        md5Checksum:
+          type: string
+          description: The MD5 hash of the file contents.
+          example: a162591e78eb2c816a28907d3ac020f9
+        mimeTypeByBytes:
+          type: string
+          description: The MIME type of the file based on its contents.
+          example: text/csv
+        mimeTypeByExtension:
+          type: string
+          description: The MIME type of the file based on its extension.
+          example: audio/vorbis
+        mimeTypeMismatch:
+          type: boolean
+          description: Indicates whether or not the MIME type of the file based on
+            its contents does not match the MIME type based on its extension and that
+            this mismatch is unexpected.
+          example: true
+        modifyTimestamp:
+          type: string
+          description: File modification timestamp as reported by the device's operating
+            system.  This only indicates changes to file contents.  Changes to file
+            permissions, file owner, or other metadata are not reflected in this timestamp.  Date
+            is reported in Coordinated Universal Time (UTC).
+          format: date-time
+          example: '2020-10-27T15:16:05.369203Z'
+        operatingSystemUser:
+          type: string
+          description: The username logged in to the device when the file activity
+            was observed, as reported by the device‚Äö√Ñ√¥s operating system.
+          example: ari.example
+        osHostName:
+          type: string
+          description: The name reported by the device's operating system.  This may
+            be different than the device name in the Code42 console.
+          example: Mari's MacBook
+        outsideActiveHours:
+          type: boolean
+          description: Indicates whether or not this event occurred outside of the
+            user's typical active hours using data modeling from the this user's prior
+            activity.
+          example: false
+        printJobName:
+          type: string
+          description: For print events, the name of the print job, as reported by
+            the user's device.
+          example: printer.exe
+        printerName:
+          type: string
+          description: For print events, the name of the printer the job was sent
+            to.
+          example: OfficeJet
+        privateIpAddresses:
+          type: array
+          description: The IP address of the user's device on your internal network,
+            including Network interfaces, Virtual Network Interface controllers (NICs),
+            and Loopback/non-routable addresses.
+          example:
+          - 127.0.0.1
+          - 127.0.0.2
+          items:
+            type: string
+        processName:
+          type: string
+          description: For events generated when a file is read in a browser or other
+            app, the name of the process that accessed the file, as reported by the
+            device‚Äö√Ñ√¥s operating system.
+          example: bash
+        processOwner:
+          type: string
+          description: For events generated when a file is read in a browser or other
+            app, the username of the process owner, as reported by the device‚Äö√Ñ√¥s
+            operating system.
+          example: root
+        publicIpAddress:
+          type: string
+          description: The external IP address of the user's device.
+          example: 127.0.0.1
+        remoteActivity:
+          type: string
+          description: For endpoint events, compares the IP address of the file event
+            to your defined list of addresses in the Data Preferences section of the
+            Code42 console. If the IP address from the file event does not match,
+            "remote" is true. If the IP address does match, "remote" is false.
+          example: UNKNOWN
+          enum:
+          - TRUE
+          - FALSE
+          - UNKNOWN
+        removableMediaBusType:
+          type: string
+          description: For events detected on removable media, indicates the communication
+            system used to transfer data between the host and the removable device.
+          example: USB 3.0 Bus
+        removableMediaCapacity:
+          type: integer
+          description: For events detected on removable media, the capacity of the
+            removable device in bytes.
+          format: int64
+          example: 15631122432
+        removableMediaMediaName:
+          type: string
+          description: |-
+            For events detected on removable media, the media name of the device, as reported by the vendor/device. This is usually very similar to the productName, but can vary based on the type of device. For example, if the device is a hard drive in a USB enclosure, this may be the combination of the drive model and the enclosure model.
+            This value is not provided by all devices, so it may be null in some cases.
+          example: Cruzer Blade
+        removableMediaName:
+          type: string
+          description: For events detected on removable media, the name of the removable
+            device.
+          example: JUMPDRIVE
+        removableMediaPartitionId:
+          type: array
+          description: For events detected on removable media, a unique identifier
+            assigned to the volume/partition when it was formatted. Windows devices
+            refer to this as the VolumeGuid. On Mac devices, this is the Disk / Partition
+            UUID, which appears when running the Terminal command diskUtil info.
+          example:
+          - disk0s2
+          - disk0s3
+          items:
+            type: string
+        removableMediaSerialNumber:
+          type: string
+          description: For events detected on removable media, the serial number of
+            the removable device.
+          example: 4C531001550407108465
+        removableMediaVendor:
+          type: string
+          description: For events detected on removable media, the vendor of the removable
+            device.
+          example: SanDisk
+        removableMediaVolumeName:
+          type: array
+          description: For events detected on removable media, the name assigned to
+            the volume when it was formatted, as reported by the device's operating
+            system. This is also frequently called the "partition" name.
+          example:
+          - MY_FILES
+          items:
+            type: string
+        sha256Checksum:
+          type: string
+          description: The SHA256 hash of the file contents.
+          example: ded96d69c63754472efc4aa86fed68d4e17784b38089851cfa84e699e48b4155
+        shared:
+          type: string
+          description: Indicates the shared status as reported by the cloud provider
+            at the time the event occurred. A shared file indicates that one or more
+            users have been granted explicit access to the file. It does not capture
+            whether or not a link to the file has been shared.
+          example: 'TRUE'
+          enum:
+          - 'TRUE'
+          - 'FALSE'
+        sharedWith:
+          $ref: '#/components/schemas/SharedWithUser'
+        sharingTypeAdded:
+          type: array
+          description: Public sharing types that were added by this event.
+          example:
+          - RemovableMedia
+          items:
+            type: string
+        source:
+          type: string
+          description: Data source for a file event.
+          example: OneDrive
+        syncDestination:
+          type: string
+          description: For events detected within a cloud storage sync destination
+            on a device, the name of the cloud storage vendor.
+          example: Dropbox
+        syncDestinationUsername:
+          type: array
+          description: For events detected within a cloud storage sync destination
+            on a device, lists the usernames logged into the cloud storage provider
+            when the file activity was observed.
+          example:
+          - ari@example.com
+          items:
+            type: string
+        tabUrl:
+          type: string
+          description: For events generated when a file is read in a browser or other
+            app, the URL that had activity at the time of the event.
+          example: https://example.com
+        trusted:
+          type: boolean
+          description: Indicates whether or not the file activity is trusted based
+            on your Data Preferences settings.
+          example: true
+        url:
+          type: string
+          description: URL reported by the cloud provider at the time the event occurred.
+          example: https://example.com
+        userUid:
+          type: string
+          description: Unique identifier for the user of the Code42 app on the device.
+            Null if the file event occurred on a cloud provider.
+          example: "1138"
+        windowTitle:
+          type: array
+          description: For events generated when a file is read in a browser or other
+            app, the tab or window title(s) that had activity at the time of the event.
+          example:
+          - Inbox - cody@example.com
+          items:
+            type: string
+    FileEventResponse:
+      title: FileEventResponse
+      type: object
+      properties:
+        fileEvents:
+          type: array
+          description: List of file events in the response.
+          items:
+            $ref: '#/components/schemas/FileEvent'
+        nextPgToken:
+          type: string
+          description: Use as the pgToken value in another request to indicate the
+            starting point for additional page results. nextPgToken is null if there
+            are no more results or if pgToken was not supplied.
+          example: 0_147e9445-2f30-4a91-8b2a-9455332e880a_973435567569502913_986467523038446097_163
+        problems:
+          type: array
+          description: List of problems in the request.  A problem with a search request
+            could be an invalid filter value, an operator that can't be used on a
+            term, etc.
+          items:
+            $ref: '#/components/schemas/QueryProblem'
+        totalCount:
+          type: integer
+          description: Total number of file events in the response.
+          format: int64
+          example: 42
+    FilterGroup:
+      title: FilterGroup
+      required:
+      - filters
+      type: object
+      properties:
+        filterClause:
+          type: string
+          description: Grouping clause for filters.  Default is `AND`.
+          example: AND
+          enum:
+          - AND
+          - OR
+        filters:
+          type: array
+          description: One or more SearchFilters to be combined in a query.
+          items:
+            $ref: '#/components/schemas/SearchFilter'
+    Group:
+      title: Group
+      type: object
+      properties:
+        docCount:
+          type: integer
+          description: The approximate count of hits matching this value for your
+            query.
+          format: int64
+          example: 3
+        value:
+          type: string
+          description: The value of the term for this group.
+          example: readme.md
+    GroupingRequest:
+      title: GroupingRequest
+      required:
+      - groups
+      type: object
+      properties:
+        groupClause:
+          type: string
+          description: Grouping clause for any specified groups.  Default is `AND`.
+          example: AND
+          enum:
+          - AND
+          - OR
+        groupingTerm:
+          type: string
+          description: The search term to use to form the groups.
+          example: eventType
+          enum:
+          - eventId
+          - eventType
+          - eventTimestamp
+          - insertionTimestamp
+          - filePath
+          - fileName
+          - fileType
+          - fileCategory
+          - fileCategoryByBytes
+          - fileCategoryByExtension
+          - fileSize
+          - fileOwner
+          - md5Checksum
+          - sha256Checksum
+          - createTimestamp
+          - modifyTimestamp
+          - deviceUserName
+          - deviceUid
+          - userUid
+          - osHostName
+          - domainName
+          - publicIpAddress
+          - privateIpAddresses
+          - actor
+          - directoryId
+          - source
+          - url
+          - shared
+          - sharedWith
+          - sharingTypeAdded
+          - cloudDriveId
+          - detectionSourceAlias
+          - fileId
+          - exposure
+          - processOwner
+          - processName
+          - windowTitle
+          - tabUrl
+          - removableMediaVendor
+          - removableMediaName
+          - removableMediaSerialNumber
+          - removableMediaCapacity
+          - removableMediaBusType
+          - removableMediaMediaName
+          - removableMediaVolumeName
+          - removableMediaPartitionId
+          - syncDestination
+          - syncDestinationUsername
+          - emailDlpPolicyNames
+          - emailSubject
+          - emailSender
+          - emailFrom
+          - emailRecipients
+          - outsideActiveHours
+          - mimeTypeByBytes
+          - mimeTypeByExtension
+          - mimeTypeMismatch
+          - printJobName
+          - printerName
+          - printedFilesBackupPath
+          - remoteActivity
+          - trusted
+          - operatingSystemUser
+          - destinationCategory
+          - destinationName
+        groups:
+          type: array
+          description: One or more FilterGroups to be combined in a query.
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+    GroupingResponse:
+      title: GroupingResponse
+      type: object
+      properties:
+        groups:
+          type: array
+          description: The top groups based on the query and group by term.
+          items:
+            $ref: '#/components/schemas/Group'
+        problems:
+          type: array
+          description: List of problems in the request.  A problem with a search request
+            could be an invalid filter value, an operator that can't be used on a
+            term, etc.
+          items:
+            $ref: '#/components/schemas/QueryProblem'
+    QueryProblem:
+      title: QueryProblem
+      required:
+      - type
+      type: object
+      properties:
+        badFilter:
+          $ref: '#/components/schemas/SearchFilter'
+        description:
+          type: string
+          description: Additional description of the problem.
+          example: Request timed out.  Refine your filter criteria and try again.
+        type:
+          type: string
+          description: The type of problem that occured.
+          example: SEARCH_FAILED
+          enum:
+          - ILLEGAL_VALUE
+          - ILLEGAL_OPERATOR
+          - MUST_BE_EMAIL_ADDRESS
+          - MAX_LENGTH_EXCEEDED
+          - INVALID_PAGE_SIZE
+          - INVALID_PAGE_NUMBER
+          - INVALID_PAGE_TOKEN
+          - MISSING_VALUE
+          - UNEXPECTED_VALUE
+          - MISSING_GROUPS
+          - MISSING_FILTERS
+          - MAX_FILTERS_EXCEEDED
+          - SEARCH_FAILED
+          - QUERY_TIMEOUT
+          - ILLEGAL_SORT
+          - ILLEGAL_GROUP
+    SearchFilter:
+      title: SearchFilter
+      required:
+      - value
+      type: object
+      properties:
+        operator:
+          type: string
+          description: The type of match to perform.  Default value is `IS`.
+          example: IS_NOT
+          enum:
+          - IS
+          - IS_NOT
+          - ON_OR_BEFORE
+          - ON_OR_AFTER
+          - ON
+          - WITHIN_THE_LAST
+          - LESS_THAN
+          - GREATER_THAN
+          - EXISTS
+          - DOES_NOT_EXIST
+        term:
+          type: string
+          description: The field to match.  Default value is `deviceUserName`.
+          example: actor
+          enum:
+          - eventId
+          - eventType
+          - eventTimestamp
+          - insertionTimestamp
+          - filePath
+          - fileName
+          - fileType
+          - fileCategory
+          - fileCategoryByBytes
+          - fileCategoryByExtension
+          - fileSize
+          - fileOwner
+          - md5Checksum
+          - sha256Checksum
+          - createTimestamp
+          - modifyTimestamp
+          - deviceUserName
+          - deviceUid
+          - userUid
+          - osHostName
+          - domainName
+          - publicIpAddress
+          - privateIpAddresses
+          - actor
+          - directoryId
+          - source
+          - url
+          - shared
+          - sharedWith
+          - sharingTypeAdded
+          - cloudDriveId
+          - detectionSourceAlias
+          - fileId
+          - exposure
+          - processOwner
+          - processName
+          - windowTitle
+          - tabUrl
+          - removableMediaVendor
+          - removableMediaName
+          - removableMediaSerialNumber
+          - removableMediaCapacity
+          - removableMediaBusType
+          - removableMediaMediaName
+          - removableMediaVolumeName
+          - removableMediaPartitionId
+          - syncDestination
+          - syncDestinationUsername
+          - emailDlpPolicyNames
+          - emailSubject
+          - emailSender
+          - emailFrom
+          - emailRecipients
+          - outsideActiveHours
+          - mimeTypeByBytes
+          - mimeTypeByExtension
+          - mimeTypeMismatch
+          - printJobName
+          - printerName
+          - printedFilesBackupPath
+          - remoteActivity
+          - trusted
+          - operatingSystemUser
+          - destinationCategory
+          - destinationName
+        value:
+          type: string
+          description: The input for the search.
+          example: ari@example.com
+    SearchRequest:
+      title: SearchRequest
+      required:
+      - groups
+      type: object
+      properties:
+        defaultSortKey:
+          type: string
+          enum:
+          - eventId
+          - eventType
+          - eventTimestamp
+          - insertionTimestamp
+          - filePath
+          - fileName
+          - fileType
+          - fileCategory
+          - fileCategoryByBytes
+          - fileCategoryByExtension
+          - fileSize
+          - fileOwner
+          - md5Checksum
+          - sha256Checksum
+          - createTimestamp
+          - modifyTimestamp
+          - deviceUserName
+          - deviceUid
+          - userUid
+          - osHostName
+          - domainName
+          - publicIpAddress
+          - privateIpAddresses
+          - actor
+          - directoryId
+          - source
+          - url
+          - shared
+          - sharedWith
+          - sharingTypeAdded
+          - cloudDriveId
+          - detectionSourceAlias
+          - fileId
+          - exposure
+          - processOwner
+          - processName
+          - windowTitle
+          - tabUrl
+          - removableMediaVendor
+          - removableMediaName
+          - removableMediaSerialNumber
+          - removableMediaCapacity
+          - removableMediaBusType
+          - removableMediaMediaName
+          - removableMediaVolumeName
+          - removableMediaPartitionId
+          - syncDestination
+          - syncDestinationUsername
+          - emailDlpPolicyNames
+          - emailSubject
+          - emailSender
+          - emailFrom
+          - emailRecipients
+          - outsideActiveHours
+          - mimeTypeByBytes
+          - mimeTypeByExtension
+          - mimeTypeMismatch
+          - printJobName
+          - printerName
+          - printedFilesBackupPath
+          - remoteActivity
+          - trusted
+          - operatingSystemUser
+          - destinationCategory
+          - destinationName
+        groupClause:
+          type: string
+          description: Grouping clause for any specified groups.  Default is `AND`.
+          example: OR
+          enum:
+          - AND
+          - OR
+        groups:
+          type: array
+          description: One or more FilterGroups to be combined in a query.
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+        pgNum:
+          type: integer
+          description: Page number for search; ignored if pgToken is included.  Default
+            is 1.
+          format: int32
+          example: 1
+        pgSize:
+          type: integer
+          description: Max number of results to return for a page.  Default is 100.
+          format: int32
+          example: 100
+        pgToken:
+          type: string
+          description: A token used to indicate the starting point for additional
+            page results. Typically, you obtain the pgToken value from the nextPgToken
+            provided in a previous request. A pgToken is the only way to page past
+            10,000 results. If pgToken is supplied, pgNum is ignored. Provide empty
+            string to retrieve the 'first page of results and null to use the pgNum
+            value.  Default is null.
+          example: 0_147e9445-2f30-4a91-8b2a-9455332e880a_973435567569502913_986467523038446097_163
+        srtDir:
+          type: string
+          description: Sort direction.  Default is `desc`.
+          example: asc
+          enum:
+          - asc
+          - desc
+        srtKey:
+          type: string
+          description: Search term for sorting.
+          example: eventId
+          enum:
+          - eventId
+          - eventType
+          - eventTimestamp
+          - insertionTimestamp
+          - filePath
+          - fileName
+          - fileType
+          - fileCategory
+          - fileCategoryByBytes
+          - fileCategoryByExtension
+          - fileSize
+          - fileOwner
+          - md5Checksum
+          - sha256Checksum
+          - createTimestamp
+          - modifyTimestamp
+          - deviceUserName
+          - deviceUid
+          - userUid
+          - osHostName
+          - domainName
+          - publicIpAddress
+          - privateIpAddresses
+          - actor
+          - directoryId
+          - source
+          - url
+          - shared
+          - sharedWith
+          - sharingTypeAdded
+          - cloudDriveId
+          - detectionSourceAlias
+          - fileId
+          - exposure
+          - processOwner
+          - processName
+          - windowTitle
+          - tabUrl
+          - removableMediaVendor
+          - removableMediaName
+          - removableMediaSerialNumber
+          - removableMediaCapacity
+          - removableMediaBusType
+          - removableMediaMediaName
+          - removableMediaVolumeName
+          - removableMediaPartitionId
+          - syncDestination
+          - syncDestinationUsername
+          - emailDlpPolicyNames
+          - emailSubject
+          - emailSender
+          - emailFrom
+          - emailRecipients
+          - outsideActiveHours
+          - mimeTypeByBytes
+          - mimeTypeByExtension
+          - mimeTypeMismatch
+          - printJobName
+          - printerName
+          - printedFilesBackupPath
+          - remoteActivity
+          - trusted
+          - operatingSystemUser
+          - destinationCategory
+          - destinationName
+    SharedWithUser:
+      title: SharedWithUser
+      type: object
+      properties:
+        cloudUsername:
+          type: string
+          description: Name of the user reported by the cloud provider with whom the
+            file was shared.
+          example: alix@example.com
+    StreamingResponseBody:
+      title: StreamingResponseBody
+      type: object

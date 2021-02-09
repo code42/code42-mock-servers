@@ -1,0 +1,2742 @@
+openapi: 3.0.1
+info:
+  title: Api Documentation
+  description: Api Documentation
+  version: 1.0.0
+servers:
+- url: /
+tags:
+- name: Core
+  description: A collection of data for core Code42 actions.
+paths:
+
+  # AUTH
+
+  /c42api/v3/auth/jwt:
+    get:
+      tags:
+      - Auth
+      summary: Get an authentication token
+      operationId: V3AuthJwt_Get
+      parameters:
+      - name: useBody
+        in: query
+        description: To get a JWT token in the response.
+        schema:
+          type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JwtResponse_core'
+      security:
+      - basicAuth: []
+
+  # USER
+
+  /api/User/{userId}:
+    get:
+      tags:
+      - Users
+      summary: Get a user
+      operationId: Users_Get
+      parameters:
+      - name: userId
+        in: path
+        description: The unique Code42 userId of the user to return.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse_core'
+  /api/User:
+    get:
+      tags:
+      - users
+      summary: Get all users
+      operationId: UserList_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      totalCount:
+                        type: integer
+                        format: int32
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UserResponse_core'
+    post:
+      tags:
+      - users
+      summary: Create a User
+      operationId: User_Create
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse_core'
+  /api/v7/scim-user-data/collated-view:
+    get:
+      tags:
+      - users
+      summary: Get scim user data
+      operationId: UserScim_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                    properties:
+                      date:
+                        type: string
+                      headers:
+                        type: array
+                        items:
+                          type: string
+                      licenseStatus:
+                        type: string
+                  data:
+                    type: object
+                    properties:
+                      userId:
+                        type: string
+                      title:
+                        type: string
+                      division:
+                        type: string
+                      department:
+                        type: string
+                      employmentType:
+                        type: string
+                      managerUserId:
+                        type: string
+                      locality:
+                        type: string
+                      region:
+                        type: string
+                      country:
+                        type: string
+  /api/UserRole/{userId}:
+    get:
+      tags:
+      - users
+      summary: Get user roles
+      operationId: UserRole_Get
+      parameters:
+      - name: userId
+        in: path
+        description: The unique Code42 userId of the user.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRolesResponse_core'
+  /api/UserRole:
+    post:
+      tags:
+      - users
+      summary: Add a user role
+      operationId: UserRole_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      tags:
+      - users
+      summary: Remove a user role
+      operationId: UserRole_Delete
+      parameters:
+      - name: userId
+        in: query
+        description: The unique Code42 userId of the user.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      - name: roleName
+        in: query
+        description: The role to remove.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v4/role/view:
+    get:
+      tags:
+      - users
+      summary: Get roles the current user can assign to others
+      operationId: UserRoleAvailable_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRolesResponse_core'
+  /api/UserMoveProcess:
+    post:
+      tags:
+      - users
+      summary: Assign a user to a different organization
+      operationId: UserMove_Post
+      responses:
+        204:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/UserBlock/{userId}:
+    parameters:
+    - name: userId
+      in: path
+      description: The unique Code42 userId of the user.
+      required: true
+      schema:
+        type: string
+    put:
+      tags:
+      - users
+      summary: Block a user
+      operationId: UserBlock_Put
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      tags:
+      - users
+      summary: Unblock a user
+      operationId: UserBlock_Delete
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/UserDeactivation/{userId}:
+    parameters:
+    - name: userId
+      in: path
+      description: The unique Code42 userId of the user.
+      required: true
+      schema:
+        type: string
+    put:
+      tags:
+      - users
+      summary: Deactivate a user
+      operationId: UserDeactivate_Put
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      tags:
+      - users
+      summary: Reactivate a user
+      operationId: UserDeactivate_Delete
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+
+  # CUSTOMER
+
+  /c42api/v3/customer/my:
+    get:
+      tags:
+      - customer
+      summary: Get the current customer
+      operationId: Customer_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse_core'
+
+  # FILE DOWNLOAD
+  
+  /c42api/v3/FileDownloadToken:
+    get:
+      tags:
+      - filedownload
+      summary: Get a file download token
+      operationId: FileDownloadToken_Get
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileDownloadTokenResponse_core'
+
+  /c42api/v3/GetFile:
+    get:
+      tags:
+      - filedownload
+      summary: Stream the requested file
+      operationId: GetFile_Get
+      responses:
+        200:
+          content:
+            text/plain:
+              example: '123'
+
+  # SERVER ENVIRONMENT
+
+  /api/ServerEnv:
+    get:
+      tags:
+      - serverenv
+      summary: Get the server envionment
+      operationId: ServerEnv_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerEnvResponse_core'
+
+  # KEY-VALUE STORE
+
+  /v1/AlertService-API_URL:
+    get:
+      tags:
+      - keyvaluestore
+      summary: Get the alerts microservice URL
+      operationId: AlertsUrl_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            '*/*':
+              schema:
+                type: string
+                example: http://127.0.0.1:4201
+  /v1/FedObserver-API_URL:
+    get:
+      tags:
+      - keyvaluestore
+      summary: Get the alert rules microservice URL
+      operationId: AlertRulesUrl_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            '*/*':
+              schema:
+               type: string
+               example: http://127.0.0.1:4202
+  /v1/employeecasemanagementV2-API_URL:
+    get:
+      tags:
+      - keyvaluestore
+      summary: Get the detection list URL
+      operationId: DetectionListsUrl_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            '*/*':
+              schema:
+               type: string
+               example: http://127.0.0.1:4203/svc/api/
+  /v1/CASES_API-URL:
+    get:
+      tags:
+      - keyvaluestore
+      summary: Get the cases URL
+      operationId: CasesUrl_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            '*/*':
+              schema:
+               type: string
+               example: http://127.0.0.1:4204
+  /api/connectedServerUrl:
+    get:
+      tags:
+      - keyvaluestore
+      summary: Get the connected server URL
+      operationId: ConnectedServerUrl_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  serverUrl:
+                    type: string
+                    example: http://127.0.0.1:4206
+  /v1/AUDIT-LOG_API-URL:
+    get:
+      tags:
+      - keyvaluestore
+      summary: Get the cases URL
+      operationId: AuditLogsUrl_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            '*/*':
+              schema:
+               type: string
+               example: http://127.0.0.1:4207
+  /v1/FORENSIC_SEARCH-API_URL:
+    get:
+      tags:
+      - keyvaluestore
+      summary: Get the forensic search URL
+      operationId: ForensicSearchUrl_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            '*/*':
+              schema:
+               type: string
+               example: http://127.0.0.1:4208
+  /v1/PRESERVATION-DATA-SERVICE_API-URL:
+    get:
+      tags:
+      - keyvaluestore
+      summary: Get the preservation data service URL
+      operationId: PreservationDataServiceUrl_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            '*/*':
+              schema:
+               type: string
+               example: http://127.0.0.1:4209
+  # DEVICES
+
+  /api/v14/agent-state/view-by-device-guid:
+    get:
+      tags:
+      - devices
+      summary: Get device agent state
+      operationId: DeviceAgentState_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentStateResponse_core'
+  /api/Computer:
+    get:
+      tags:
+      - devices
+      summary: Get all devices
+      operationId: Devices_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      totalCount:
+                        type: integer
+                        example: 1
+                      warningCount:
+                        type: integer
+                      criticialCount:
+                        type: integer
+                      computers:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/DeviceResponse_core'
+  /api/Computer/{deviceGuid}:
+    parameters:
+    - name: deviceGuid
+      in: path
+      description: The GUID of the device.
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - devices
+      summary: Get a device
+      operationId: Device_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceResponse_core'
+    put:
+      tags:
+      - devices
+      summary: Update a device
+      operationId: DeviceSettings_Put
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/ComputerBlock/{deviceId}:
+    parameters:
+    - name: deviceId
+      in: path
+      description: The GUID of the device.
+      required: true
+      schema:
+        type: string
+    put:
+      tags:
+      - devices
+      summary: Block a device
+      operationId: DeviceBlock_Put
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      tags:
+      - devices
+      summary: Unblock a device
+      operationId: DeviceBlock_Delete
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v4/computer-deactivation/update:
+    post:
+      tags:
+      - devices
+      summary: Deactivate a device
+      operationId: DeviceDeactivate_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v4/computer-deactivation/remove:
+    post:
+      tags:
+      - devices
+      summary: Reactivate a device
+      operationId: DeviceReactivate_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/ComputerDeauthorization/{deviceId}:
+    parameters:
+    - name: deviceId
+      in: path
+      description: The GUID of the device.
+      required: true
+      schema:
+        type: string
+    put:
+      tags:
+      - devices
+      summary: Deauthorize a device
+      operationId: DeviceDeauthorization_Put
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+
+  # ARCHIVE
+
+  /api/Archive:
+    get:
+      tags:
+      - archive
+      summary: Get all archives
+      operationId: ArchiveList_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArchiveListResponse_core'
+  /api/Archive/{archiveGuid}:
+    parameters:
+    - name: archiveGuid
+      in: path
+      description: The GUID of the archive.
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - archive
+      summary: Get an archives
+      operationId: Archive_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArchiveResponse_core'
+  /c42api/v3/BackupSets/{deviceGuid}/{destGuid}:
+    parameters:
+    - name: deviceGuid
+      in: path
+      description: The GUID of the device.
+      required: true
+      schema:
+        type: string
+    - name: destGuid
+      in: path
+      description: The GUID of the destination.
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - archive
+      summary: Get backupsets
+      operationId: ArchiveBackupSets_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupSetsResponse_core'
+  /api/RestoreHistory:
+    get:
+      tags:
+      - archive
+      summary: Get all restore history
+      operationId: ArchiveRestoreHistory_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestoreHistoryResponse_core'
+  /api/coldStorage/{archiveGuid}:
+    parameters:
+    - name: archiveGuid
+      in: path
+      description: The GUID of the archive.
+      required: true
+      schema:
+        type: string
+    put:
+      tags:
+      - archive
+      summary: Update cold storage archive
+      operationId: ColdStorage_Put
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/ColdStorage:
+    get:
+      tags:
+      - archive
+      summary: Get all cold storage archives.
+      operationId: ColdStorage_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ColdStorageResponse_core'
+  /api/LoginToken:
+    post:
+      tags:
+      - archive
+      summary: Get a token for logging into the storage archive server.
+      operationId: LoginToken_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorageAuthTokenResponse_core'
+  /api/StorageAuthToken:
+    post:
+      tags:
+        - archive
+      summary: Get a storage auth token
+      operationId: StorageAuthToken_Post
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StorageAuthTokenRequest_core'
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorageAuthTokenResponse_core'
+
+  /api/DataKeyToken:
+    post:
+      tags:
+      - archive
+      summary: Get a token for decrypting an archive
+      operationId: DataKeyToken_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      dataKeyToken:
+                        type: string
+                        example: 123TestDataKeyToken123
+  /api/WebRestoreInfo:
+    get:
+      tags:
+      - archive
+      summary: Get information about a web restore
+      operationId: WebRestoreInfo_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      nodeGuid:
+                        type: string
+                        example: '123NodeGuid123'
+  /c42api/v3/SecurityEventsLocation:
+    get:
+      tags:
+      - archive
+      summary: Get storage node ID for events.
+      operationId: SecurityEventsLocation_Get
+      parameters:
+      - name: userUid
+        in: query
+        schema:
+          type: string
+      responses:
+        200:
+          description: Access information has been returned.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityEventsLocationResponse_core'
+
+  # ORGS
+
+  /api/Org/{orgId}:
+    get:
+      tags:
+      - orgs
+      summary: Get an organization
+      operationId: Org_Get
+      parameters:
+      - name: orgId
+        in: path
+        description: The unique Code42 orgId of the org to return.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgResponse_core'
+  /api/Org/:
+    post:
+      tags:
+      - orgs
+      summary: Create an organization
+      operationId: Org_Create
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgResponse_core'
+  /api/Org:
+    get:
+      tags:
+      - orgs
+      summary: Get all organizations
+      operationId: OrgList_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      totalCount:
+                        type: integer
+                        format: int32
+                        example: 1
+                      orgs:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/OrgResponse_core'
+  /api/OrgBlock/{orgId}:
+    put:
+      tags:
+        - orgs
+      summary: Block an organization
+      operationId: OrgBlock_Put
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgId of the org to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      tags:
+        - orgs
+      summary: Unblock an organization
+      operationId: OrgBlock_Delete
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgId of the org to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/OrgDeactivation/{orgId}:
+    put:
+      tags:
+        - orgs
+      summary: Deactivate an organization
+      operationId: OrgDeactivate_Put
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgId of the org to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      tags:
+        - orgs
+      summary: Reactivate an organization
+      operationId: OrgDeactivate_Delete
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgId of the org to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v14/agent-state/view-by-organization-id:
+    get:
+      tags:
+       - orgs
+      summary: Get organization agent state
+      operationId: OrgView_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                    properties:
+                      date:
+                        type: string
+                        example: "2021-01-28T18:55:27.285Z"
+                      headers:
+                        type: array
+                        items:
+                          type: string
+                      licenseStatus:
+                        type: string
+                        example: "Your license"
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        deviceGuid:
+                          type: string
+                          example: 324523452345
+                        name:
+                          type: string
+                        value:
+                          type: string
+
+# LEGAL HOLD
+
+  /api/v4/legal-hold-policy/create:
+    post:
+      tags:
+        - legal-hold
+      summary: Create a policy
+      operationId: LegalHoldPolicy_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalHoldPolicyResponse_core'
+  /api/LegalHold:
+    post:
+      tags:
+        - legal-hold
+      summary: Create a matter
+      operationId: LegalHoldMatter_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LegalHoldMatterResponse_core'
+    get:
+      tags:
+        - legal-hold
+      summary: Get a page of matters
+      operationId: LegalHoldMatterList_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      legalHolds:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/LegalHoldMatterResponse_core'
+  /api/v4/legal-hold-policy/view:
+    get:
+      tags:
+        - legal-hold
+      summary: Get a policy
+      operationId: LegalHoldPolicy_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LegalHoldPolicyResponse_core'
+  /api/v4/legal-hold-policy/list:
+    get:
+      tags:
+        - legal-hold
+      summary: Get a list of policies
+      operationId: LegalHoldPolicyList_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LegalHoldPolicyResponse_core'
+  /api/LegalHold/{legalHoldUid}:
+    parameters:
+    - name: legalHoldUid
+      in: path
+      description: A unique legal hold matter identifier.
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+        - legal-hold
+      summary: Get a matter
+      operationId: LegalHoldMatter_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LegalHoldMatterResponse_core'
+  /api/LegalHoldMembership:
+    get:
+      tags:
+        - legal-hold
+      summary: Get a page of custodians
+      operationId: LegalHoldCustodianList_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    properties:
+                      legalHoldMemberships:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/LegalHoldCustodianResponse_core'
+    post:
+      tags:
+        - legal-hold
+      summary: Add a custodian to a matter
+      operationId: LegalHoldCustodian_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LegalHoldCustodianResponse_core'
+  /api/LegalHoldMembershipDeactivation:
+    post:
+      tags:
+        - legal-hold
+      summary: Remove a custodian from a matter
+      operationId: LegalHoldCustodianDeactivation_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v4/legal-hold-deactivation/update:
+    post:
+      tags:
+        - legal-hold
+      summary: Deactivate a matter
+      operationId: LegalHoldMatterDeactivation_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      description:
+                        type: string
+  /api/LegalHoldReactivation/{legalHoldUid}:
+    parameters:
+    - name: legalHoldUid
+      in: path
+      description: A unique legal hold matter identifier.
+      required: true
+      schema:
+        type: string
+    put:
+      tags:
+        - legal-hold
+      summary: Reactivate a matter
+      operationId: LegalHoldMatterReactivation_Put
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+
+# MODELS
+
+components:
+  schemas:
+    JwtResponse_core:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            v3_user_token:
+              type: string
+        error:
+          type: string
+          format: nullable
+        warnings:
+          type: string
+          format: nullable
+    UserResponse_core:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            timestamp:
+              type: string
+            params:
+              type: object
+              properties: {}
+        data:
+          type: object
+          properties:
+            userId:
+              type: integer
+              format: int32
+              example: 123456789
+            userUid:
+              type: string
+              example: "12345678987654321"
+            status:
+              type: string
+            username:
+              type: string
+              example: "test.user@example.com"
+            email:
+              type: string
+              example: "test.user@example.com"
+            firstName:
+              type: string
+              example: "test"
+            lastName:
+              type: string
+              example: "user"
+            quotaInBytes:
+              type: integer
+              format: int32
+            orgId:
+              type: integer
+              format: int32
+            orgUid:
+              type: string
+            orgName:
+              type: string
+            userExtRef:
+              type: string
+              format: nullable
+            notes:
+              type: string
+              format: nullable
+            active:
+              type: boolean
+            blocked:
+              type: boolean
+            emailPromo:
+              type: boolean
+            invited:
+              type: boolean
+            orgType:
+              type: string
+            usernameIsAnEmail:
+              type: boolean
+            creationDate:
+              type: string
+            modificationDate:
+              type: string
+            passwordReset:
+              type: boolean
+            localAuthenticationOnly:
+              type: boolean
+            licenses:
+              type: array
+              items:
+                type: string
+    UserRolesResponse_core:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            timestamp:
+              type: string
+            params:
+              type: object
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              roleId:
+                type: integer
+                format: int32
+                example: 4321
+              roleName:
+                type: string
+              locked:
+                type: boolean
+              creationDate:
+                type: string
+              modificationDate:
+                type: string
+              permissions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    permission:
+                      type: string
+    CustomerResponse_core:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            name:
+              type: string
+            registrationKey:
+              type: string
+            deploymentModel:
+              type: string
+            maintenanceMode:
+              type: boolean
+            tenantUid:
+              type: string
+              example: "9e111111-550b-6666-8d0d-e3023456ab75"
+            masterServicesAgreement:
+              type: object
+              properties:
+                accepted:
+                  type: boolean
+                acceptanceRequired:
+                  type: boolean
+        error:
+          type: string
+          format: nullable
+        warnings:
+          type: string
+          format: nullable
+    SecurityEventsLocationResponse_core:
+      type: object
+      properties:
+        data: 
+          type: object
+          properties: 
+            userUid: 
+              type: string
+            securityPlanLocationsByDestination: 
+              type: array
+              items: 
+                type: object
+                properties: 
+                  destinationGuid: 
+                    type: string
+                  securityPlanLocationsByNode: 
+                    type: array
+                    items: 
+                      type: object
+                      properties: 
+                        nodeGuid: 
+                          type: string
+                        securityPlanUids: 
+                          type: array
+                          items: 
+                            type: string
+        error: 
+          type: string
+          format: nullable
+        warnings: 
+          type: string
+          format: nullable
+    StorageAuthTokenRequest_core:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            planUid:
+              type: string
+            destinationGuid:
+              type: string
+    StorageAuthTokenResponse_core:
+      type: object
+      properties:
+        metadata: 
+          type: object
+          properties: 
+            timestamp: 
+              type: string
+            params: 
+              type: object
+              properties:  
+        data: 
+          type: object
+          properties: 
+            loginToken: 
+              type: string
+            serverUrl: 
+              type: string
+              example: http://127.0.0.1:4205
+    AuthTokenResponse_core:
+      type: object
+      properties:
+        metadata: 
+          type: object
+          properties: 
+            timestamp: 
+              type: string
+            params: 
+              type: object
+              properties:  
+        data: 
+          type: array
+          example:
+          - tokenValue1
+          - tokenValue2
+          items: 
+            type: string
+    FileDownloadTokenResponse_core:
+      type: object
+      properties:
+        data: 
+          type: string
+        error: 
+          type: string
+          format: nullable
+        warnings: 
+          type: string
+          format: nullable
+    ServerEnvResponse_core:
+      type: object
+      properties:
+        clusterType:
+          type: object
+          properties:
+            consumer:
+              type: boolean
+            business:
+              type: boolean
+            cpc:
+              type: boolean
+            multiTenant:
+              type: boolean
+            enterprise:
+              type: boolean
+        serverType:
+          type: object
+          properties:
+            master:
+              type: boolean
+            storage:
+              type: boolean
+        env:
+          type: object
+          properties:
+            dev:
+              type: boolean
+            prd:
+              type: boolean
+            stg:
+              type: boolean
+            beta:
+              type: boolean
+        secureKeystoreLocked:
+          type: boolean
+        initialSetupMlk:
+          type: boolean
+        initialSetupAdmin:
+          type: boolean
+        ssl:
+          type: boolean
+        httpPort:
+          type: integer
+          format: int32
+          example: 4200
+        httpsPort:
+          type: integer
+          format: int32
+        stsEnabled:
+          type: boolean
+        stsBaseUrl:
+          type: string
+          example: "http://127.0.0.1:4200"
+    OrgResponse_core:
+      type: object
+      properties:
+        orgUid:
+          type: string
+          example: "98765432123456789"
+        orgId:
+          type: integer
+          example: 987888
+        orgName:
+          type: string
+          example: "Test Org"
+        orgExtRef:
+          type: string
+        notes:
+          type: string
+        status:
+          type: string
+        active:
+          type: boolean
+        blocked:
+          type: boolean
+          example: false
+        parentOrgUid:
+          type: string
+        parentOrgId:
+          type: integer
+          example: 999999
+        type:
+          type: string
+        classification:
+          type: string
+        hierarchyCounts:
+          type: object
+          properties:
+            allOrgCount:
+              type: integer
+              format: int32
+            allDeviceCount:
+              type: integer
+              format: int32
+            inheritedOrgCount:
+              type: integer
+              format: int32
+            inheritedDeviceCount:
+              type: integer
+              format: int32
+        configInheritanceCounts:
+          type: object
+          properties:
+            allOrgCount:
+              type: integer
+              format: int32
+            allDeviceCount:
+              type: integer
+              format: int32
+            inheritedOrgCount:
+              type: integer
+              format: int32
+            inheritedDeviceCount:
+              type: integer
+              format: int32
+        creationDate:
+          type: string
+        modificationDate:
+          type: string
+        deactivationDate:
+          type: string
+        coldBytes:
+          type: integer
+          format: int32
+        registrationKey:
+          type: string
+        reporting:
+          type: object
+          properties:
+            orgManagers:
+              type: array
+              items:
+                type: object
+                properties:
+                  uid:
+                    type: string
+                    example: "6765643253465234"
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  username:
+                    type: string
+        customConfig:
+          type: boolean
+        settings:
+          type: object
+          properties:
+            maxSeats:
+              type: integer
+              format: int32
+            maxBytes:
+              type: integer
+              format: int32
+            archiveHoldDays:
+              type: integer
+              format: int32
+            defaultUserMaxBytes:
+              type: integer
+              format: int32
+            defaultUserMobileQuota:
+              type: integer
+              format: int32
+            webRestoreUserLimitMb:
+              type: integer
+              format: int32
+            webRestoreAdminLimitMb:
+              type: integer
+              format: int32
+            warnInDays:
+              type: integer
+              format: int32
+            alertInDays:
+              type: integer
+              format: int32
+            recipients:
+              type: array
+              items:
+                type: string
+            reportLastSent:
+              type: string
+            reportSchedule:
+              type: string
+            sendReports:
+              type: boolean
+            usernameIsAnEmail:
+              type: boolean
+            ldapServerIds:
+              type: array
+              items:
+                type: integer
+                format: int32
+            radiusServerIds:
+              type: array
+              items:
+                type: integer
+                format: int32
+            ssoIdentityProviderUids:
+              type: array
+              items:
+                type: string
+            securityKeyType:
+              type: string
+            securityKeyLocked:
+              type: boolean
+            autoOfferSelf:
+              type: boolean
+            allowLocalFolders:
+              type: boolean
+            defaultRoles:
+              type: array
+              items:
+                type: string
+            isSimpleOrg:
+              type: boolean
+            isDefaultRolesInherited:
+              type: boolean
+            destinations:
+              type: array
+              items:
+                type: object
+                properties:
+                  guid:
+                    type: string
+                  destinationName:
+                    type: string
+                  type:
+                    type: string
+            allDestinations:
+              type: array
+              items:
+                type: object
+                properties:
+                  guid:
+                    type: string
+                  destinationName:
+                    type: string
+                  type:
+                    type: string
+            isUsingDestinationDefaults:
+              type: boolean
+            isUsingQuotaDefaults:
+              type: boolean
+            isUsingReportingDefaults:
+              type: boolean
+            isNativeClientsEnabled:
+              type: boolean
+            securityKeyInherit:
+              type: boolean
+        settingsInherited:
+          type: object
+          properties:
+            maxSeats:
+              type: integer
+              format: int32
+            maxBytes:
+              type: integer
+              format: int32
+            archiveHoldDays:
+              type: integer
+              format: int32
+            defaultUserMaxBytes:
+              type: integer
+              format: int32
+            defaultUserMobileQuota:
+              type: integer
+              format: int32
+            webRestoreUserLimitMb:
+              type: integer
+              format: int32
+            webRestoreAdminLimitMb:
+              type: integer
+              format: int32
+            warnInDays:
+              type: integer
+              format: int32
+            alertInDays:
+              type: integer
+              format: int32
+            recipients:
+              type: array
+              items:
+                type: string
+            reportLastSent:
+              type: string
+            reportSchedule:
+              type: string
+            sendReports:
+              type: boolean
+            usernameIsAnEmail:
+              type: boolean
+            ldapServerIds:
+              type: array
+              items:
+                type: integer
+                format: int32
+            radiusServerIds:
+              type: array
+              items:
+                type: integer
+                format: int32
+            ssoIdentityProviderUids:
+              type: array
+              items:
+                type: string
+            securityKeyType:
+              type: string
+            securityKeyLocked:
+              type: boolean
+            autoOfferSelf:
+              type: boolean
+            allowLocalFolders:
+              type: boolean
+            defaultRoles:
+              type: array
+              items:
+                type: string
+            isSimpleOrg:
+              type: boolean
+            isDefaultRolesInherited:
+              type: boolean
+            destinations:
+              type: array
+              items:
+                type: object
+                properties:
+                  guid:
+                    type: string
+                  destinationName:
+                    type: string
+                  type:
+                    type: string
+            allDestinations:
+              type: array
+              items:
+                type: object
+                properties:
+                  guid:
+                    type: string
+                  destinationName:
+                    type: string
+                  type:
+                    type: string
+            isUsingDestinationDefaults:
+              type: boolean
+            isUsingQuotaDefaults:
+              type: boolean
+            isUsingReportingDefaults:
+              type: boolean
+            isNativeClientsEnabled:
+              type: boolean
+            securityKeyInherit:
+              type: boolean
+        settingsSummary:
+          type: object
+          properties:
+            maxSeats:
+              type: integer
+              format: int32
+            maxBytes:
+              type: integer
+              format: int32
+            archiveHoldDays:
+              type: integer
+              format: int32
+            defaultUserMaxBytes:
+              type: integer
+              format: int32
+            defaultUserMobileQuota:
+              type: integer
+              format: int32
+            webRestoreUserLimitMb:
+              type: integer
+              format: int32
+            webRestoreAdminLimitMb:
+              type: integer
+              format: int32
+            warnInDays:
+              type: integer
+              format: int32
+            alertInDays:
+              type: integer
+              format: int32
+            recipients:
+              type: array
+              items:
+                type: string
+            reportLastSent:
+              type: string
+            reportSchedule:
+              type: string
+            sendReports:
+              type: boolean
+            usernameIsAnEmail:
+              type: boolean
+            ldapServerIds:
+              type: array
+              items:
+                type: integer
+                format: int32
+            radiusServerIds:
+              type: array
+              items:
+                type: integer
+                format: int32
+            ssoIdentityProviderUids:
+              type: array
+              items:
+                type: string
+            securityKeyType:
+              type: string
+            securityKeyLocked:
+              type: boolean
+            autoOfferSelf:
+              type: boolean
+            allowLocalFolders:
+              type: boolean
+            defaultRoles:
+              type: array
+              items:
+                type: string
+            isSimpleOrg:
+              type: boolean
+            isDefaultRolesInherited:
+              type: boolean
+            destinations:
+              type: array
+              items:
+                type: object
+                properties:
+                  guid:
+                    type: string
+                  destinationName:
+                    type: string
+                  type:
+                    type: string
+            allDestinations:
+              type: array
+              items:
+                type: object
+                properties:
+                  guid:
+                    type: string
+                  destinationName:
+                    type: string
+                  type:
+                    type: string
+            isUsingDestinationDefaults:
+              type: boolean
+            isUsingQuotaDefaults:
+              type: boolean
+            isUsingReportingDefaults:
+              type: boolean
+            isNativeClientsEnabled:
+              type: boolean
+            securityKeyInherit:
+              type: boolean
+        orgInheritDto:
+          type: object
+          properties:
+            orgUid:
+              type: string
+            orgUidProvidingOrg:
+              type: integer
+              format: int32
+            orgNameProvidingOrg:
+              type: string
+            orgUidProvidingDestinations:
+              type: string
+            orgNameProvidingDestinations:
+              type: string
+            orgUidProvidingDeviceDefaults:
+              type: string
+            orgNameProvidingDeviceDefaults:
+              type: string
+        computerCount:
+          type: integer
+          format: int32
+        shareDeviceCount:
+          type: integer
+          format: int32
+        backupDeviceCount:
+          type: integer
+          format: int32
+        backupComputerCount:
+          type: integer
+          format: int32
+        userCount:
+          type: integer
+          format: int32
+        licensedUserCount:
+          type: integer
+          format: int32
+        orgCount:
+          type: integer
+          format: int32
+        planCount:
+          type: integer
+          format: int32
+        backupUsage:
+          type: array
+          items:
+            type: object
+            properties:
+              targetDestinationGuid:
+                type: string
+              selectedFiles:
+                type: integer
+                format: int32
+              selectedBytes:
+                type: integer
+                format: int32
+              todoFiles:
+                type: integer
+                format: int32
+              archiveBytes:
+                type: integer
+                format: int64
+                example: 10000000
+              billableBytes:
+                type: integer
+                format: int32
+              backupSessionCount:
+                type: integer
+                format: int32
+              archiveBytesDeltaMonth:
+                type: integer
+                format: int32
+        archiveSizes:
+          type: array
+          items:
+            type: object
+            properties:
+              targetDestinationGuid:
+                type: string
+              archiveSize:
+                type: integer
+                format: int64
+                example: 100000000
+        windowsUsmtFiles:
+          type: object
+          properties:
+            USER:
+              type: object
+              properties:
+                filename:
+                  type: string
+            APP:
+              type: object
+              properties:
+                filename:
+                  type: string
+            DOCS:
+              type: object
+              properties:
+                filename:
+                  type: string
+            CONFIG:
+              type: object
+              properties:
+                filename:
+                  type: string
+            CUSTOM:
+              type: object
+              properties:
+                filename:
+                  type: string
+        deviceDefaults:
+          type: string
+    AgentStateResponse_core:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            date:
+              type: string
+              example: "2021-01-28T18:55:27.285Z"
+            headers:
+              type: array
+              items:
+                type: string
+            licenseStatus:
+              type: string
+              example: "Your license"
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              deviceGuid:
+                type: string
+                example: 324523452345
+              name:
+                type: string
+              value:
+                type: string
+    DeviceResponse_core:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            active:
+              type: boolean
+            address:
+              type: string
+            alertState:
+              type: integer
+              format: int32
+            alertStates:
+              type: array
+              items:
+                type: string
+            availableDestinations:
+              type: array
+              items:
+                type: object
+                properties:
+                  destinationId:
+                    type: integer
+                    example: 1000
+                  guid:
+                    type: string
+                    example: "4256234562456"
+                  destinationName:
+                    type: string
+                    example: Dest
+                  type:
+                    type: string
+                    example: "CLUSTER"
+            backupUsage:
+              type: array
+              items:
+                type: object
+                properties:
+                  activity:
+                    type: object
+                    properties:
+                      connected:
+                        type: boolean
+                      backingUp:
+                        type: boolean
+                      restoring:
+                        type: boolean
+                      timeRemainingInMs:
+                        type: integer
+                        format: int32
+                      remainingFiles:
+                        type: integer
+                        format: int32
+                      remainingBytes:
+                        type: integer
+                        format: int32
+                  alertState:
+                    type: integer
+                    format: int32
+                  alertStates:
+                    type: array
+                    items:
+                      type: string
+                  archiveBytes:
+                    type: integer
+                    format: int32
+                  archiveFormat:
+                    type: string
+                  archiveGuid:
+                    type: string
+                  billableBytes:
+                    type: integer
+                    format: int32
+                  completionRateAverage:
+                    type: integer
+                    format: int32
+                  creationDate:
+                    type: string
+                  history:
+                    type: array
+                    items: {}
+                  isProvider:
+                    type: boolean
+                  lastBackup:
+                    type: string
+                  lastCompactDate:
+                    type: string
+                    format: nullable
+                  lastCompletedBackup:
+                    type: string
+                  lastConnected:
+                    type: string
+                  lastMaintenanceDate:
+                    type: string
+                  modificationDate:
+                    type: string
+                  percentComplete:
+                    type: integer
+                    format: int32
+                  selectedBytes:
+                    type: integer
+                    format: int32
+                  selectedFiles:
+                    type: integer
+                    format: int32
+                  sendRateAverage:
+                    type: integer
+                    format: int32
+                  serverGuid:
+                    type: string
+                  serverHostName:
+                    type: string
+                  serverId:
+                    type: integer
+                    format: int32
+                  serverName:
+                    type: string
+                  storePointId:
+                    type: integer
+                    format: int32
+                  storePointName:
+                    type: string
+                  targetComputerGuid:
+                    type: string
+                  targetComputerName:
+                    type: string
+                  targetComputerOsName:
+                    type: string
+                    format: nullable
+                  targetComputerParentGuid:
+                    type: string
+                    format: nullable
+                  targetComputerParentId:
+                    type: string
+                    format: nullable
+                  targetComputerType:
+                    type: string
+                  todoBytes:
+                    type: integer
+                    format: int32
+                  todoFiles:
+                    type: integer
+                    format: int32
+                  using:
+                    type: boolean
+            blocked:
+              type: boolean
+            buildVersion:
+              type: string
+              format: nullable
+            computerExtRef:
+              type: string
+            computerId:
+              type: integer
+              format: int32
+              example: 12341234
+            creationDate:
+              type: string
+            guid:
+              type: string
+              example: 123412412431241
+            javaVersion:
+              type: string
+            lastConnected:
+              type: string
+            loginDate:
+              type: string
+            migrationStatus:
+              type: object
+              properties:
+                statusResult:
+                  type: string
+                success:
+                  type: boolean
+                lastRunDate:
+                  type: string
+                lastMigrationExitCode:
+                  type: string
+                lastMigrationExitMessage:
+                  type: string
+                lastMigrationFileBackupComplete:
+                  type: string
+                lastMigrationFilePath:
+                  type: string
+            modelInfo:
+              type: string
+              format: nullable
+            modificationDate:
+              type: string
+            name:
+              type: string
+            notes:
+              type: string
+            orgId:
+              type: integer
+              format: int32
+              example: 12
+            orgUid:
+              type: string
+            osArch:
+              type: string
+            osHostname:
+              type: string
+            osName:
+              type: string
+            osVersion:
+              type: string
+            parentComputerId:
+              type: string
+              format: nullable
+            parentComputerGuid:
+              type: string
+              format: nullable
+            productVersion:
+              type: string
+            remoteAddress:
+              type: string
+            service:
+              type: string
+            status:
+              type: string
+            timeZone:
+              type: string
+            type:
+              type: string
+            upgradeAvailible:
+              type: boolean
+            userId:
+              type: string
+            userUid:
+              type: string
+            version:
+              type: integer
+              format: int64
+            settings:
+              type: object
+              properties:
+                serviceBackupConfig:
+                  type: object
+                  properties:
+                    backupConfig:
+                      type: object
+                      properties:
+                        backupSets:
+                         type: array
+                         items:
+                           type: object
+                           properties:
+                              backupPaths:
+                                type: object
+                                properties:
+                                  pathset:
+                                    type: array
+                                    items:
+                                      type: object
+                                  excludeUser:
+                                    type: array
+                                    items:
+                                      type: object
+                              destinations:
+                                type: object
+    ArchiveListResponse_core:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            timestamp:
+              type: string
+            params:
+              type: object
+              properties:
+                pgNum:
+                  type: string
+                backupSourceGuid:
+                  type: string
+                pgSize:
+                  type: string
+        data:
+          type: object
+          properties:
+            archives:
+              type: array
+              items:
+                $ref: '#/components/schemas/ArchiveResponse_core'
+    ArchiveResponse_core:
+      type: object
+      properties:
+        archiveGuid:
+          type: string
+        userId:
+          type: string
+          format: nullable
+        userUid:
+          type: string
+          format: nullable
+        archiveBytes:
+          type: integer
+          format: int32
+        targetGuid:
+          type: string
+        lastCompletedBackup:
+          type: string
+          format: nullable
+        isColdStorage:
+          type: boolean
+        lastMaintained:
+          type: string
+        maintenanceDuration:
+          type: integer
+          format: int32
+        compactBytesRemoved:
+          type: string
+          format: nullable
+        storePointId:
+          type: integer
+          format: int32
+        selectedBytes:
+          type: integer
+          format: int32
+        selectedFiles:
+          type: integer
+          format: int32
+        todoBytes:
+          type: integer
+          format: int32
+        format:
+          type: string
+    BackupSetsResponse_core:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            backupSets:
+              type: array
+              items:
+                type: object
+                properties:
+                  multiSetDestination:
+                    type: boolean
+                  backupSetId:
+                    type: string
+                    example: "123BackupSetId123"
+        error:
+          type: string
+          format: nullable
+        warnings:
+          type: string
+          format: nullable
+
+    RestoreHistoryResponse_core:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            timestamp:
+              type: string
+            params:
+              type: object
+              properties:
+                computerId:
+                  type: string
+                pgNum:
+                  type: string
+                days:
+                  type: string
+                pgSize:
+                  type: string
+        data:
+          type: object
+          properties:
+            restoreEvents:
+              type: array
+              items:
+                type: object
+                properties:
+                  restoreId:
+                    type: integer
+                  requestingUserId:
+                    type: integer
+                    format: int32
+                  sourceUserId:
+                    type: integer
+                    format: int32
+                  sourceOrgId:
+                    type: integer
+                    format: int32
+                  restoreFiles:
+                    type: integer
+                    format: int32
+                  restoreBytes:
+                    type: integer
+                    format: int32
+                  startDate:
+                    type: string
+                  completedDate:
+                    type: string
+                  acceptingUserId:
+                    type: integer
+                    format: int32
+                  acceptingUserFirstName:
+                    type: string
+                  acceptingUserLastName:
+                    type: string
+                  acceptingUsername:
+                    type: string
+                  acceptingDeviceId:
+                    type: integer
+                    format: int32
+                  acceptingDeviceName:
+                    type: string
+                  acceptingDeviceOsName:
+                    type: string
+                  acceptingDeviceOsHostname:
+                    type: string
+                  acceptingDeviceOsVersion:
+                    type: string
+                    format: nullable
+                  acceptingType:
+                    type: string
+                  rateBytesPerSecond:
+                    type: integer
+                    format: int32
+    ColdStorageResponse_core:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            timestamp:
+              type: string
+            params:
+              type: object
+              properties:
+                incChildOrgs:
+                  type: string
+                srtDir:
+                  type: string
+                srtKey:
+                  type: string
+                pgNum:
+                  type: string
+                pgSize:
+                  type: string
+                orgId:
+                  type: string
+        data:
+          type: object
+          properties:
+            coldStorageRows:
+              type: array
+              items:
+                type: object
+                properties:
+                  archiveGuid:
+                    type: string
+                  archiveBytes:
+                    type: integer
+                    format: int32
+                  archiveHoldExpireDate:
+                    type: string
+                  orgId:
+                    type: integer
+                    format: int32
+                  orgName:
+                    type: string
+                  mountPointId:
+                    type: integer
+                    format: int32
+                  mountPointName:
+                    type: string
+                  serverName:
+                    type: string
+                  archiveType:
+                    type: string
+                  fcuId:
+                    type: integer
+                    format: int32
+                  sourceUserId:
+                    type: integer
+                    format: int32
+                  sourceUserFirstName:
+                    type: string
+                  sourceUserLastName:
+                    type: string
+                  sourceUserUserName:
+                    type: string
+                  sourceUserEmail:
+                    type: string
+                  sourceComputerId:
+                    type: integer
+                    format: int32
+                  sourceComputerName:
+                    type: string
+                  sourceComputerOsHostname:
+                    type: string
+                  sourceComputerService:
+                    type: string
+    LegalHoldPolicyResponse_core:
+      type: object
+      properties:
+        legalHoldPolicyUid:
+          type: string
+          example: '123LegalHoldPolicyUid123'
+        name:
+          type: string
+          example: mock legal hold policy
+        creatorUser:
+          type: object
+          properties:
+            userUid:
+              type: string
+              example: '123UserUid123'
+            userId:
+              type: integer
+              format: int32
+              example: 123
+            username:
+              type: string
+            email:
+              type: string
+            firstName:
+              type: string
+            lastName:
+              type: string
+        policy:
+          type: object
+          properties:
+            backupOpenFiles:
+              type: boolean
+            compression:
+              type: string
+            dataDeDupAutoMaxFileSizeForLan:
+              type: integer
+              format: int32
+            dataDeDupAutoMaxFileSizeForWan:
+              type: integer
+              format: int32
+            dataDeDuplication:
+              type: string
+            encryptionEnabled:
+              type: boolean
+            scanIntervalMillis:
+              type: integer
+              format: int32
+            scanTime:
+              type: string
+            watchFiles:
+              type: boolean
+            destinations:
+              type: array
+              items:
+                type: string
+            backupRunWindow:
+              type: object
+              properties:
+                alwaysRun:
+                  type: boolean
+                startTimeOfDay:
+                  type: string
+                endTimeOfDay:
+                  type: string
+                days:
+                  type: array
+                  items:
+                    type: string
+            backupPaths:
+              type: object
+              properties:
+                paths:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      path:
+                        type: string
+                      directory:
+                        type: boolean
+                      selected:
+                        type: boolean
+                excludePatterns:
+                  type: object
+                  properties:
+                    windows:
+                      type: array
+                      items:
+                        type: string
+                    linux:
+                      type: array
+                      items:
+                        type: string
+                    macintosh:
+                      type: array
+                      items:
+                        type: string
+                    all:
+                      type: array
+                      items:
+                        type: string
+            retentionPolicy:
+              type: object
+              properties:
+                backupFrequencyMillis:
+                  type: integer
+                  format: int32
+                keepDeleted:
+                  type: boolean
+                keepDeletedMinutes:
+                  type: integer
+                  format: int32
+                versionLastWeekIntervalMinutes:
+                  type: integer
+                  format: int32
+                versionLastNinetyDaysIntervalMinutes:
+                  type: integer
+                  format: int32
+                versionLastYearIntervalMinutes:
+                  type: integer
+                  format: int32
+                versionPrevYearsIntervalMinutes:
+                  type: integer
+                  format: int32
+        creationDate:
+          type: string
+        modificationDate:
+          type: string
+    LegalHoldMatterResponse_core:
+      type: object
+      properties:
+        legalHoldUid:
+          type: string
+          example: '123LegalHoldUid123'
+        name:
+          type: string
+        description:
+          type: string
+        notes:
+          type: string
+        holdExtRef:
+          type: string
+        active:
+          type: boolean
+          example: true
+        creationDate:
+          type: string
+          format: date-time
+        lastModified:
+          type: string
+          format: date-time
+        holdPolicyUid:
+          type: string
+          example: '123LegalHoldPolicyUid123'
+        creator:
+          type: object
+          properties:
+            userUid:
+              type: string
+              example: '123UserUid123'
+            username:
+              type: string
+            email:
+              type: string
+            userExtRef:
+              type: string
+    LegalHoldCustodianResponse_core:
+      type: object
+      properties:
+        legalHoldMembershipUid: 
+          type: string
+        active: 
+          type: boolean
+        creationDate: 
+          type: string
+        legalHold: 
+          type: object
+          properties: 
+            legalHoldUid: 
+              type: string
+            name: 
+              type: string
+        user: 
+          type: object
+          properties: 
+            userUid: 
+              type: string
+            username: 
+              type: string
+            email: 
+              type: string
+            userExtRef: 
+              type: string
+              format: nullable
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic

@@ -1,5 +1,7 @@
 # Mock Microservice Endpoints
 
+***Warning: This repo is for internal Code42 use and may change or seize to exist at any time.***
+
 To start the servers:
 
 ```bash

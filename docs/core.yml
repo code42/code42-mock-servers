@@ -76,6 +76,7 @@ paths:
                       totalCount:
                         type: integer
                         format: int32
+                        example: 1
                       users:
                         type: array
                         items:
@@ -1236,6 +1237,7 @@ components:
           properties:
             v3_user_token:
               type: string
+              example: test_v3_user_token
         error:
           type: string
           format: nullable

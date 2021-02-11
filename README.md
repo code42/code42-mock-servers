@@ -22,7 +22,7 @@ You can convert existing JSON Swagger v2 swagger using https://editor.swagger.io
 
 Some minor editing might be required to get the conversion to work. For example, warnings may appears on the left
 margin of the Swagger editor. Address all the warnings before re-attempting the conversion.
-A common problem from our docs is that the conversion tool does not like having `descriptions` 
+A common problem from our docs is that the conversion tool does not like having `descriptions`
 (or any additional properties) next a `ref`.
 
 For example, replace:
@@ -43,7 +43,7 @@ You may also have issues with enum values. See the section below.
 ## Endpoint Enums
 
 Another common problem is that our Code42 docs often declare enums as having a type of `integer`.
-This will cause failures in Prism. Change the enum type to `string`. This is also needed for the conversion 
+This will cause failures in Prism. Change the enum type to `string`. This is also needed for the conversion
 to OpenAPI 3 to work properly.
 
 Prism is case-sensitive when it comes to enum values whereas typically Code42 servers are not.
@@ -94,16 +94,16 @@ to
 
 It is not necessary to do this for every response property. Here are reasons you may need to:
 
-* Prism complains about the type returned.  If ths happens, setting the example will control the output so Prism can't generate faulty 
-	examples by mistake.
-* You are expecting a specific response value in a test.  This is how the Key-Value mock endpoints work: they return localhost with 
-	different ports (see section below).
+* Prism complains about the type returned.  If ths happens, setting the example will control the output so Prism can't generate faulty
+  examples by mistake.
+* You are expecting a specific response value in a test.  This is how the Key-Value mock endpoints work: they return localhost with
+  different ports (see section below).
 * You want to constrain the response value. Prism likes to use negative integers when the type is an integer, but you might not want that,
-	especially for IDs like the `userId`.
+  especially for IDs like the `userId`.
 
 ## docker-compose and the Mock Key-Value Store
 
-Each microservice gets its own port that gets returned from the mock Key-Value Store found in `core.yml`. To add a new service, include 
+Each microservice gets its own port that gets returned from the mock Key-Value Store found in `core.yml`. To add a new service, include
 the mocked endpoint for getting your microservice's URL.
 
 Example:
@@ -125,7 +125,7 @@ Example:
                example: http://127.0.0.1:4220
 ```
 
-Then, in the `docker-compose.yml` file, add another entry using your service's mock `.yml` file and an incremented port (the same one you used in 
+Then, in the `docker-compose.yml` file, add another entry using your service's mock `.yml` file and an incremented port (the same one you used in
 the mock key-value store endpoint).
 
 ```yml
@@ -145,7 +145,7 @@ Notice the port number appears in three places in the `yml` for the docker-compo
 
 ## Returning empty JSON responses
 
-If your endpoint claims to return application/json but you are returning an empty response, 
+If your endpoint claims to return application/json but you are returning an empty response,
 you might have your service's yml (after conversion from JSON) looking like this:
 
 ```yml
@@ -160,7 +160,7 @@ Instead, to return an empty response in a way that Prism understands, do this:
         200:
           description: 'Success: Given alerts are updated to the indicated status.'
           content:
-					  application/json:
+            application/json:
               schema:
                 type: object
 ```

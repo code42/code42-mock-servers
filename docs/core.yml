@@ -55,7 +55,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserResponse_core'
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                    properties:
+                      timestamp:
+                        type: string
+                      params:
+                        type: object
+                  data:
+                    $ref: '#/components/schemas/UserResponse_core'
   /api/User:
     get:
       tags:
@@ -1247,78 +1257,67 @@ components:
     UserResponse_core:
       type: object
       properties:
-        metadata:
-          type: object
-          properties:
-            timestamp:
-              type: string
-            params:
-              type: object
-              properties: {}
-        data:
-          type: object
-          properties:
-            userId:
-              type: integer
-              format: int32
-              example: 123456789
-            userUid:
-              type: string
-              example: "123UserUid123"
-            status:
-              type: string
-            username:
-              type: string
-              example: "test.user@example.com"
-            email:
-              type: string
-              example: "test.user@example.com"
-            firstName:
-              type: string
-              example: "test"
-            lastName:
-              type: string
-              example: "user"
-            quotaInBytes:
-              type: integer
-              format: int32
-            orgId:
-              type: integer
-              format: int32
-            orgUid:
-              type: string
-            orgName:
-              type: string
-            userExtRef:
-              type: string
-              format: nullable
-            notes:
-              type: string
-              format: nullable
-            active:
-              type: boolean
-            blocked:
-              type: boolean
-            emailPromo:
-              type: boolean
-            invited:
-              type: boolean
-            orgType:
-              type: string
-            usernameIsAnEmail:
-              type: boolean
-            creationDate:
-              type: string
-            modificationDate:
-              type: string
-            passwordReset:
-              type: boolean
-            localAuthenticationOnly:
-              type: boolean
-            licenses:
-              type: array
-              items:
-                type: string
+        userId:
+          type: integer
+          format: int32
+          example: 123456789
+        userUid:
+          type: string
+          example: "123UserUid123"
+        status:
+          type: string
+        username:
+          type: string
+          example: "test.user@example.com"
+        email:
+          type: string
+          example: "test.user@example.com"
+        firstName:
+          type: string
+          example: "test"
+        lastName:
+          type: string
+          example: "user"
+        quotaInBytes:
+          type: integer
+          format: int32
+        orgId:
+          type: integer
+          format: int32
+        orgUid:
+          type: string
+        orgName:
+          type: string
+        userExtRef:
+          type: string
+          format: nullable
+        notes:
+          type: string
+          format: nullable
+        active:
+          type: boolean
+        blocked:
+          type: boolean
+        emailPromo:
+          type: boolean
+        invited:
+          type: boolean
+        orgType:
+          type: string
+        usernameIsAnEmail:
+          type: boolean
+        creationDate:
+          type: string
+        modificationDate:
+          type: string
+        passwordReset:
+          type: boolean
+        localAuthenticationOnly:
+          type: boolean
+        licenses:
+          type: array
+          items:
+            type: string
     UserRolesResponse_core:
       type: object
       properties:

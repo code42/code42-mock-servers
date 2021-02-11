@@ -32,7 +32,7 @@ services:
     restart: always
     ports:
       - "4202:4202"
-    command: mock docs/alert_rules.yml -p 4202 -h 0.0.0.0
+    command: mock docs/alert-rules.yml -p 4202 -h 0.0.0.0
 
   detection_lists:
     image: c42/mock-microservice-endpoints:1.0
@@ -43,7 +43,7 @@ services:
     restart: always
     ports:
       - "4203:4203"
-    command: mock docs/detection_lists.yml -p 4203 -h 0.0.0.0
+    command: mock docs/detection-lists.yml -p 4203 -h 0.0.0.0
 
   cases:
     image: c42/mock-microservice-endpoints:1.0
@@ -76,7 +76,7 @@ services:
     restart: always
     ports:
       - "4206:4206"
-    command: mock docs/connected_server.yml -p 4206 -h 0.0.0.0
+    command: mock docs/connected-server.yml -p 4206 -h 0.0.0.0
   
   audit_logs:
     image: c42/mock-microservice-endpoints:1.0
@@ -87,7 +87,7 @@ services:
     restart: always
     ports:
       - "4207:4207"
-    command: mock docs/audit_logs.yml -p 4207 -h 0.0.0.0
+    command: mock docs/audit-logs.yml -p 4207 -h 0.0.0.0
 
   file-events:
     image: c42/mock-microservice-endpoints:1.0

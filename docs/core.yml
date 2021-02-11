@@ -1264,7 +1264,7 @@ components:
               example: 123456789
             userUid:
               type: string
-              example: "12345678987654321"
+              example: "123UserUid123"
             status:
               type: string
             username:
@@ -1391,6 +1391,7 @@ components:
           properties:
             userUid:
               type: string
+              example: 123UserUid123
             securityPlanLocationsByDestination:
               type: array
               items:
@@ -2284,6 +2285,7 @@ components:
               type: string
             userUid:
               type: string
+              example: 123UserUid123
             version:
               type: integer
               format: int64
@@ -2349,6 +2351,7 @@ components:
         userUid:
           type: string
           format: nullable
+          example: 123User123
         archiveBytes:
           type: integer
           format: int32
@@ -2740,6 +2743,7 @@ components:
           properties:
             userUid:
               type: string
+              example: 123UserUid123
             username:
               type: string
             email:

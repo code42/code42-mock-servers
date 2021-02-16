@@ -8,6 +8,7 @@ services:
       dockerfile: Dockerfile
     container_name: mock_core
     restart: always
+    network_mode: "host"
     ports:
       - "4200:4200"
     command: mock docs/core.yml -p 4200 -h 0.0.0.0
@@ -19,6 +20,7 @@ services:
       dockerfile: Dockerfile
     container_name: mock_alerts
     restart: always
+    network_mode: "host"
     ports:
       - "4201:4201"
     command: mock docs/alerts.yml -p 4201 -h 0.0.0.0
@@ -30,6 +32,7 @@ services:
       dockerfile: Dockerfile
     container_name: mock_alert_rules
     restart: always
+    network_mode: "host"
     ports:
       - "4202:4202"
     command: mock docs/alert-rules.yml -p 4202 -h 0.0.0.0
@@ -41,6 +44,7 @@ services:
       dockerfile: Dockerfile
     container_name: mock_detection_lists
     restart: always
+    network_mode: "host"
     ports:
       - "4203:4203"
     command: mock docs/detection-lists.yml -p 4203 -h 0.0.0.0
@@ -52,6 +56,7 @@ services:
       dockerfile: Dockerfile
     container_name: mock_cases
     restart: always
+    network_mode: "host"
     ports:
       - "4204:4204"
     command: mock docs/cases.yml -p 4204 -h 0.0.0.0
@@ -63,6 +68,7 @@ services:
       dockerfile: Dockerfile
     container_name: mock_storage
     restart: always
+    network_mode: "host"
     ports:
       - "4205:4205"
     command: mock docs/storage.yml -p 4205 -h 0.0.0.0
@@ -74,6 +80,7 @@ services:
       dockerfile: Dockerfile
     container_name: mock_connected_server
     restart: always
+    network_mode: "host"
     ports:
       - "4206:4206"
     command: mock docs/connected-server.yml -p 4206 -h 0.0.0.0
@@ -85,6 +92,7 @@ services:
       dockerfile: Dockerfile
     container_name: mock_audit_logs
     restart: always
+    network_mode: "host"
     ports:
       - "4207:4207"
     command: mock docs/audit-logs.yml -p 4207 -h 0.0.0.0
@@ -96,6 +104,7 @@ services:
       dockerfile: Dockerfile
     container_name: mock_file_events
     restart: always
+    network_mode: "host"
     ports:
       - "4208:4208"
     command: mock docs/file-events.yml -p 4208 -h 0.0.0.0
@@ -107,6 +116,7 @@ services:
       dockerfile: Dockerfile
     container_name: mock_preservation_data_service
     restart: always
+    network_mode: "host"
     ports:
       - "4209:4209"
     command: mock docs/preservation-data-service.yml -p 4209 -h 0.0.0.0

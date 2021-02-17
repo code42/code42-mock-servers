@@ -9,7 +9,7 @@ services:
     container_name: mock_core
     restart: always
     ports:
-      - "127.0.0.1:4200:4200"
+      - "0.0.0.0:4200:4200"
     command: mock docs/core.yml -p 4200 -h 0.0.0.0
 
   alerts:

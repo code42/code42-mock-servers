@@ -9,6 +9,15 @@ tags:
 - name: AuditLogs
   description: A collection of data for an insider threat investigation.
 paths:
+  /:
+    get:
+      summary: Check the health of the mock microservice container
+      responses:
+        200:
+          description: A successful response
+          content:
+            text/plain:
+              example: healthcheck-success
   /rpc/search/search-audit-log:
     post:
       tags:

@@ -7,6 +7,15 @@ servers:
 - url: /
 - name: Detection Lists
 paths:
+  /:
+    get:
+      summary: Check the health of the mock microservice container
+      responses:
+        200:
+          description: A successful response
+          content:
+            text/plain:
+              example: healthcheck-success
   /svc/api/v2/departingemployee/get:
     post:
       tags:

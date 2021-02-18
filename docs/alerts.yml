@@ -9,16 +9,15 @@ info:
 servers:
 - url: /
 paths:
-  # Healthcheck
   /:
     get:
+      summary: Check the health of the mock microservice container
       responses:
         200:
           description: A successful response
           content:
             text/plain:
-              example: hello
-
+              example: healthcheck-success
   /svc/api/v1/update-state:
     post:
       tags:

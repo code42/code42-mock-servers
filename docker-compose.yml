@@ -11,6 +11,11 @@ services:
     ports:
       - "0.0.0.0:4200:4200"
     command: mock docs/core.yml -p 4200 -h 0.0.0.0
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4200 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   alerts:
     image: c42/mock-microservice-endpoints:1.0
@@ -22,6 +27,11 @@ services:
     ports:
       - "4201:4201"
     command: mock docs/alerts.yml -p 4201 -h 0.0.0.0
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4201 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   alert_rules:
     image: c42/mock-microservice-endpoints:1.0
@@ -110,3 +120,12 @@ services:
     ports:
       - "4209:4209"
     command: mock docs/preservation-data-service.yml -p 4209 -h 0.0.0.0
+
+  hello:
+    image: hello-world
+    container_name: hello_world
+    depends_on:
+      core:
+        condition: service_healthy
+      alerts:
+        condition: service_healthy

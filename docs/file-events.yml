@@ -1386,7 +1386,7 @@ components:
           type: string
           description: Time at which the saved search was created.
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         groupClause:
           type: string
           description: Grouping clause for any specified groups.

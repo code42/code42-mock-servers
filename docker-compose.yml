@@ -89,7 +89,7 @@ services:
       - "4207:4207"
     command: mock docs/audit-logs.yml -p 4207 -h 0.0.0.0
 
-  file-events:
+  file_events:
     image: c42/mock-microservice-endpoints:1.0
     build:
       context: .
@@ -100,7 +100,7 @@ services:
       - "4208:4208"
     command: mock docs/file-events.yml -p 4208 -h 0.0.0.0
 
-  preservation-data-service:
+  preservation_data_service:
     image: c42/mock-microservice-endpoints:1.0
     build:
       context: .

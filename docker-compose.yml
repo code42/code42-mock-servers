@@ -9,7 +9,7 @@ services:
     container_name: mock_core
     restart: always
     ports:
-      - "0.0.0.0:4200:4200"
+      - "4200:4200"
     command: mock docs/core.yml -p 4200 -h 0.0.0.0
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:4200 || exit 1"]
@@ -162,8 +162,8 @@ services:
       retries: 3
 
   health_checker:
-    image: hello-world
-    container_name: health_checker
+    build: .
+    command: [":"]
     depends_on:
       core:
         condition: service_healthy

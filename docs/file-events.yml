@@ -9,6 +9,15 @@ tags:
 - name: File Events
   description: Security file events detected by Code42.
 paths:
+  /:
+    get:
+      summary: Check the health of the mock microservice container
+      responses:
+        200:
+          description: A successful response
+          content:
+            text/plain:
+              example: healthcheck-success
   /forensic-search/queryservice/api/v1/fileevent:
     post:
       tags:

@@ -1,6 +1,6 @@
 # Mock Microservice Endpoints
 
-***Warning: This repo is for internal Code42 use and may change or seize to exist at any time.***
+***Warning: This repo is for internal Code42 use and may change or cease to exist at any time.***
 
 To start the servers:
 
@@ -142,6 +142,39 @@ the mock key-value store endpoint).
 ```
 
 Notice the port number appears in three places in the `yml` for the docker-compose file.
+
+## Integration Tests and CI/CD
+
+To successfully execute integration tests against the mock server in a CI/CD context, you must ensure that the `docker-compose up` command does not return before your mock microservice container is fully instantiated and ready to receive requests.
+
+First, add a healthcheck endpoint to your OpenAPI yml file:
+```yml
+  /:
+    get:
+      summary: Check the health of the mock microservice container
+      responses:
+        200:
+          description: A successful response
+          content:
+            text/plain:
+              example: healthcheck-success
+```
+
+Then, in `docker-compose.yml`, add a `healthcheck` configuration section to your service definition. Be sure to modify the port to match the port exposed by your mock microservice container.
+```yml
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4200 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+```
+
+Finally, add a service dependency to the `health_checker` service at the bottom of `docker-compose.yml` so that the `docker-compose up` command will not return until your container is fully instantiated and responding to HTTP requests:
+```yml
+    depends_on:
+      core:
+        condition: service_healthy
+```
 
 ## Returning empty JSON responses
 

@@ -9,6 +9,15 @@ tags:
 - name: Core
   description: A collection of data for core Code42 actions.
 paths:
+  /:
+    get:
+      summary: Check the health of the mock microservice container
+      responses:
+        200:
+          description: A successful response
+          content:
+            text/plain:
+              example: healthcheck-success
 
   # AUTH
 

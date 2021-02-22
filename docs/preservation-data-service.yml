@@ -8,6 +8,15 @@ servers:
 tags:
 - name: Preservation Data Service
 paths:
+  /:
+    get:
+      summary: Check the health of the mock microservice container
+      responses:
+        200:
+          description: A successful response
+          content:
+            text/plain:
+              example: healthcheck-success
   /api/v1/FileVersionListing:
     get:
       tags:

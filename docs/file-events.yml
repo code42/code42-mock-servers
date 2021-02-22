@@ -75,7 +75,7 @@ paths:
         200:
           description: 'Success: List of groups matching the query.'
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/GroupingResponse'
       deprecated: false
@@ -1415,7 +1415,7 @@ components:
           type: string
           description: Time at which the saved search was last modified.
           format: date-time
-          example: 2020-10-27T15:20:26.311894Z
+          example: '2020-10-27T15:20:26.311894Z'
         name:
           type: string
           description: Name given to the saved search.

@@ -162,8 +162,9 @@ services:
       retries: 3
 
   health_checker:
-    build: .
-    command: [":"]
+    image: c42/mock-microservice-endpoints:1.0
+    entrypoint: ["echo", "All mock server containers are responding to requests!"]
+    container_name: "health_checker"
     depends_on:
       core:
         condition: service_healthy

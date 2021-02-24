@@ -92,7 +92,7 @@ services:
       - "4205:4205"
     command: mock docs/storage.yml -p 4205 -h 0.0.0.0
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4205 || exit 1"] 
+      test: ["CMD-SHELL", "curl -f http://localhost:4205 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -112,7 +112,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-  
+
   audit_logs:
     image: c42/mock-microservice-endpoints:1.0
     build:

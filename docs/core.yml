@@ -1256,7 +1256,7 @@ components:
           properties:
             v3_user_token:
               type: string
-              example: test_v3_user_token
+              example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6IjUyYmE4MDUwLTQ0MWYtNGY5MS05MTJiLTE2Mjg0Y2U3MmQzZSIsImlhdCI6MTYxNDAyNTA5OCwiZXhwIjoxNjE0MDI4Njk4fQ.O5oH8870M3ZXVB-1iyUg_tJ1Yke_b2RuwGYz2m_aYYk
         error:
           type: string
           format: nullable

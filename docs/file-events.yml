@@ -65,7 +65,7 @@ paths:
                 $ref: '#/components/schemas/StreamingResponseBody'
       deprecated: false
       x-codegen-request-body-name: request
-  /api/v1/fileevent/grouping:
+  /forensic-search/queryservice/api/v1/fileevent/grouping:
     post:
       tags:
       - File Events
@@ -84,11 +84,50 @@ paths:
         200:
           description: 'Success: List of groups matching the query.'
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/GroupingResponse'
       deprecated: false
       x-codegen-request-body-name: request
+  /forensic-search/queryservice/api/v1/saved:
+    get:
+      tags:
+      - File Events
+      summary: Get all saved searches
+      operationId: getSavedSearchesUsingGET
+      responses:
+        200:
+          description: 'Success: List of all saved searches for the tenant.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedSearchResponse-file-events'
+      deprecated: false
+  /forensic-search/queryservice/api/v1/saved/{id}:
+    get:
+      tags:
+      - File Events
+      summary: Get a single saved search
+      operationId: getSavedSearchByIdUsingGET
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier for a saved search.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: 'Success: Details of the specified saved search.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedSearchResponse-file-events'
+        404:
+          description: 'Not found: Saved search does not exist.'
+          content: {}
+      deprecated: false
+    
 components:
   schemas:
     ExportRequest:
@@ -1253,3 +1292,338 @@ components:
     StreamingResponseBody:
       title: StreamingResponseBody
       type: object
+    SavedSearchResponse-file-events:
+      title: SavedSearchResponse
+      type: object
+      properties:
+        searches:
+          type: array
+          description: List of saved searches in the response.
+          items:
+            $ref: '#/components/schemas/SavedSearchDetail-file-events'
+    SavedSearchDetail-file-events:
+      title: SavedSearchDetail
+      type: object
+      properties:
+        apiVersion:
+          type: integer
+          description: Version of the API used to create the search.
+          format: int32
+          example: 1
+        columns:
+          type: array
+          description: List of columns to be displayed in the web app for the search.
+          items:
+            type: string
+            enum:
+            - eventId
+            - eventType
+            - eventTimestamp
+            - insertionTimestamp
+            - filePath
+            - fileName
+            - fileType
+            - fileCategory
+            - fileCategoryByBytes
+            - fileCategoryByExtension
+            - fileSize
+            - fileOwner
+            - md5Checksum
+            - sha256Checksum
+            - createTimestamp
+            - modifyTimestamp
+            - deviceUserName
+            - deviceUid
+            - userUid
+            - osHostName
+            - domainName
+            - publicIpAddress
+            - privateIpAddresses
+            - actor
+            - directoryId
+            - source
+            - url
+            - shared
+            - sharedWith
+            - sharingTypeAdded
+            - cloudDriveId
+            - detectionSourceAlias
+            - fileId
+            - exposure
+            - processOwner
+            - processName
+            - windowTitle
+            - tabUrl
+            - tabTitles
+            - tabUrls
+            - removableMediaVendor
+            - removableMediaName
+            - removableMediaSerialNumber
+            - removableMediaCapacity
+            - removableMediaBusType
+            - removableMediaMediaName
+            - removableMediaVolumeName
+            - removableMediaPartitionId
+            - syncDestination
+            - syncDestinationUsername
+            - emailDlpPolicyNames
+            - emailSubject
+            - emailSender
+            - emailFrom
+            - emailRecipients
+            - outsideActiveHours
+            - mimeTypeByBytes
+            - mimeTypeByExtension
+            - mimeTypeMismatch
+            - printJobName
+            - printerName
+            - printedFilesBackupPath
+            - remoteActivity
+            - trusted
+            - operatingSystemUser
+            - destinationCategory
+            - destinationName
+        createdByUID:
+          type: string
+          description: User UID of the user who created the saved search.
+          example: "806150685834341100"
+        createdByUsername:
+          type: string
+          description: Username of the user who created the saved search.
+          example: adrian@example.com
+        creationTimestamp:
+          type: string
+          description: Time at which the saved search was created.
+          format: date-time
+          example: '2020-10-27T15:16:05.369203Z'
+        groupClause:
+          type: string
+          description: Grouping clause for any specified groups.
+          example: OR
+          enum:
+          - AND
+          - OR
+        groups:
+          type: array
+          description: One or more FilterGroups to be combined in a query.
+          items:
+            $ref: '#/components/schemas/FilterGroup-file-events'
+        id:
+          type: string
+          description: Unique identifier for the saved search.
+          example: cde979fa-d551-4be9-b242-39e75b824089
+        modifiedByUID:
+          type: string
+          description: User UID of the user who last modified the saved search.
+          example: "421380797518239200"
+        modifiedByUsername:
+          type: string
+          description: Username of the user who last modified the saved search.
+          example: ari@example.com
+        modifiedTimestamp:
+          type: string
+          description: Time at which the saved search was last modified.
+          format: date-time
+          example: '2020-10-27T15:20:26.311894Z'
+        name:
+          type: string
+          description: Name given to the saved search.
+          example: Example saved search
+        notes:
+          type: string
+          description: Optional notes about the search.
+          example: This search returns all events.
+        srtDir:
+          type: string
+          description: Sort direction.
+          example: asc
+          enum:
+          - asc
+          - desc
+        srtKey:
+          type: string
+          description: Search term for sorting.
+          example: eventId
+          enum:
+          - eventId
+          - eventType
+          - eventTimestamp
+          - insertionTimestamp
+          - filePath
+          - fileName
+          - fileType
+          - fileCategory
+          - fileCategoryByBytes
+          - fileCategoryByExtension
+          - fileSize
+          - fileOwner
+          - md5Checksum
+          - sha256Checksum
+          - createTimestamp
+          - modifyTimestamp
+          - deviceUserName
+          - deviceUid
+          - userUid
+          - osHostName
+          - domainName
+          - publicIpAddress
+          - privateIpAddresses
+          - actor
+          - directoryId
+          - source
+          - url
+          - shared
+          - sharedWith
+          - sharingTypeAdded
+          - cloudDriveId
+          - detectionSourceAlias
+          - fileId
+          - exposure
+          - processOwner
+          - processName
+          - windowTitle
+          - tabUrl
+          - tabTitles
+          - tabUrls
+          - removableMediaVendor
+          - removableMediaName
+          - removableMediaSerialNumber
+          - removableMediaCapacity
+          - removableMediaBusType
+          - removableMediaMediaName
+          - removableMediaVolumeName
+          - removableMediaPartitionId
+          - syncDestination
+          - syncDestinationUsername
+          - emailDlpPolicyNames
+          - emailSubject
+          - emailSender
+          - emailFrom
+          - emailRecipients
+          - outsideActiveHours
+          - mimeTypeByBytes
+          - mimeTypeByExtension
+          - mimeTypeMismatch
+          - printJobName
+          - printerName
+          - printedFilesBackupPath
+          - remoteActivity
+          - trusted
+          - operatingSystemUser
+          - destinationCategory
+          - destinationName
+    FilterGroup-file-events:
+      type: object
+      required:
+        - filters
+      properties:
+        filterClause:
+          type: string
+          example: AND
+          description: Grouping clause for filters.  Default is `AND`.
+          enum:
+            - AND
+            - OR
+        filters:
+          type: array
+          description: One or more SearchFilters to be combined in a query.
+          items:
+            $ref: '#/components/schemas/SearchFilter-file-events'
+      title: FilterGroup
+    SearchFilter-file-events:
+      type: object
+      required:
+        - value
+      properties:
+        operator:
+          type: string
+          example: IS_NOT
+          description: The type of match to perform.  Default value is `IS`.
+          enum:
+            - IS
+            - IS_NOT
+            - ON_OR_BEFORE
+            - ON_OR_AFTER
+            - 'ON'
+            - WITHIN_THE_LAST
+            - LESS_THAN
+            - GREATER_THAN
+            - EXISTS
+            - DOES_NOT_EXIST
+        term:
+          type: string
+          example: actor
+          description: The field to match.  Default value is `deviceUserName`.
+          enum:
+            - eventId
+            - eventType
+            - eventTimestamp
+            - insertionTimestamp
+            - filePath
+            - fileName
+            - fileType
+            - fileCategory
+            - fileCategoryByBytes
+            - fileCategoryByExtension
+            - fileSize
+            - fileOwner
+            - md5Checksum
+            - sha256Checksum
+            - createTimestamp
+            - modifyTimestamp
+            - deviceUserName
+            - deviceUid
+            - userUid
+            - osHostName
+            - domainName
+            - publicIpAddress
+            - privateIpAddresses
+            - actor
+            - directoryId
+            - source
+            - url
+            - shared
+            - sharedWith
+            - sharingTypeAdded
+            - cloudDriveId
+            - detectionSourceAlias
+            - fileId
+            - exposure
+            - processOwner
+            - processName
+            - windowTitle
+            - tabUrl
+            - tabTitles
+            - tabUrls
+            - removableMediaVendor
+            - removableMediaName
+            - removableMediaSerialNumber
+            - removableMediaCapacity
+            - removableMediaBusType
+            - removableMediaMediaName
+            - removableMediaVolumeName
+            - removableMediaPartitionId
+            - syncDestination
+            - syncDestinationUsername
+            - emailDlpPolicyNames
+            - emailSubject
+            - emailSender
+            - emailFrom
+            - emailRecipients
+            - outsideActiveHours
+            - mimeTypeByBytes
+            - mimeTypeByExtension
+            - mimeTypeMismatch
+            - printJobName
+            - printerName
+            - printedFilesBackupPath
+            - remoteActivity
+            - trusted
+            - operatingSystemUser
+            - destinationCategory
+            - destinationName
+        value:
+          type: string
+          example: ari@example.com
+          description: The input for the search.
+      title: SearchFilter

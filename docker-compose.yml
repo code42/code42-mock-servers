@@ -16,6 +16,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
   alerts:
     image: c42/mock-microservice-endpoints:1.0
@@ -32,6 +34,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
   alert_rules:
     image: c42/mock-microservice-endpoints:1.0
@@ -48,6 +52,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
   detection_lists:
     image: c42/mock-microservice-endpoints:1.0
@@ -64,6 +70,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
   cases:
     image: c42/mock-microservice-endpoints:1.0
@@ -80,6 +88,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
   storage:
     image: c42/mock-microservice-endpoints:1.0
@@ -96,6 +106,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
   connected_server:
     image: c42/mock-microservice-endpoints:1.0
@@ -112,6 +124,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
   audit_logs:
     image: c42/mock-microservice-endpoints:1.0
@@ -128,6 +142,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
   file_events:
     image: c42/mock-microservice-endpoints:1.0
@@ -144,6 +160,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
   preservation_data_service:
     image: c42/mock-microservice-endpoints:1.0
@@ -160,6 +178,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
   health_checker:
     image: c42/mock-microservice-endpoints:1.0
@@ -186,3 +206,6 @@ services:
         condition: service_healthy
       preservation_data_service:
         condition: service_healthy
+
+networks:
+  api-integration-test-network:

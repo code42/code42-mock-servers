@@ -209,3 +209,4 @@ services:
 
 networks:
   api-integration-test-network:
+    external: true

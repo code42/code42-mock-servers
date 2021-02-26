@@ -44,7 +44,7 @@ paths:
                           type: string
                         storageNodeURL:
                           type: string
-                          example: http://127.0.0.1:4200
+                          example: http://storage:4200
                         archiveGuid:
                           type: string
                         fileId:

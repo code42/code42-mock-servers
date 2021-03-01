@@ -454,8 +454,8 @@ paths:
           content:
             '*/*':
               schema:
-               type: string
-               example: http://cases:4204
+                type: string
+                example: http://cases:4204
   /api/connectedServerUrl:
     get:
       tags:

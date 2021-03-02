@@ -1263,6 +1263,13 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      membershipsChanged:
+                        type: boolean
+                        example: true
 
 # MODELS
 

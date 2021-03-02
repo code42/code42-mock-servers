@@ -1234,7 +1234,7 @@ paths:
     put:
       tags:
         - legal-hold
-      summary: Reactivate a matter
+      summary: Deactivate a matter
       operationId: LegalHoldMatterDeactivation_Put
       responses:
         200:

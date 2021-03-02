@@ -1223,6 +1223,26 @@ paths:
                         type: string
                       description:
                         type: string
+  /api/LegalHoldDeactivation/{legalHoldUid}:
+    parameters:
+    - name: legalHoldUid
+      in: path
+      description: A unique legal hold matter identifier.
+      required: true
+      schema:
+        type: string
+    put:
+      tags:
+        - legal-hold
+      summary: Deactivate a matter
+      operationId: LegalHoldMatterDeactivation_Put
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
   /api/LegalHoldReactivation/{legalHoldUid}:
     parameters:
     - name: legalHoldUid
@@ -1243,6 +1263,13 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      membershipsChanged:
+                        type: boolean
+                        example: true
 
 # MODELS
 

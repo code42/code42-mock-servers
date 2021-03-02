@@ -413,7 +413,7 @@ paths:
             '*/*':
               schema:
                 type: string
-                example: http://127.0.0.1:4201
+                example: http://alerts:4201
   /v1/FedObserver-API_URL:
     get:
       tags:
@@ -427,7 +427,7 @@ paths:
             '*/*':
               schema:
                type: string
-               example: http://127.0.0.1:4202
+               example: http://alert-rules:4202
   /v1/employeecasemanagementV2-API_URL:
     get:
       tags:
@@ -441,7 +441,7 @@ paths:
             '*/*':
               schema:
                type: string
-               example: http://127.0.0.1:4203/svc/api/
+               example: http://detection-lists:4203/svc/api/
   /v1/CASES_API-URL:
     get:
       tags:
@@ -454,8 +454,8 @@ paths:
           content:
             '*/*':
               schema:
-               type: string
-               example: http://127.0.0.1:4204
+                type: string
+                example: http://cases:4204
   /api/connectedServerUrl:
     get:
       tags:
@@ -472,7 +472,7 @@ paths:
                 properties:
                   serverUrl:
                     type: string
-                    example: http://127.0.0.1:4206
+                    example: http://connected-server:4206
   /v1/AUDIT-LOG_API-URL:
     get:
       tags:
@@ -486,7 +486,7 @@ paths:
             '*/*':
               schema:
                type: string
-               example: http://127.0.0.1:4207
+               example: http://audit-log:4207
   /v1/FORENSIC_SEARCH-API_URL:
     get:
       tags:
@@ -500,7 +500,7 @@ paths:
             '*/*':
               schema:
                type: string
-               example: http://127.0.0.1:4208
+               example: http://file-events:4208
   /v1/PRESERVATION-DATA-SERVICE_API-URL:
     get:
       tags:
@@ -514,7 +514,7 @@ paths:
             '*/*':
               schema:
                type: string
-               example: http://127.0.0.1:4209
+               example: http://preservation-data-service:4209
   # DEVICES
 
   /api/v14/agent-state/view-by-device-guid:
@@ -1451,7 +1451,7 @@ components:
               type: string
             serverUrl:
               type: string
-              example: http://127.0.0.1:4205
+              example: http://storage:4205
     FileDownloadTokenResponse_core:
       type: object
       properties:
@@ -1516,7 +1516,7 @@ components:
           type: boolean
         stsBaseUrl:
           type: string
-          example: "http://127.0.0.1:4200"
+          example: "http://core:4200"
     OrgResponse_core:
       type: object
       properties:

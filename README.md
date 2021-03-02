@@ -96,7 +96,7 @@ It is not necessary to do this for every response property. Here are reasons you
 
 * Prism complains about the type returned.  If ths happens, setting the example will control the output so Prism can't generate faulty
   examples by mistake.
-* You are expecting a specific response value in a test.  This is how the Key-Value mock endpoints work: they return localhost with
+* You are expecting a specific response value in a test.  This is how the Key-Value mock endpoints work: they return the container host with
   different ports (see section below).
 * You want to constrain the response value. Prism likes to use negative integers when the type is an integer, but you might not want that,
   especially for IDs like the `userId`.
@@ -122,7 +122,7 @@ Example:
             '*/*':
               schema:
                type: string
-               example: http://127.0.0.1:4220
+               example: http://service-name:4220
 ```
 
 Then, in the `docker-compose.yml` file, add another entry using your service's mock `.yml` file and an incremented port (the same one you used in
@@ -163,7 +163,7 @@ First, add a healthcheck endpoint to your OpenAPI yml file:
 Then, in `docker-compose.yml`, add a `healthcheck` configuration section to your service definition. Be sure to modify the port to match the port exposed by your mock microservice container.
 ```yml
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4200 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://service:4200 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3

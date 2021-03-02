@@ -1,4 +1,4 @@
-version: '3'
+version: '2.4'
 services:
 
   core:
@@ -12,10 +12,12 @@ services:
       - "4200:4200"
     command: mock docs/core.yml -p 4200 -h 0.0.0.0
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4200 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://core:4200 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
   alerts:
     image: c42/mock-microservice-endpoints:1.0
@@ -28,12 +30,14 @@ services:
       - "4201:4201"
     command: mock docs/alerts.yml -p 4201 -h 0.0.0.0
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4201 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://alerts:4201 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
-  alert_rules:
+  alert-rules:
     image: c42/mock-microservice-endpoints:1.0
     build:
       context: .
@@ -44,12 +48,14 @@ services:
       - "4202:4202"
     command: mock docs/alert-rules.yml -p 4202 -h 0.0.0.0
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4202 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://alert-rules:4202 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
-  detection_lists:
+  detection-lists:
     image: c42/mock-microservice-endpoints:1.0
     build:
       context: .
@@ -60,10 +66,12 @@ services:
       - "4203:4203"
     command: mock docs/detection-lists.yml -p 4203 -h 0.0.0.0
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4203 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://detection-lists:4203 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
   cases:
     image: c42/mock-microservice-endpoints:1.0
@@ -76,10 +84,12 @@ services:
       - "4204:4204"
     command: mock docs/cases.yml -p 4204 -h 0.0.0.0
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4204 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://cases:4204 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
   storage:
     image: c42/mock-microservice-endpoints:1.0
@@ -92,12 +102,14 @@ services:
       - "4205:4205"
     command: mock docs/storage.yml -p 4205 -h 0.0.0.0
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4205 || exit 1"] 
+      test: ["CMD-SHELL", "curl -f http://storage:4205 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
-  connected_server:
+  connected-server:
     image: c42/mock-microservice-endpoints:1.0
     build:
       context: .
@@ -108,28 +120,32 @@ services:
       - "4206:4206"
     command: mock docs/connected-server.yml -p 4206 -h 0.0.0.0
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4206 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://connected-server:4206 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
-  
-  audit_logs:
+    networks:
+      - api-integration-test-network
+
+  audit-log:
     image: c42/mock-microservice-endpoints:1.0
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: mock_audit_logs
+    container_name: mock_audit_log
     restart: always
     ports:
       - "4207:4207"
-    command: mock docs/audit-logs.yml -p 4207 -h 0.0.0.0
+    command: mock docs/audit-log.yml -p 4207 -h 0.0.0.0
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4207 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://audit-log:4207 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
-  file_events:
+  file-events:
     image: c42/mock-microservice-endpoints:1.0
     build:
       context: .
@@ -140,12 +156,14 @@ services:
       - "4208:4208"
     command: mock docs/file-events.yml -p 4208 -h 0.0.0.0
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4208 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://file-events:4208 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
-  preservation_data_service:
+  preservation-data-service:
     image: c42/mock-microservice-endpoints:1.0
     build:
       context: .
@@ -156,10 +174,12 @@ services:
       - "4209:4209"
     command: mock docs/preservation-data-service.yml -p 4209 -h 0.0.0.0
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:4209 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://preservation-data-service:4209 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - api-integration-test-network
 
   health_checker:
     image: c42/mock-microservice-endpoints:1.0
@@ -170,19 +190,22 @@ services:
         condition: service_healthy
       alerts:
         condition: service_healthy
-      alert_rules:
+      alert-rules:
         condition: service_healthy
-      detection_lists:
+      detection-lists:
         condition: service_healthy
       cases:
         condition: service_healthy
       storage:
         condition: service_healthy
-      connected_server:
+      connected-server:
         condition: service_healthy
-      audit_logs:
+      audit-log:
         condition: service_healthy
-      file_events:
+      file-events:
         condition: service_healthy
-      preservation_data_service:
+      preservation-data-service:
         condition: service_healthy
+
+networks:
+  api-integration-test-network:

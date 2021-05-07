@@ -220,7 +220,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/v4/role/view:
+  /api/role:
     get:
       tags:
       - users

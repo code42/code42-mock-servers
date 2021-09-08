@@ -863,6 +863,7 @@ components:
           example: 3
         value:
           type: string
+          nullable: true
           description: The value of the term for this group.
           example: readme.md
     GroupingRequest:

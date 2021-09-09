@@ -676,7 +676,9 @@ components:
           description: The external IP address of the user's device.
           example: 127.0.0.1
         remoteActivity:
-          type: string
+          type:
+            - string
+            - boolean
           description: For endpoint events, compares the IP address of the file event
             to your defined list of addresses in the Data Preferences section of the
             Code42 console. If the IP address from the file event does not match,
@@ -863,7 +865,6 @@ components:
           example: 3
         value:
           type: string
-          nullable: true
           description: The value of the term for this group.
           example: readme.md
     GroupingRequest:
@@ -1096,6 +1097,7 @@ components:
           - destinationName
         value:
           type: string
+          nullable: true
           description: The input for the search.
           example: ari@example.com
     SearchRequest:

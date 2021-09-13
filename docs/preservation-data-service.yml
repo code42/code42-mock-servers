@@ -52,6 +52,54 @@ paths:
                   totalVersions: 
                     type: integer
                     format: int32
+  /api/v2/file-version-listing:
+    get:
+      tags:
+      - file-version-listing-controller-v-2
+      summary: Retrieve the list of versions. The path or encodedPath is required
+        in addition to the deviceGuid
+      operationId: fileVersionListingUsingGET_1
+      parameters:
+      - name: deviceUid
+        in: query
+        description: deviceUid
+        required: true
+        schema:
+          type: string
+      - name: encodedFilePath
+        in: query
+        description: The filePath or encodedFilePath must be present
+        schema:
+          type: string
+      - name: fileMD5
+        in: query
+        description: fileMD5
+        schema:
+          type: string
+      - name: fileModTime
+        in: query
+        description: fileModTime
+        schema:
+          type: integer
+          format: int64
+      - name: filePath
+        in: query
+        description: The filePath or encodedFilePath must be present
+        schema:
+          type: string
+      - name: fileSHA256
+        in: query
+        description: fileSHA256
+        schema:
+          type: string
+      responses:
+        200:
+          description: A successful request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileVersionListingResultV2'
+
   /api/v1/FileLocations:
     get:
       tags:
@@ -70,7 +118,6 @@ paths:
             application/json:
               schema:
                 type: object
-                properties:
                 definitions: 
                   locations: 
                     type: array
@@ -83,4 +130,108 @@ paths:
                           type: string
                         fileName: 
                           type: string
-
+components:
+  schemas:
+    FileVersionListingResultV2:
+      title: FileVersionListingResultV2
+      required:
+      - preservationVersions
+      - securityEventVersionsAtPath
+      - securityEventVersionsMatchingChecksum
+      - totalVersions
+      type: object
+      properties:
+        preservationVersions:
+          type: array
+          items:
+            $ref: '#/components/schemas/VersionResult'
+        securityEventVersionsAtPath:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecurityVersionResult'
+        securityEventVersionsMatchingChecksum:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecurityVersionResult'
+        totalVersions:
+          type: integer
+          format: int64
+    SecurityVersionResult:
+      title: SecurityVersionResult
+      required:
+      - deviceUid
+      - edsUrl
+      - eventId
+      - fileMD5
+      - fileModificationTime
+      - filePath
+      - fileSHA256
+      - fileSize
+      - versionTimestamp
+      type: object
+      properties:
+        deviceUid:
+          type: string
+        edsUrl:
+          type: string
+          example: http://exfiltration-data-service:4210
+        eventId:
+          type: string
+        fileMD5:
+          type: string
+        fileModificationTime:
+          type: integer
+          format: int64
+        filePath:
+          type: string
+        fileSHA256:
+          type: string
+        fileSize:
+          type: integer
+          format: int64
+        versionTimestamp:
+          type: integer
+          format: int64
+    VersionResult:
+      title: VersionResult
+      required:
+      - archiveGuid
+      - deleted
+      - destinationGuid
+      - fileId
+      - fileModificationTime
+      - fileSize
+      - fileType
+      - storageNodeURL
+      - versionTimestamp
+      type: object
+      properties:
+        archiveGuid:
+          type: string
+        deleted:
+          type: boolean
+        destinationGuid:
+          type: string
+        fileId:
+          type: string
+        fileMD5:
+          type: string
+        fileModificationTime:
+          type: integer
+          format: int64
+        fileSHA256:
+          type: string
+        fileSize:
+          type: integer
+          format: int64
+        fileType:
+          type: string
+          enum:
+          - FILE
+          - DIRECTORY
+          - OTHER
+        storageNodeURL:
+          type: string
+        versionTimestamp:
+          type: integer
+          format: int64

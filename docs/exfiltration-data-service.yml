@@ -1,0 +1,114 @@
+openapi: 3.0.1
+info:
+  title: Api Documentation
+  description: Api Documentation
+  version: 1.0.0
+servers:
+- url: /
+tags:
+- name: Exfiltration Data Service
+paths:
+  /:
+    get:
+      summary: Check the health of the mock microservice container
+      responses:
+        200:
+          description: A successful response
+          content:
+            text/plain:
+              example: healthcheck-success
+  /api/v1/file-download-token:
+    get:
+      tags:
+      - file-download-token-controller-v-1
+      summary: Generate a token that can be redeemed to download a file
+      operationId: createTokenUsingGET
+      parameters:
+      - name: deviceUid
+        in: query
+        description: deviceUid
+        required: true
+        schema:
+          type: string
+      - name: eventId
+        in: query
+        description: eventId
+        required: true
+        schema:
+          type: string
+      - name: fileModTime
+        in: query
+        description: fileModTime
+        schema:
+          type: integer
+          format: int64
+      - name: filePath
+        in: query
+        description: filePath
+        required: true
+        schema:
+          type: string
+      - name: sizeFromEvent
+        in: query
+        description: sizeFromEvent
+        schema:
+          type: integer
+          format: int64
+      - name: timeFromBrowser
+        in: query
+        description: timeFromBrowser
+        schema:
+          type: string
+      - name: trigger
+        in: query
+        description: trigger
+        schema:
+          type: string
+      - name: userUidFromEvent
+        in: query
+        description: userUidFromEvent
+        schema:
+          type: string
+      - name: versionTimestamp
+        in: query
+        description: versionTimestamp
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/v1/get-file:
+    get:
+      tags:
+      - get-file-controller-v-1
+      summary: getFile
+      operationId: getFileUsingGET
+      parameters:
+      - name: encodedFileName
+        in: query
+        description: encodedFileName
+        schema:
+          type: string
+      - name: fileName
+        in: query
+        description: fileName
+        schema:
+          type: string
+      - name: token
+        in: query
+        description: token
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            text/plain:
+              example: '123'

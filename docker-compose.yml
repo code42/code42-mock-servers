@@ -181,6 +181,24 @@ services:
     networks:
       - api-integration-test-network
 
+  exfiltration-data-service:
+    image: c42/mock-microservice-endpoints:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mock_exfiltration_data_service
+    restart: always
+    ports:
+      - "4210:4210"
+    command: mock docs/exfiltration-data-service.yml -p 4210 -h 0.0.0.0
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://exfiltration-data-service:4210 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - api-integration-test-network
+
   health_checker:
     image: c42/mock-microservice-endpoints:1.0
     entrypoint: ["echo", "All mock server containers are responding to requests!"]
@@ -205,6 +223,8 @@ services:
       file-events:
         condition: service_healthy
       preservation-data-service:
+        condition: service_healthy
+      exfiltration-data-service:
         condition: service_healthy
 
 networks:

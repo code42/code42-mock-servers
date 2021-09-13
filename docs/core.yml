@@ -515,6 +515,7 @@ paths:
               schema:
                type: string
                example: http://preservation-data-service:4209
+
   # DEVICES
 
   /api/v14/agent-state/view-by-device-guid:

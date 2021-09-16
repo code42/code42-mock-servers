@@ -1,0 +1,183 @@
+openapi: 3.0.1
+info:
+  description: Api Documentation
+  title: Api Documentation
+  version: 1.0.0
+servers:
+- url: /
+tags:
+  - name: Trusted Activities
+    description: A collection of data for managing trusted activities.
+
+paths:
+  /:
+    get:
+      summary: Check the health of the mock microservice container
+      responses:
+        200:
+          description: A successful response
+          content:
+            text/plain:
+              example: healthcheck-success
+  /api/v1/trusted-activities:
+    get:
+      tags:
+        - trust-resource-controller
+      summary: Get all trusted activities for my tenant
+      operationId: getTrustResourcesUsingGET
+      parameters:
+        - name: type
+          in: query
+          description: type
+          required: false
+          type: string
+        # will need to add paging params
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/TrustedResourcesListResponse'
+      deprecated: false
+    post:
+      tags:
+        - trust-resource-controller
+      summary: Sets a single trusted activity based on the resource value provided
+      operationId: createTrustResourceUsingPOST
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/TrustResourceRequest'
+      responses:
+        200:
+          description: On Success
+          schema:
+            $ref: '#/definitions/TrustedResourceResponse'
+      deprecated: false
+  /api/v1/trusted-activities/{id}:
+    get:
+      tags:
+        - trust-resource-controller
+      summary: Gets a single trusted activity based on the resource value provided
+      operationId: getTrustResourceUsingGET
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: On Success
+          schema:
+            $ref: '#/definitions/TrustedResourceResponse'
+      deprecated: false
+    put:
+      tags:
+        - trust-resource-controller
+      summary: Modify a trusted activity
+      operationId: editTrustResourceUsingPUT
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int32
+        - in: body
+          name: request
+          description: request
+          required: true
+          schema:
+            $ref: '#/definitions/TrustResourceRequest'
+      responses:
+        200:
+          description: On Success
+          schema:
+            $ref: '#/definitions/TrustedResourceResponse'
+      deprecated: false
+    delete:
+      tags:
+        - trust-resource-controller
+      summary: Delete a trusted activity
+      operationId: deleteTrustResourceUsingDELETE
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        204:
+          description: On Success
+          schema:
+            type: object
+      deprecated: false
+definitions:
+  TrustResourceRequest:
+    type: object
+    required:
+      - type
+      - value
+    properties:
+      type:
+        type: string
+        example: DOMAIN
+      value:
+        type: string
+        example: test-domain.com
+      description:
+        type: string
+        nullable: true
+    title: TrustResourceRequest
+  TrustedResourceResponse:
+    type: object
+    properties:
+      description:
+        type: string
+        description: The description of the trusted resource.
+        nullable: true
+      resourceId:
+        type: string
+        description: The identifier of the resource.
+        example: "123"
+      type:
+        type: string
+        description: 'The type of the trusted resource. eg: SLACK, DOMAIN, IP_ADDRESS.'
+        example: DOMAIN
+      updatedAt:
+        type: string
+        format: date-time
+        description: The time at which the resource was last updated at.
+        example: 2020-12-23T14:24:44.593Z
+      updatedByUserUid:
+        type: string
+        description: The unique identifier of the user that last updated the resource.
+        example: 123UserUid123
+      updatedByUsername:
+        type: string
+        description: The username of the user that last updated the resource.
+        example: username
+      value:
+        type: string
+        description: The value of the trusted resource.
+        example: test-domain.com
+    title: TrustedResourceResponse
+  TrustedResourcesListResponse:
+    type: object
+    properties:
+      trustResources:
+        type: array
+        description: The trusted activities
+        items:
+          $ref: '#/definitions/TrustedResourceResponse'
+    title: TrustedResourcesListResponse

@@ -199,6 +199,25 @@ services:
     networks:
       - api-integration-test-network
 
+  trusted-activities:
+    image: c42/mock-microservice-endpoints:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mock_trusted_activities
+    restart: always
+    ports:
+      - "4211:4211"
+    command: mock docs/trusted-activities.yml -p 4211 -h 0.0.0.0
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://trusted-activities:4211 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - api-integration-test-network
+
+
   health_checker:
     image: c42/mock-microservice-endpoints:1.0
     entrypoint: ["echo", "All mock server containers are responding to requests!"]
@@ -225,6 +244,8 @@ services:
       preservation-data-service:
         condition: service_healthy
       exfiltration-data-service:
+        condition: service_healthy
+      trusted-activities:
         condition: service_healthy
 
 networks:

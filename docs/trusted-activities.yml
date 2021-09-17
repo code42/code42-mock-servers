@@ -35,8 +35,10 @@ paths:
       responses:
         200:
           description: OK
-          schema:
-            $ref: '#/definitions/TrustedResourcesListResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/TrustedResourcesListResponse'
       deprecated: false
     post:
       tags:
@@ -55,8 +57,10 @@ paths:
       responses:
         200:
           description: On Success
-          schema:
-            $ref: '#/definitions/TrustedResourceResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/TrustedResourceResponse'
       deprecated: false
   /api/v1/trusted-activities/{id}:
     get:
@@ -75,8 +79,10 @@ paths:
       responses:
         200:
           description: On Success
-          schema:
-            $ref: '#/definitions/TrustedResourceResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/TrustedResourceResponse'
       deprecated: false
     put:
       tags:
@@ -101,8 +107,10 @@ paths:
       responses:
         200:
           description: On Success
-          schema:
-            $ref: '#/definitions/TrustedResourceResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/TrustedResourceResponse'
       deprecated: false
     delete:
       tags:
@@ -119,8 +127,10 @@ paths:
       responses:
         204:
           description: On Success
-          schema:
-            type: object
+          content:
+            application/json:
+              schema:
+                type: object
       deprecated: false
 definitions:
   TrustResourceRequest:

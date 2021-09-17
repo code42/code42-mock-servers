@@ -515,6 +515,20 @@ paths:
               schema:
                type: string
                example: http://preservation-data-service:4209
+  /v1/TRUSTED-DOMAINS_API-URL:
+    get:
+      tags:
+      - keyvaluestore
+      summary: Get the trusted activities URL
+      operationId: TrustedActivitiesUrl_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            '*/*':
+              schema:
+                type: string
+                example: http://trusted-activities-service:4211
 
   # DEVICES
 

@@ -158,7 +158,7 @@ paths:
                         type: string
                       country:
                         type: string
-  /api/UserRole/{userId}:
+  /api/v1/UserRole/{userId}:
     get:
       tags:
       - users
@@ -178,7 +178,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserRolesResponse_core'
-  /api/UserRole:
+  /api/v1/UserRole:
     post:
       tags:
       - users
@@ -220,7 +220,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/role:
+  /api/v1/role:
     get:
       tags:
       - users
@@ -233,7 +233,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserRolesResponse_core'
-  /api/UserMoveProcess:
+  /api/v1/UserMoveProcess:
     post:
       tags:
       - users
@@ -246,7 +246,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/UserBlock/{userId}:
+  /api/v1/UserBlock/{userId}:
     parameters:
     - name: userId
       in: path
@@ -278,7 +278,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/UserDeactivation/{userId}:
+  /api/v1/UserDeactivation/{userId}:
     parameters:
     - name: userId
       in: path
@@ -313,7 +313,7 @@ paths:
 
   # CUSTOMER
 
-  /api/AlertLog:
+  /api/v1/AlertLog:
     get:
       tags:
       - customer
@@ -326,7 +326,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/Diagnostic:
+  /api/v1/Diagnostic:
     get:
       tags:
       - customer
@@ -355,7 +355,7 @@ paths:
 
   # FILE DOWNLOAD
 
-  /c42api/v3/FileDownloadToken:
+  /api/v3/FileDownloadToken:
     get:
       tags:
       - filedownload
@@ -369,7 +369,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/FileDownloadTokenResponse_core'
 
-  /c42api/v3/GetFile:
+  /api/v3/GetFile:
     get:
       tags:
       - filedownload
@@ -384,7 +384,7 @@ paths:
 
   # SERVER ENVIRONMENT
 
-  /api/ServerEnv:
+  /api/v1/ServerEnv:
     get:
       tags:
       - serverenv
@@ -456,7 +456,7 @@ paths:
               schema:
                 type: string
                 example: http://cases:4204
-  /api/connectedServerUrl:
+  /api/v1/connectedServerUrl:
     get:
       tags:
       - keyvaluestore
@@ -605,7 +605,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/ComputerBlock/{deviceId}:
+  /api/v1/ComputerBlock/{deviceId}:
     parameters:
     - name: deviceId
       in: path
@@ -663,7 +663,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/ComputerDeauthorization/{deviceId}:
+  /api/v1/ComputerDeauthorization/{deviceId}:
     parameters:
     - name: deviceId
       in: path
@@ -686,7 +686,7 @@ paths:
 
   # ARCHIVE
 
-  /api/Archive:
+  /api/v1/Archive:
     get:
       tags:
       - archive
@@ -699,7 +699,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ArchiveListResponse_core'
-  /api/Archive/{archiveGuid}:
+  /api/v1/Archive/{archiveGuid}:
     parameters:
     - name: archiveGuid
       in: path
@@ -719,7 +719,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ArchiveResponse_core'
-  /c42api/v3/BackupSets/{deviceGuid}/{destGuid}:
+  /api/v3/BackupSets/{deviceGuid}/{destGuid}:
     parameters:
     - name: deviceGuid
       in: path
@@ -745,7 +745,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BackupSetsResponse_core'
-  /api/RestoreHistory:
+  /api/v1/RestoreHistory:
     get:
       tags:
       - archive
@@ -758,7 +758,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RestoreHistoryResponse_core'
-  /api/coldStorage/{archiveGuid}:
+  /api/v1/coldStorage/{archiveGuid}:
     parameters:
     - name: archiveGuid
       in: path
@@ -778,7 +778,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/ColdStorage:
+  /api/v1/ColdStorage:
     get:
       tags:
       - archive
@@ -791,7 +791,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ColdStorageResponse_core'
-  /api/LoginToken:
+  /api/v1/LoginToken:
     post:
       tags:
       - archive
@@ -804,7 +804,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StorageAuthTokenResponse_core'
-  /api/StorageAuthToken:
+  /api/v1/StorageAuthToken:
     post:
       tags:
         - archive
@@ -824,7 +824,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/StorageAuthTokenResponse_core'
 
-  /api/DataKeyToken:
+  /api/v1/DataKeyToken:
     post:
       tags:
       - archive
@@ -844,7 +844,7 @@ paths:
                       dataKeyToken:
                         type: string
                         example: 123TestDataKeyToken123
-  /api/WebRestoreInfo:
+  /api/v1/WebRestoreInfo:
     get:
       tags:
       - archive
@@ -864,7 +864,7 @@ paths:
                       nodeGuid:
                         type: string
                         example: '123NodeGuid123'
-  /c42api/v3/SecurityEventsLocation:
+  /api/v3/SecurityEventsLocation:
     get:
       tags:
       - archive
@@ -885,7 +885,7 @@ paths:
 
   # ORGS
 
-  /api/Org/{orgId}:
+  /api/v1/Org/{orgId}:
     get:
       tags:
       - orgs
@@ -905,7 +905,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrgResponse_core'
-  /api/Org/:
+  /api/v1/Org/:
     post:
       tags:
       - orgs
@@ -918,7 +918,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrgResponse_core'
-  /api/Org:
+  /api/v1/Org:
     get:
       tags:
       - orgs
@@ -943,7 +943,7 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/OrgResponse_core'
-  /api/OrgBlock/{orgId}:
+  /api/v1/OrgBlock/{orgId}:
     put:
       tags:
         - orgs
@@ -982,7 +982,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/OrgDeactivation/{orgId}:
+  /api/v1/OrgDeactivation/{orgId}:
     put:
       tags:
         - orgs
@@ -1204,7 +1204,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/LegalHoldCustodianResponse_core'
-  /api/LegalHoldMembershipDeactivation:
+  /api/v1/LegalHoldMembershipDeactivation:
     post:
       tags:
         - legal-hold

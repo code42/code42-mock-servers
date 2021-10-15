@@ -21,7 +21,7 @@ paths:
 
   # AUTH
 
-  /c42api/v3/auth/jwt:
+  /api/v3/auth/jwt:
     get:
       tags:
       - Auth
@@ -45,7 +45,7 @@ paths:
 
   # USER
 
-  /api/User/{userId}:
+  /api/v1/User/{userId}:
     get:
       tags:
       - Users
@@ -75,7 +75,7 @@ paths:
                         type: object
                   data:
                     $ref: '#/components/schemas/UserResponse_core'
-  /api/User:
+  /api/v1/User:
     get:
       tags:
       - users
@@ -339,7 +339,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /c42api/v3/customer/my:
+  /api/v3/customer/my:
     get:
       tags:
       - customer
@@ -545,7 +545,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AgentStateResponse_core'
-  /api/Computer:
+  /api/v1/Computer:
     get:
       tags:
       - devices
@@ -573,7 +573,7 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/DeviceResponse_core'
-  /api/Computer/{deviceGuid}:
+  /api/v1/Computer/{deviceGuid}:
     parameters:
     - name: deviceGuid
       in: path
@@ -1076,7 +1076,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LegalHoldPolicyResponse_core'
-  /api/LegalHold:
+  /api/v1/LegalHold:
     post:
       tags:
         - legal-hold
@@ -1146,7 +1146,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/LegalHoldPolicyResponse_core'
-  /api/LegalHold/{legalHoldUid}:
+  /api/v1/LegalHold/{legalHoldUid}:
     parameters:
     - name: legalHoldUid
       in: path
@@ -1169,7 +1169,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/LegalHoldMatterResponse_core'
-  /api/LegalHoldMembership:
+  /api/v1/LegalHoldMembership:
     get:
       tags:
         - legal-hold
@@ -1238,7 +1238,7 @@ paths:
                         type: string
                       description:
                         type: string
-  /api/LegalHoldDeactivation/{legalHoldUid}:
+  /api/v1/LegalHoldDeactivation/{legalHoldUid}:
     parameters:
     - name: legalHoldUid
       in: path
@@ -1258,7 +1258,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /api/LegalHoldReactivation/{legalHoldUid}:
+  /api/v1/LegalHoldReactivation/{legalHoldUid}:
     parameters:
     - name: legalHoldUid
       in: path

@@ -313,19 +313,6 @@ paths:
 
   # CUSTOMER
 
-  /api/v1/AlertLog:
-    get:
-      tags:
-      - customer
-      summary: Get server alert log data
-      operationId: AlertLog_Get
-      responses:
-        200:
-          description: A successful response
-          content:
-            application/json:
-              schema:
-                type: object
   /api/v1/Diagnostic:
     get:
       tags:

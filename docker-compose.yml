@@ -13,8 +13,8 @@ services:
     command: mock docs/core.yml -p 4200 -h 0.0.0.0
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://core:4200 || exit 1"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 15s
       retries: 3
     networks:
       - api-integration-test-network
@@ -31,8 +31,8 @@ services:
     command: mock docs/alerts.yml -p 4201 -h 0.0.0.0
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://alerts:4201 || exit 1"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 15s
       retries: 3
     networks:
       - api-integration-test-network
@@ -49,8 +49,8 @@ services:
     command: mock docs/alert-rules.yml -p 4202 -h 0.0.0.0
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://alert-rules:4202 || exit 1"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 15s
       retries: 3
     networks:
       - api-integration-test-network
@@ -67,8 +67,8 @@ services:
     command: mock docs/detection-lists.yml -p 4203 -h 0.0.0.0
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://detection-lists:4203 || exit 1"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 15s
       retries: 3
     networks:
       - api-integration-test-network
@@ -85,8 +85,8 @@ services:
     command: mock docs/cases.yml -p 4204 -h 0.0.0.0
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://cases:4204 || exit 1"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 15s
       retries: 3
     networks:
       - api-integration-test-network
@@ -103,8 +103,8 @@ services:
     command: mock docs/storage.yml -p 4205 -h 0.0.0.0
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://storage:4205 || exit 1"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 15s
       retries: 3
     networks:
       - api-integration-test-network
@@ -121,8 +121,8 @@ services:
     command: mock docs/connected-server.yml -p 4206 -h 0.0.0.0
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://connected-server:4206 || exit 1"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 15s
       retries: 3
     networks:
       - api-integration-test-network
@@ -139,8 +139,8 @@ services:
     command: mock docs/audit-log.yml -p 4207 -h 0.0.0.0
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://audit-log:4207 || exit 1"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 15s
       retries: 3
     networks:
       - api-integration-test-network
@@ -157,8 +157,8 @@ services:
     command: mock docs/file-events.yml -p 4208 -h 0.0.0.0
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://file-events:4208 || exit 1"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 15s
       retries: 3
     networks:
       - api-integration-test-network
@@ -175,8 +175,8 @@ services:
     command: mock docs/preservation-data-service.yml -p 4209 -h 0.0.0.0
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://preservation-data-service:4209 || exit 1"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 15s
       retries: 3
     networks:
       - api-integration-test-network
@@ -193,8 +193,8 @@ services:
     command: mock docs/exfiltration-data-service.yml -p 4210 -h 0.0.0.0
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://exfiltration-data-service:4210 || exit 1"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 15s
       retries: 3
     networks:
       - api-integration-test-network
@@ -211,8 +211,8 @@ services:
     command: mock docs/trusted-activities.yml -p 4211 -h 0.0.0.0
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://trusted-activities:4211 || exit 1"]
-      interval: 10s
-      timeout: 5s
+      interval: 30s
+      timeout: 15s
       retries: 3
     networks:
       - api-integration-test-network

@@ -1035,6 +1035,7 @@ components:
           - ILLEGAL_SORT
           - ILLEGAL_GROUP
     RiskIndicator-file-events:
+    title: RiskIndicator
     type: object
     properties:
       name:
@@ -1046,7 +1047,6 @@ components:
         format: int32
         example: 5
         description: Configured weight of the risk indicator at the time this event was seen.
-    title: RiskIndicator
     SearchFilter:
       title: SearchFilter
       required:

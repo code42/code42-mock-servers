@@ -194,6 +194,9 @@ components:
             - removableMediaMediaName
             - removableMediaVolumeName
             - removableMediaPartitionId
+            - riskIndicators
+            - riskScore
+            - riskSeverity
             - syncDestination
             - syncDestinationUsername
             - emailDlpPolicyNames
@@ -262,6 +265,9 @@ components:
           - removableMediaMediaName
           - removableMediaVolumeName
           - removableMediaPartitionId
+          - riskIndicators
+          - riskScore
+          - riskSeverity
           - syncDestination
           - syncDestinationUsername
           - emailDlpPolicyNames
@@ -740,6 +746,29 @@ components:
           - MY_FILES
           items:
             type: string
+        riskIndicators:
+          type: array
+          description: List of risk indicators identified for this event. If more than one risk indicator applies to this event, the sum of all indicators determines the total risk score.
+          items:
+            $ref: '#/components/schemas/RiskIndicator-file-events'
+          example:
+            - name: Browser upload
+              weight: 5
+        riskScore:
+          type: integer
+          format: int32
+          example: 12
+          description: Sum of the weights for each risk indicator. This score is used to determine the overall risk severity of the event.
+        riskSeverity:
+          type: string
+          example: CRITICAL
+          description: The general risk assessment of the event, based on the numeric score.
+          enum:
+            - CRITICAL
+            - HIGH
+            - LOW
+            - MODERATE
+            - NO_RISK_INDICATED
         sha256Checksum:
           type: string
           description: The SHA256 hash of the file contents.
@@ -1005,6 +1034,19 @@ components:
           - QUERY_TIMEOUT
           - ILLEGAL_SORT
           - ILLEGAL_GROUP
+    RiskIndicator-file-events:
+    type: object
+    properties:
+      name:
+        type: string
+        example: Browser upload
+        description: Name of the risk indicator.
+      weight:
+        type: integer
+        format: int32
+        example: 5
+        description: Configured weight of the risk indicator at the time this event was seen.
+    title: RiskIndicator
     SearchFilter:
       title: SearchFilter
       required:

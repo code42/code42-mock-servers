@@ -43,6 +43,43 @@ paths:
       security:
       - basicAuth: []
 
+    /api/v3/auth/jwt:
+      get:
+        tags:
+          - Auth
+        summary: Get an authentication token
+        operationId: V3AuthJwt_Get
+        parameters:
+          - name: useBody
+            in: query
+            description: To get a JWT token in the response.
+            schema:
+              type: string
+        responses:
+          200:
+            description: A successful response
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/JwtResponse_core'
+        security:
+          - basicAuth: [ ]
+  /api/v3/oauth/token:
+    post:
+      tags:
+        - Auth
+      summary: Get an authentication API client token
+      operationId: v3OauthToken_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiClientResponse_core'
+      security:
+        - basicAuth: [ ]
+
   # USER
 
   /api/v1/User/{userId}:
@@ -1273,6 +1310,197 @@ paths:
                         type: boolean
                         example: true
 
+# LEGAL HOLD API CLIENT
+
+  #create legal hold policy
+  /api/v27/legal-hold-policy/create:
+    post:
+      tags:
+        - legal-hold
+      summary: Create a policy
+      operationId: LegalHoldPolicy_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegalHoldPolicyResponse_core'
+  # create legal hold matter
+  /api/v27/legal-hold-matter/create:
+    post:
+      tags:
+        - legal-hold
+      summary: Create a matter
+      operationId: LegalHoldMatter_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LegalHoldMatterResponse_core'
+  # get legal hold policy by uid
+  /api/v27/legal-hold-policy/view:
+    get:
+      tags:
+        - legal-hold
+      summary: Get a policy
+      operationId: LegalHoldPolicy_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LegalHoldPolicyResponse_core'
+  # get a legal hold matter by uid
+  /api/v27/legal-hold-matter/view:
+    get:
+      tags:
+        - legal-hold
+      summary: Get a matter
+      operationId: LegalHoldMatter_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LegalHoldMatterResponse_core'
+  # get all legal hold matter custodians
+  /api/v27/legal-hold-membership/list:
+    get:
+      tags:
+        - legal-hold
+      summary: Get a page of custodians
+      operationId: LegalHoldCustodianList_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    properties:
+                      legalHoldMemberships:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/LegalHoldCustodianResponse_core'
+  # add a custodian to a matter (create a legal hold membership)
+  /api/v27/legal-hold-membership/create:
+    post:
+      tags:
+        - legal-hold
+      summary: Add a custodian to a matter
+      operationId: LegalHoldCustodian_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LegalHoldCustodianResponse_core'
+  # remove a custodian from a matter
+  /api/v27/legal-hold-membership/deactivate:
+    post:
+      tags:
+        - legal-hold
+      summary: Get a matter
+      operationId: LegalHoldMembershipDeactivate_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LegalHoldCustodianResponse_core'
+  # get list of legal hold policies
+  /api/v27/legal-hold-policy/list:
+    get:
+      tags:
+        - legal-hold
+      summary: Get a matter
+      operationId: LegalHoldPolicyList_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LegalHoldPolicyResponse_core'
+  # get all legal hold matters
+  /api/v27/legal-hold-matter/list:
+    get:
+      tags:
+        - legal-hold
+      summary: Get a matter
+      operationId: LegalHoldMatterList_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LegalHoldMatterResponse_core'
+  # deactivate a matter
+  /api/v27/legal-hold-matter/deactivate:
+    post:
+      tags:
+        - legal-hold
+      summary: Get a matter
+      operationId: LegalHoldMatterDeactivate_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LegalHoldMatterResponse_core'
+  # reactivate a matter
+  /api/v27/legal-hold-matter/activate:
+    post:
+      tags:
+        - legal-hold
+      summary: Get a matter
+      operationId: LegalHoldMatterReactivate_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/LegalHoldMatterResponse_core'
+
 # MODELS
 
 components:
@@ -1292,6 +1520,27 @@ components:
         warnings:
           type: string
           format: nullable
+    ApiClientResponse_core:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            access_token:
+              type: string
+              example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6IjUyYmE4MDUwLTQ0MWYtNGY5MS05MTJiLTE2Mjg0Y2U3MmQzZSIsImlhdCI6MTYxNDAyNTA5OCwiZXhwIjoxNjE0MDI4Njk4fQ.O5oH8870M3ZXVB-1iyUg_tJ1Yke_b2RuwGYz2m_aYYk
+            token_type:
+              type: string
+              example: bearer
+            expires_in:
+              type: integer
+              example: 900
+      error:
+        type: string
+        format: nullable
+      warnings:
+        type: string
+        format: nullable
     UserResponse_core:
       type: object
       properties:

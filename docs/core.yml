@@ -510,7 +510,7 @@ paths:
             '*/*':
               schema:
                type: string
-               example: http://audit-log:4207
+               example: http://audit-log:4212
   /v1/FORENSIC_SEARCH-API_URL:
     get:
       tags:

@@ -135,10 +135,10 @@ services:
     container_name: mock_audit_log
     restart: always
     ports:
-      - "4207:4207"
-    command: mock docs/audit-log.yml -p 4207 -h 0.0.0.0
+      - "4212:4212"
+    command: mock docs/audit-log.yml -p 4212 -h 0.0.0.0
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://audit-log:4207 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://audit-log:4212 || exit 1"]
       interval: 30s
       timeout: 15s
       retries: 3

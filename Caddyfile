@@ -1,0 +1,61 @@
+http://localhost
+
+route /core/* {
+uri strip_prefix /core
+reverse_proxy core:4200
+}
+
+route /alerts/* {
+uri strip_prefix /alerts
+reverse_proxy alerts:4200
+}
+
+route /alert_rules/* {
+uri strip_prefix /alert_rules
+reverse_proxy alert_rules:4200
+}
+
+route /detection_lists/* {
+uri strip_prefix /detection_lists
+reverse_proxy detection_lists:4200
+}
+
+route /cases/* {
+uri strip_prefix /cases
+reverse_proxy cases:4200
+}
+
+route /storage/* {
+uri strip_prefix /storage
+reverse_proxy storage:4200
+}
+
+route /connected_server/* {
+uri strip_prefix /connected_server
+reverse_proxy connected_server:4200
+}
+
+route /audit_log/* {
+uri strip_prefix /audit_log
+reverse_proxy audit_log:4200
+}
+
+route /file_events/* {
+uri strip_prefix /file_events
+reverse_proxy file_events:4200
+}
+
+route /preservation_data_service/* {
+uri strip_prefix /preservation_data_service
+reverse_proxy preservation_data_service:4200
+}
+
+route /exfiltration_data_service/* {
+uri strip_prefix /exfiltration_data_service
+reverse_proxy exfiltration_data_service:4200
+}
+
+route /trusted_activities/* {
+uri strip_prefix /trusted_activities
+reverse_proxy trusted_activities:4200
+}

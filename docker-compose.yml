@@ -8,18 +8,30 @@ services:
     ports:
       - "4200:4200"
     depends_on:
-      - core
-      - alerts
-      - alert_rules
-      - detection_lists
-      - cases
-      - storage
-      - connected_server
-      - audit_log
-      - file_events
-      - preservation_data_service
-      - exfiltration_data_service
-      - trusted_activities
+      core:
+        condition: service_healthy
+      alerts:
+        condition: service_healthy
+      alert-rules:
+        condition: service_healthy
+      detection-lists:
+        condition: service_healthy
+      cases:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
+      connected-server:
+        condition: service_healthy
+      audit-log:
+        condition: service_healthy
+      file-events:
+        condition: service_healthy
+      preservation-data-service:
+        condition: service_healthy
+      exfiltration-data-service:
+        condition: service_healthy
+      trusted-activities:
+        condition: service_healthy
 
   core:
     image: c42/mock-microservice-endpoints:1.0
@@ -31,6 +43,7 @@ services:
     command: mock docs/core.yml -p 4200 -h 0.0.0.0
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://core:4200 || exit 1"]
+#      test: ["CMD-SHELL", "curl -f http://localhost:4200/core || exit 1"]
       interval: 30s
       timeout: 15s
       retries: 3
@@ -214,35 +227,35 @@ services:
       - api-integration-test-network
 
 
-  health_checker:
-    image: c42/mock-microservice-endpoints:1.0
-    entrypoint: ["echo", "All mock server containers are responding to requests!"]
-    container_name: "health_checker"
-    depends_on:
-      core:
-        condition: service_healthy
-      alerts:
-        condition: service_healthy
-      alert-rules:
-        condition: service_healthy
-      detection-lists:
-        condition: service_healthy
-      cases:
-        condition: service_healthy
-      storage:
-        condition: service_healthy
-      connected-server:
-        condition: service_healthy
-      audit-log:
-        condition: service_healthy
-      file-events:
-        condition: service_healthy
-      preservation-data-service:
-        condition: service_healthy
-      exfiltration-data-service:
-        condition: service_healthy
-      trusted-activities:
-        condition: service_healthy
+#  health_checker:
+#    image: c42/mock-microservice-endpoints:1.0
+#    entrypoint: ["echo", "All mock server containers are responding to requests!"]
+#    container_name: "health_checker"
+#    depends_on:
+#      core:
+#        condition: service_healthy
+#      alerts:
+#        condition: service_healthy
+#      alert-rules:
+#        condition: service_healthy
+#      detection-lists:
+#        condition: service_healthy
+#      cases:
+#        condition: service_healthy
+#      storage:
+#        condition: service_healthy
+#      connected-server:
+#        condition: service_healthy
+#      audit-log:
+#        condition: service_healthy
+#      file-events:
+#        condition: service_healthy
+#      preservation-data-service:
+#        condition: service_healthy
+#      exfiltration-data-service:
+#        condition: service_healthy
+#      trusted-activities:
+#        condition: service_healthy
 
 networks:
   api-integration-test-network:

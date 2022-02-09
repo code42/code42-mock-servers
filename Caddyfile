@@ -1,4 +1,4 @@
-http://localhost, http://core {
+http://127.0.0.1, http://localhost, http://core {
     route /* {
     reverse_proxy core:4200
     }
@@ -49,7 +49,7 @@ http://audit-log {
 
 http://file-events {
     route /* {
-    reverse_proxy file_events:4200
+    reverse_proxy file-events:4200
     }
 }
 

@@ -9,34 +9,29 @@ services:
       - "4200:80"
     depends_on:
       core:
-        condition: service_healthy
+        condition: service_started
       alerts:
-        condition: service_healthy
+        condition: service_started
       alert-rules:
-        condition: service_healthy
+        condition: service_started
       detection-lists:
-        condition: service_healthy
+        condition: service_started
       cases:
-        condition: service_healthy
+        condition: service_started
       storage:
-        condition: service_healthy
+        condition: service_started
       connected-server:
-        condition: service_healthy
+        condition: service_started
       audit-log:
-        condition: service_healthy
+        condition: service_started
       file-events:
-        condition: service_healthy
+        condition: service_started
       preservation-data-service:
-        condition: service_healthy
+        condition: service_started
       exfiltration-data-service:
-        condition: service_healthy
+        condition: service_started
       trusted-activities:
-        condition: service_healthy
-    healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost || exit 1" ]
-      interval: 30s
-      timeout: 15s
-      retries: 3
+        condition: service_started
 
   core:
     image: c42/mock-microservice-endpoints:1.0
@@ -46,11 +41,6 @@ services:
     container_name: mock_core
     restart: always
     command: mock docs/core.yml -p 4200 -h 0.0.0.0
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://core:4200 || exit 1"]
-      interval: 30s
-      timeout: 15s
-      retries: 3
 
   alerts:
     image: c42/mock-microservice-endpoints:1.0
@@ -60,11 +50,6 @@ services:
     container_name: mock_alerts
     restart: always
     command: mock docs/alerts.yml -p 4200 -h 0.0.0.0
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://alerts:4200 || exit 1"]
-      interval: 30s
-      timeout: 15s
-      retries: 3
 
   alert-rules:
     image: c42/mock-microservice-endpoints:1.0
@@ -74,11 +59,6 @@ services:
     container_name: mock_alert_rules
     restart: always
     command: mock docs/alert-rules.yml -p 4200 -h 0.0.0.0
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://alert-rules:4200 || exit 1"]
-      interval: 30s
-      timeout: 15s
-      retries: 3
 
   detection-lists:
     image: c42/mock-microservice-endpoints:1.0
@@ -88,11 +68,6 @@ services:
     container_name: mock_detection_lists
     restart: always
     command: mock docs/detection-lists.yml -p 4200 -h 0.0.0.0
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://detection-lists:4200 || exit 1"]
-      interval: 30s
-      timeout: 15s
-      retries: 3
 
   cases:
     image: c42/mock-microservice-endpoints:1.0
@@ -102,11 +77,6 @@ services:
     container_name: mock_cases
     restart: always
     command: mock docs/cases.yml -p 4200 -h 0.0.0.0
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://cases:4200 || exit 1"]
-      interval: 30s
-      timeout: 15s
-      retries: 3
 
   storage:
     image: c42/mock-microservice-endpoints:1.0
@@ -116,11 +86,6 @@ services:
     container_name: mock_storage
     restart: always
     command: mock docs/storage.yml -p 4200 -h 0.0.0.0
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://storage:4200 || exit 1"]
-      interval: 30s
-      timeout: 15s
-      retries: 3
 
   connected-server:
     image: c42/mock-microservice-endpoints:1.0
@@ -130,11 +95,6 @@ services:
     container_name: mock_connected_server
     restart: always
     command: mock docs/connected-server.yml -p 4200 -h 0.0.0.0
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://connected-server:4200 || exit 1"]
-      interval: 30s
-      timeout: 15s
-      retries: 3
 
   audit-log:
     image: c42/mock-microservice-endpoints:1.0
@@ -144,11 +104,6 @@ services:
     container_name: mock_audit_log
     restart: always
     command: mock docs/audit-log.yml -p 4200 -h 0.0.0.0
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://audit-log:4200 || exit 1"]
-      interval: 30s
-      timeout: 15s
-      retries: 3
 
   file-events:
     image: c42/mock-microservice-endpoints:1.0
@@ -158,11 +113,6 @@ services:
     container_name: mock_file_events
     restart: always
     command: mock docs/file-events.yml -p 4200 -h 0.0.0.0
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://file-events:4200 || exit 1"]
-      interval: 30s
-      timeout: 15s
-      retries: 3
 
   preservation-data-service:
     image: c42/mock-microservice-endpoints:1.0
@@ -172,11 +122,6 @@ services:
     container_name: mock_preservation_data_service
     restart: always
     command: mock docs/preservation-data-service.yml -p 4200 -h 0.0.0.0
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://preservation-data-service:4200 || exit 1"]
-      interval: 30s
-      timeout: 15s
-      retries: 3
 
   exfiltration-data-service:
     image: c42/mock-microservice-endpoints:1.0
@@ -186,11 +131,6 @@ services:
     container_name: mock_exfiltration_data_service
     restart: always
     command: mock docs/exfiltration-data-service.yml -p 4200 -h 0.0.0.0
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://exfiltration-data-service:4200 || exit 1"]
-      interval: 30s
-      timeout: 15s
-      retries: 3
 
   trusted-activities:
     image: c42/mock-microservice-endpoints:1.0
@@ -200,8 +140,3 @@ services:
     container_name: mock_trusted_activities
     restart: always
     command: mock docs/trusted-activities.yml -p 4200 -h 0.0.0.0
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://trusted-activities:4200 || exit 1"]
-      interval: 30s
-      timeout: 15s
-      retries: 3

@@ -205,11 +205,3 @@ services:
       interval: 30s
       timeout: 15s
       retries: 3
-
-  health_checker:
-    image: c42/mock-microservice-endpoints:1.0
-    entrypoint: ["echo", "Proxy container is responding to requests!"]
-    container_name: "health_checker"
-    depends_on:
-      proxy:
-        condition: service_healthy

@@ -174,7 +174,7 @@ components:
           type: string
         edsUrl:
           type: string
-          example: http://exfiltration-data-service:4210
+          example: http://exfiltration-data-service:4200
         eventId:
           type: string
         fileMD5:

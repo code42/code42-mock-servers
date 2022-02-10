@@ -437,7 +437,7 @@ paths:
             '*/*':
               schema:
                 type: string
-                example: http://alerts:4201
+                example: http://alerts:4200
   /v1/FedObserver-API_URL:
     get:
       tags:
@@ -451,7 +451,7 @@ paths:
             '*/*':
               schema:
                type: string
-               example: http://alert-rules:4202
+               example: http://alert-rules:4200
   /v1/employeecasemanagementV2-API_URL:
     get:
       tags:
@@ -465,7 +465,7 @@ paths:
             '*/*':
               schema:
                type: string
-               example: http://detection-lists:4203/svc/api/
+               example: http://detection-lists:4200/svc/api/
   /v1/CASES_API-URL:
     get:
       tags:
@@ -479,7 +479,7 @@ paths:
             '*/*':
               schema:
                 type: string
-                example: http://cases:4204
+                example: http://cases:4200
   /api/v1/connectedServerUrl:
     get:
       tags:
@@ -496,7 +496,7 @@ paths:
                 properties:
                   serverUrl:
                     type: string
-                    example: http://connected-server:4206
+                    example: http://connected-server:4200
   /v1/AUDIT-LOG_API-URL:
     get:
       tags:
@@ -510,7 +510,7 @@ paths:
             '*/*':
               schema:
                type: string
-               example: http://audit-log:4207
+               example: http://audit-log:4200
   /v1/FORENSIC_SEARCH-API_URL:
     get:
       tags:
@@ -524,7 +524,7 @@ paths:
             '*/*':
               schema:
                type: string
-               example: http://file-events:4208
+               example: http://file-events:4200
   /v1/PRESERVATION-DATA-SERVICE_API-URL:
     get:
       tags:
@@ -538,7 +538,7 @@ paths:
             '*/*':
               schema:
                type: string
-               example: http://preservation-data-service:4209
+               example: http://preservation-data-service:4200
   /v1/TRUSTED-DOMAINS_API-URL:
     get:
       tags:
@@ -552,7 +552,7 @@ paths:
             '*/*':
               schema:
                 type: string
-                example: http://trusted-activities-service:4211
+                example: http://trusted-activities-service:4200
 
   # DEVICES
 
@@ -1729,7 +1729,7 @@ components:
               type: string
             serverUrl:
               type: string
-              example: http://storage:4205
+              example: http://storage:4200
     FileDownloadTokenResponse_core:
       type: object
       properties:

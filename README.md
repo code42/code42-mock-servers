@@ -118,10 +118,10 @@ It is not necessary to do this for every response property. Here are reasons you
 * You want to constrain the response value. Prism likes to use negative integers when the type is an integer, but you might not want that,
   especially for IDs like the `userId`.
 
-## docker-compose and the Mock Key-Value Store
+## Caddyfile, docker-compose, and the Mock Key-Value Store
 
-Each microservice gets its own port that gets returned from the mock Key-Value Store found in `core.yml`. To add a new service, include
-the mocked endpoint for getting your microservice's URL.
+Each microservice gets its own hostname that gets returned from the mock Key-Value Store found in `core.yml`. To add a new service, include
+the mocked endpoint for getting your microservice's URL.  
 
 Example:
 
@@ -139,11 +139,10 @@ Example:
             '*/*':
               schema:
                type: string
-               example: http://service-name:4220
+               example: http://service-name:4200
 ```
 
-Then, in the `docker-compose.yml` file, add another entry using your service's mock `.yml` file and an incremented port (the same one you used in
-the mock key-value store endpoint).
+Then, in the `docker-compose.yml` file, add another entry using your service's mock `.yml` file.
 
 ```yml
   service:
@@ -153,12 +152,20 @@ the mock key-value store endpoint).
       dockerfile: Dockerfile
     container_name: mock_service
     restart: always
-    ports:
-      - "4220:4220"
-    command: mock docs/service.yml -p 4220 -h 0.0.0.0
+    command: mock docs/service.yml -p 4200 -h 0.0.0.0
 ```
 
-Notice the port number appears in three places in the `yml` for the docker-compose file.
+All mock services should use port `4200`.
+
+Then, in the `Caddyfile` (which defines the reverse proxy) add an entry to map your service's hostname to the appropriate container address. 
+
+```yml
+http://service {
+    route /* {
+    reverse_proxy service:4200
+    }
+}
+```
 
 ## Integration Tests and CI/CD
 
@@ -177,7 +184,7 @@ First, add a healthcheck endpoint to your OpenAPI yml file:
               example: healthcheck-success
 ```
 
-Then, in `docker-compose.yml`, add a `healthcheck` configuration section to your service definition. Be sure to modify the port to match the port exposed by your mock microservice container.
+Then, in `docker-compose.yml`, add a `healthcheck` configuration section to your service definition.
 ```yml
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://service:4200 || exit 1"]
@@ -186,7 +193,7 @@ Then, in `docker-compose.yml`, add a `healthcheck` configuration section to your
       retries: 3
 ```
 
-Finally, add a service dependency to the `health_checker` service at the bottom of `docker-compose.yml` so that the `docker-compose up` command will not return until your container is fully instantiated and responding to HTTP requests:
+Finally, add a service dependency to the `proxy` service container at the top of `docker-compose.yml` so that the `docker-compose up` command will not return until all containers are fully instantiated and responding to HTTP requests:
 ```yml
     depends_on:
       core:
@@ -217,4 +224,4 @@ Instead, to return an empty response in a way that Prism understands, do this:
 
 ## Optional Request Parameters
 
-If you don't explitly mark your required request parameters, Prism assumes they are all required.
+If you don't explicitly mark your required request parameters, Prism assumes they are all required.

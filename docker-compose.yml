@@ -9,34 +9,29 @@ services:
       - "4200:80"
     depends_on:
       core:
-        condition: service_healthy
+        condition: service_started
       alerts:
-        condition: service_healthy
+        condition: service_started
       alert-rules:
-        condition: service_healthy
+        condition: service_started
       detection-lists:
-        condition: service_healthy
+        condition: service_started
       cases:
-        condition: service_healthy
+        condition: service_started
       storage:
-        condition: service_healthy
+        condition: service_started
       connected-server:
-        condition: service_healthy
+        condition: service_started
       audit-log:
-        condition: service_healthy
+        condition: service_started
       file-events:
-        condition: service_healthy
+        condition: service_started
       preservation-data-service:
-        condition: service_healthy
+        condition: service_started
       exfiltration-data-service:
-        condition: service_healthy
+        condition: service_started
       trusted-activities:
-        condition: service_healthy
-    healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost || exit 1" ]
-      interval: 30s
-      timeout: 15s
-      retries: 3
+        condition: service_started
 
   core:
     image: c42/mock-microservice-endpoints:1.0

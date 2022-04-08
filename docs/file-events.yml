@@ -333,7 +333,7 @@ components:
             timestamp is based on the Code42 server system clock and reported in Coordinated
             Universal Time (UTC).
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         observer:
           type: string
           description: 'The data source that captured the file event. For example:
@@ -707,7 +707,7 @@ components:
             system in Coordinated Universal Time (UTC); available for Mac and Windows
             NTFS devices only.
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         directory:
           type: string
           description: The file location on the user's device; a forward or backslash
@@ -746,7 +746,7 @@ components:
             permissions, file owner, or other metadata are not reflected in this timestamp.  Date
             is reported in Coordinated Universal Time (UTC).
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         name:
           type: string
           description: The name of the file, including the file extension.
@@ -858,7 +858,7 @@ components:
             system in Coordinated Universal Time (UTC); available for Mac and Windows
             NTFS devices only.
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         destinationCategory:
           type: string
           description: 'General category of where the file was sent. For example:
@@ -940,7 +940,7 @@ components:
             an event; based on the device’s system clock and reported in Coordinated
             Universal Time (UTC).
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         eventType:
           type: string
           description: Indicates the type of file event observed.
@@ -1037,7 +1037,7 @@ components:
             timestamp is based on the Code42 server system clock and reported in Coordinated
             Universal Time (UTC).
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         md5Checksum:
           type: string
           description: The MD5 hash of the file contents.
@@ -1063,7 +1063,7 @@ components:
             permissions, file owner, or other metadata are not reflected in this timestamp.  Date
             is reported in Coordinated Universal Time (UTC).
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         operatingSystemUser:
           type: string
           description: The username logged in to the device when the file activity
@@ -1115,9 +1115,11 @@ components:
         publicIpAddress:
           type: string
           description: The external IP address of the user's device.
-          example: 127.0.0.1
+          example: '127.0.0.1'
         remoteActivity:
-          type: string
+          type: 
+            - string
+            - boolean
           description: For endpoint events, compares the IP address of the file event
             to your defined list of addresses in the Data Preferences section of the
             Code42 console. If the IP address from the file event does not match,
@@ -1244,7 +1246,9 @@ components:
           description: The SHA256 hash of the file contents.
           example: ded96d69c63754472efc4aa86fed68d4e17784b38089851cfa84e699e48b4155
         shared:
-          type: string
+          type: 
+            - string
+            - boolean
           description: Indicates the shared status as reported by the cloud provider
             at the time the event occurred. A shared file indicates that one or more
             users have been granted explicit access to the file. It does not capture
@@ -1347,7 +1351,7 @@ components:
             an event; based on the device’s system clock and reported in Coordinated
             Universal Time (UTC).
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         destination:
           $ref: '#/components/schemas/Destination'
         event:
@@ -2215,8 +2219,74 @@ components:
             - USER_DEVICE_UID
             - USER_EMAIL
             - USER_ID
+            - eventId
+            - eventType
+            - eventTimestamp
+            - insertionTimestamp
+            - filePath
+            - fileName
+            - fileType
+            - fileCategory
+            - fileCategoryByBytes
+            - fileCategoryByExtension
+            - fileSize
+            - fileOwner
+            - md5Checksum
+            - sha256Checksum
+            - createTimestamp
+            - modifyTimestamp
+            - deviceUserName
+            - deviceUid
+            - userUid
+            - osHostName
+            - domainName
+            - publicIpAddress
+            - privateIpAddresses
+            - actor
+            - directoryId
+            - source
+            - url
+            - shared
+            - sharedWith
+            - sharingTypeAdded
+            - cloudDriveId
+            - detectionSourceAlias
+            - fileId
+            - exposure
+            - processOwner
+            - processName
+            - windowTitle
+            - tabUrl
+            - removableMediaVendor
+            - removableMediaName
+            - removableMediaSerialNumber
+            - removableMediaCapacity
+            - removableMediaBusType
+            - removableMediaMediaName
+            - removableMediaVolumeName
+            - removableMediaPartitionId
+            - syncDestination
+            - syncDestinationUsername
+            - emailDlpPolicyNames
+            - emailSubject
+            - emailSender
+            - emailFrom
+            - emailRecipients
+            - outsideActiveHours
+            - mimeTypeByBytes
+            - mimeTypeByExtension
+            - mimeTypeMismatch
+            - printJobName
+            - printerName
+            - printedFilesBackupPath
+            - remoteActivity
+            - trusted
+            - operatingSystemUser
+            - destinationCategory
+            - destinationName
         value:
           type: string
+          nullable: true
           description: The input for the search.
           example: ari@example.com
     SearchFilterRes:
@@ -2335,7 +2405,6 @@ components:
     SearchRequest:
       title: SearchRequest
       required:
-        - defaultSortKey
         - groups
       type: object
       properties:
@@ -2581,6 +2650,72 @@ components:
             - USER_DEVICE_UID
             - USER_EMAIL
             - USER_ID
+            - eventId
+            - eventType
+            - eventTimestamp
+            - insertionTimestamp
+            - filePath
+            - fileName
+            - fileType
+            - fileCategory
+            - fileCategoryByBytes
+            - fileCategoryByExtension
+            - fileSize
+            - fileOwner
+            - md5Checksum
+            - sha256Checksum
+            - createTimestamp
+            - modifyTimestamp
+            - deviceUserName
+            - deviceUid
+            - userUid
+            - osHostName
+            - domainName
+            - publicIpAddress
+            - privateIpAddresses
+            - actor
+            - directoryId
+            - source
+            - url
+            - shared
+            - sharedWith
+            - sharingTypeAdded
+            - cloudDriveId
+            - detectionSourceAlias
+            - fileId
+            - exposure
+            - processOwner
+            - processName
+            - windowTitle
+            - tabUrl
+            - removableMediaVendor
+            - removableMediaName
+            - removableMediaSerialNumber
+            - removableMediaCapacity
+            - removableMediaBusType
+            - removableMediaMediaName
+            - removableMediaVolumeName
+            - removableMediaPartitionId
+            - syncDestination
+            - syncDestinationUsername
+            - emailDlpPolicyNames
+            - emailSubject
+            - emailSender
+            - emailFrom
+            - emailRecipients
+            - outsideActiveHours
+            - mimeTypeByBytes
+            - mimeTypeByExtension
+            - mimeTypeMismatch
+            - printJobName
+            - printerName
+            - printedFilesBackupPath
+            - remoteActivity
+            - trusted
+            - operatingSystemUser
+            - destinationCategory
+            - destinationName
+
     SharedWithUser:
       title: SharedWithUser
       type: object

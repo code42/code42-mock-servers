@@ -60,7 +60,9 @@ You may also have issues with enum values. See the section below.
 
 ### \*/\* Content Types
 Sometimes the swagger editor will specify endpoints with */* content types, but those don't play nice with the mock servers.
-Specify an explicit content type instead.
+Specify an explicit content type instead.  
+
+Oftentimes you can use an `application/json` content type definition.
 
 ### Endpoint Enums
 

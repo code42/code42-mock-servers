@@ -38,7 +38,7 @@ paths:
         200:
           description: 'Success: List of file events matching the query.'
           content:
-            'application/json':
+            application/json:
               schema:
                 $ref: '#/components/schemas/FileEventResponseV1'
         400:
@@ -333,7 +333,7 @@ components:
             timestamp is based on the Code42 server system clock and reported in Coordinated
             Universal Time (UTC).
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         observer:
           type: string
           description: 'The data source that captured the file event. For example:
@@ -707,7 +707,7 @@ components:
             system in Coordinated Universal Time (UTC); available for Mac and Windows
             NTFS devices only.
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         directory:
           type: string
           description: The file location on the user's device; a forward or backslash
@@ -746,7 +746,7 @@ components:
             permissions, file owner, or other metadata are not reflected in this timestamp.  Date
             is reported in Coordinated Universal Time (UTC).
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         name:
           type: string
           description: The name of the file, including the file extension.
@@ -788,10 +788,11 @@ components:
             $ref: '#/components/schemas/FileEventV1'
         nextPgToken:
           type: string
+          nullable: true
           description: Use as the pgToken value in another request to indicate the
             starting point for additional page results. nextPgToken is null if there
             are no more results or if pgToken was not supplied.
-          example: 0_147e9445-2f30-4a91-8b2a-9455332e880a_973435567569502913_986467523038446097_163
+          example: null
         problems:
           type: array
           description: List of problems in the request.  A problem with a search request
@@ -815,10 +816,11 @@ components:
             $ref: '#/components/schemas/FileEventV2'
         nextPgToken:
           type: string
+          nullable: true
           description: Use as the pgToken value in another request to indicate the
             starting point for additional page results. nextPgToken is null if there
             are no more results or if pgToken was not supplied.
-          example: 0_147e9445-2f30-4a91-8b2a-9455332e880a_973435567569502913_986467523038446097_163
+          example: null
         problems:
           type: array
           description: List of problems in the request.  A problem with a search request
@@ -858,7 +860,7 @@ components:
             system in Coordinated Universal Time (UTC); available for Mac and Windows
             NTFS devices only.
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         destinationCategory:
           type: string
           description: 'General category of where the file was sent. For example:
@@ -940,7 +942,7 @@ components:
             an event; based on the device’s system clock and reported in Coordinated
             Universal Time (UTC).
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         eventType:
           type: string
           description: Indicates the type of file event observed.
@@ -1037,7 +1039,7 @@ components:
             timestamp is based on the Code42 server system clock and reported in Coordinated
             Universal Time (UTC).
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         md5Checksum:
           type: string
           description: The MD5 hash of the file contents.
@@ -1063,7 +1065,7 @@ components:
             permissions, file owner, or other metadata are not reflected in this timestamp.  Date
             is reported in Coordinated Universal Time (UTC).
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         operatingSystemUser:
           type: string
           description: The username logged in to the device when the file activity
@@ -1115,9 +1117,11 @@ components:
         publicIpAddress:
           type: string
           description: The external IP address of the user's device.
-          example: 127.0.0.1
+          example: '127.0.0.1'
         remoteActivity:
-          type: string
+          type: 
+            - string
+            - boolean
           description: For endpoint events, compares the IP address of the file event
             to your defined list of addresses in the Data Preferences section of the
             Code42 console. If the IP address from the file event does not match,
@@ -1244,7 +1248,9 @@ components:
           description: The SHA256 hash of the file contents.
           example: ded96d69c63754472efc4aa86fed68d4e17784b38089851cfa84e699e48b4155
         shared:
-          type: string
+          type: 
+            - string
+            - boolean
           description: Indicates the shared status as reported by the cloud provider
             at the time the event occurred. A shared file indicates that one or more
             users have been granted explicit access to the file. It does not capture
@@ -1347,7 +1353,7 @@ components:
             an event; based on the device’s system clock and reported in Coordinated
             Universal Time (UTC).
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         destination:
           $ref: '#/components/schemas/Destination'
         event:
@@ -2104,6 +2110,7 @@ components:
             - windowTitle
         value:
           type: string
+          nullable: true
           description: The input for the search.
           example: ari@example.com
     SearchFilterReq:
@@ -2335,7 +2342,6 @@ components:
     SearchRequest:
       title: SearchRequest
       required:
-        - defaultSortKey
         - groups
       type: object
       properties:
@@ -2479,13 +2485,14 @@ components:
           example: 100
         pgToken:
           type: string
+          nullable: true
           description: A token used to indicate the starting point for additional
             page results. Typically, you obtain the pgToken value from the nextPgToken
             provided in a previous request. A pgToken is the only way to page past
             10,000 results. If pgToken is supplied, pgNum is ignored. Provide empty
             string to retrieve the 'first page of results and null to use the pgNum
             value.  Default is null.
-          example: 0_147e9445-2f30-4a91-8b2a-9455332e880a_973435567569502913_986467523038446097_163
+          example: null
         srtDir:
           type: string
           description: Sort direction.  Default is `desc`.
@@ -2581,6 +2588,72 @@ components:
             - USER_DEVICE_UID
             - USER_EMAIL
             - USER_ID
+            - eventId
+            - eventType
+            - eventTimestamp
+            - insertionTimestamp
+            - filePath
+            - fileName
+            - fileType
+            - fileCategory
+            - fileCategoryByBytes
+            - fileCategoryByExtension
+            - fileSize
+            - fileOwner
+            - md5Checksum
+            - sha256Checksum
+            - createTimestamp
+            - modifyTimestamp
+            - deviceUserName
+            - deviceUid
+            - userUid
+            - osHostName
+            - domainName
+            - publicIpAddress
+            - privateIpAddresses
+            - actor
+            - directoryId
+            - source
+            - url
+            - shared
+            - sharedWith
+            - sharingTypeAdded
+            - cloudDriveId
+            - detectionSourceAlias
+            - fileId
+            - exposure
+            - processOwner
+            - processName
+            - windowTitle
+            - tabUrl
+            - removableMediaVendor
+            - removableMediaName
+            - removableMediaSerialNumber
+            - removableMediaCapacity
+            - removableMediaBusType
+            - removableMediaMediaName
+            - removableMediaVolumeName
+            - removableMediaPartitionId
+            - syncDestination
+            - syncDestinationUsername
+            - emailDlpPolicyNames
+            - emailSubject
+            - emailSender
+            - emailFrom
+            - emailRecipients
+            - outsideActiveHours
+            - mimeTypeByBytes
+            - mimeTypeByExtension
+            - mimeTypeMismatch
+            - printJobName
+            - printerName
+            - printedFilesBackupPath
+            - remoteActivity
+            - trusted
+            - operatingSystemUser
+            - destinationCategory
+            - destinationName
+
     SharedWithUser:
       title: SharedWithUser
       type: object

@@ -37,6 +37,7 @@ the format we are using is OpenAPI version 3 as yml.
 
 You can convert existing JSON Swagger v2 swagger using https://editor.swagger.io/.
 
+## Troubleshooting
 Some minor editing might be required to get the conversion to work. For example, warnings may appears on the left
 margin of the Swagger editor. Address all the warnings before re-attempting the conversion.
 A common problem from our docs is that the conversion tool does not like having `descriptions`
@@ -57,7 +58,13 @@ with just:
 
 You may also have issues with enum values. See the section below.
 
-## Endpoint Enums
+### \*/\* Content Types
+Sometimes the swagger editor will specify endpoints with */* content types, but those don't play nice with the mock servers.
+Specify an explicit content type instead.  
+
+Oftentimes you can use an `application/json` content type definition.
+
+### Endpoint Enums
 
 Another common problem is that our Code42 docs often declare enums as having a type of `integer`.
 This will cause failures in Prism. Change the enum type to `string`. This is also needed for the conversion

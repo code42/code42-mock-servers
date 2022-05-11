@@ -555,6 +555,7 @@ components:
             - url
             - userUid
             - windowTitle
+            - "@timestamp"
         groupClause:
           type: string
           description: Grouping clause for any specified groups.  Default is `AND`.
@@ -2108,6 +2109,8 @@ components:
             - url
             - userUid
             - windowTitle
+            - file.hash.md5
+            - file.hash.sha256
         value:
           type: string
           nullable: true
@@ -2653,6 +2656,7 @@ components:
             - operatingSystemUser
             - destinationCategory
             - destinationName
+            - "@timestamp"
 
     SharedWithUser:
       title: SharedWithUser

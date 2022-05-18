@@ -616,7 +616,6 @@ components:
           items:
             type: string
             enum:
-              - '@timestamp'
               - destination.category
               - destination.email.recipients
               - destination.email.subject
@@ -700,6 +699,7 @@ components:
               - user.deviceUid
               - user.email
               - user.id
+            - "@timestamp"
         groupClause:
           type: string
           description: Grouping clause for any specified groups.  Default is `AND`.
@@ -2916,6 +2916,8 @@ components:
             - url
             - userUid
             - windowTitle
+            - file.hash.md5
+            - file.hash.sha256
         value:
           type: string
           description: The input for the search.
@@ -3450,7 +3452,6 @@ components:
           description: Search term for sorting.
           example: eventId
           enum:
-            - '@timestamp'
             - destination.category
             - destination.email.recipients
             - destination.email.subject
@@ -3534,6 +3535,7 @@ components:
             - user.deviceUid
             - user.email
             - user.id
+            - "@timestamp"
     SharedWithUser:
       title: SharedWithUser
       type: object

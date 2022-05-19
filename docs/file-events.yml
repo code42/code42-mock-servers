@@ -32,7 +32,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchRequest'
+              $ref: '#/components/schemas/SearchRequest«SearchTermV1»'
         required: true
       responses:
         200:
@@ -59,7 +59,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExportRequest'
+              $ref: '#/components/schemas/ExportRequest«SearchTermV1»'
         required: true
       responses:
         200:
@@ -88,7 +88,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GroupingRequest'
+              $ref: '#/components/schemas/GroupingRequest«SearchTermV1»'
         required: true
       responses:
         200:
@@ -96,7 +96,7 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: '#/components/schemas/GroupingResponse'
+                $ref: '#/components/schemas/GroupingResponse«SearchTermV1»'
         400:
           description: 'Bad Request: An invalid query was provided.'
           content: {}
@@ -116,7 +116,7 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: '#/components/schemas/SavedSearchResponse'
+                $ref: '#/components/schemas/SavedSearchResponse«SearchTermV1»'
   /forensic-search/queryservice/api/v1/saved/{id}:
     get:
       tags:
@@ -136,7 +136,7 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: '#/components/schemas/SavedSearchResponse'
+                $ref: '#/components/schemas/SavedSearchResponse«SearchTermV1»'
         404:
           description: 'Not found: Saved search does not exist.'
           content: {}
@@ -151,7 +151,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchRequest'
+              $ref: '#/components/schemas/SearchRequest«SearchTermV2»'
         required: true
       responses:
         200:
@@ -178,7 +178,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ExportRequest'
+              $ref: '#/components/schemas/ExportRequest«SearchTermV2»'
         required: true
       responses:
         200:
@@ -207,7 +207,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GroupingRequest'
+              $ref: '#/components/schemas/GroupingRequest«SearchTermV2»'
         required: true
       responses:
         200:
@@ -215,7 +215,7 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: '#/components/schemas/GroupingResponse'
+                $ref: '#/components/schemas/GroupingResponse«SearchTermV2»'
         400:
           description: 'Bad Request: An invalid query was provided.'
           content: {}
@@ -223,6 +223,42 @@ paths:
           description: 'Server Error: Search execution failed.'
           content: {}
       x-codegen-request-body-name: request
+  /forensic-search/queryservice/api/v2/saved:
+    get:
+      tags:
+        - File Events
+      summary: Get all saved searches
+      operationId: getSavedSearchesUsingGET_1
+      responses:
+        200:
+          description: 'Success: List of all saved searches for the tenant.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedSearchResponse«SearchTermV2»'
+  /forensic-search/queryservice/api/v2/saved/{id}:
+    get:
+      tags:
+        - File Events
+      summary: Get a single saved search
+      operationId: getSavedSearchByIdUsingGET_1
+      parameters:
+        - name: id
+          in: path
+          description: Unique identifier for a saved search.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'Success: Details of the specified saved search.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedSearchResponse«SearchTermV2»'
+        404:
+          description: 'Not found: Saved search does not exist.'
+          content: { }
 components:
   schemas:
     Destination:
@@ -303,10 +339,11 @@ components:
       properties:
         email:
           type: array
-          description: For events where a file in cloud storage is synced to a device,
-            the email address of the user logged in to the cloud storage provider.
-            In some case, OneDrive events may return multiple values, but this is
-            often the same username formatted in different ways.
+          description: For endpoint events where a file in cloud storage is synced
+            to a device, the email address of the user logged in to the cloud storage
+            provider. For cloud events, the email addresses of users added as sharing
+            recipients. In some case, OneDrive events may return multiple values,
+            but this is often the same username formatted in different ways.
           example:
             - first.last@example.com
             - first_last_example_com
@@ -339,10 +376,16 @@ components:
           description: 'The data source that captured the file event. For example:
             GoogleDrive, Office365, Salesforce.'
           example: Endpoint
-    ExportRequest:
-      title: ExportRequest
+        shareType:
+          type: array
+          description: Sharing types added by this event.
+          example:
+            - SharedViaLink
+          items:
+            type: string
+    ExportRequest«SearchTermV1»:
+      title: ExportRequest«SearchTermV1»
       required:
-        - defaultSortKey
         - groups
       type: object
       properties:
@@ -357,108 +400,122 @@ components:
           items:
             type: string
             enum:
-              - DESTINATION_CATEGORY
-              - DESTINATION_EMAIL_RECIPIENTS
-              - DESTINATION_EMAIL_SUBJECT
-              - DESTINATION_IP
-              - DESTINATION_NAME
-              - DESTINATION_OPERATING_SYSTEM
-              - DESTINATION_PRINTED_FILES_BACKUP_PATH
-              - DESTINATION_PRINTER_NAME
-              - DESTINATION_PRINT_JOB_NAME
-              - DESTINATION_PRIVATE_IP
-              - DESTINATION_REMOVABLE_MEDIA_BUS_TYPE
-              - DESTINATION_REMOVABLE_MEDIA_CAPACITY
-              - DESTINATION_REMOVABLE_MEDIA_MEDIA_NAME
-              - DESTINATION_REMOVABLE_MEDIA_NAME
-              - DESTINATION_REMOVABLE_MEDIA_PARTITION_ID
-              - DESTINATION_REMOVABLE_MEDIA_SERIAL_NUMBER
-              - DESTINATION_REMOVABLE_MEDIA_VENDOR
-              - DESTINATION_REMOVABLE_MEDIA_VOLUME_NAME
-              - DESTINATION_TABS_TITLE
-              - DESTINATION_TABS_TITLE_ERROR
-              - DESTINATION_TABS_URL
-              - DESTINATION_TABS_URL_ERROR
-              - DESTINATION_USER
-              - EVENT_ACTION
-              - EVENT_ID
-              - EVENT_INSERTED
-              - EVENT_OBSERVER
-              - FILE_CATEGORY
-              - FILE_CATEGORY_BY_BYTES
-              - FILE_CATEGORY_BY_EXTENSION
-              - FILE_CLASSIFICATIONS
-              - FILE_CLOUD_DRIVE_ID
-              - FILE_CREATED
-              - FILE_DIRECTORY
-              - FILE_DIRECTORY_ID
-              - FILE_HASH_MD5
-              - FILE_HASH_SHA_256
-              - FILE_ID
-              - FILE_MIME_TTPE_BY_EXTENSIONS
-              - FILE_MIME_TYPE_BY_BYTES
-              - FILE_MODIFIED
-              - FILE_NAME
-              - FILE_OWNER
-              - FILE_SIZE_IN_BYTES
-              - FILE_URL
-              - PROCESS_EXECUTABLE
-              - PROCESS_OWNER
-              - REPORT_COUNT
-              - REPORT_DESCRIPTION
-              - REPORT_HEADERS
-              - REPORT_ID
-              - REPORT_NAME
-              - REPORT_TYPE
-              - RISK_INDICATORS_NAME
-              - RISK_INDICATORS_WEIGHT
-              - RISK_SCORE
-              - RISK_SEVERITY
-              - RISK_TRUSTED
-              - RISK_TRUST_REASON
-              - SOURCE_CATEGORY
-              - SOURCE_DOMAIN
-              - SOURCE_EMAIL_FROM
-              - SOURCE_EMAIL_SENDER
-              - SOURCE_IP
-              - SOURCE_NAME
-              - SOURCE_OPERATING_SYSTEM
-              - SOURCE_PRIVATE_IP
-              - SOURCE_REMOVABLE_MEDIA_BUS_TYPE
-              - SOURCE_REMOVABLE_MEDIA_CAPACITY
-              - SOURCE_REMOVABLE_MEDIA_MEDIA_NAME
-              - SOURCE_REMOVABLE_MEDIA_NAME
-              - SOURCE_REMOVABLE_MEDIA_PARTITION_ID
-              - SOURCE_REMOVABLE_MEDIA_SERIAL_NUMBER
-              - SOURCE_REMOVABLE_MEDIA_VENDOR
-              - SOURCE_REMOVABLE_MEDIA_VOLUME_NAME
-              - SOURCE_TABS_TITLE
-              - SOURCE_TABS_TITLE_ERROR
-              - SOURCE_TABS_URL
-              - SOURCE_TABS_URL_ERROR
-              - TIMESTAMP
-              - USER_DEVICE_UID
-              - USER_EMAIL
-              - USER_ID
-        defaultSortKey:
+              - actor
+              - cloudDriveId
+              - createTimestamp
+              - destinationCategory
+              - destinationName
+              - detectionSourceAlias
+              - deviceUid
+              - deviceUserName
+              - directoryId
+              - domainName
+              - emailDlpPolicyNames
+              - emailFrom
+              - emailRecipients
+              - emailSender
+              - emailSubject
+              - eventId
+              - eventTimestamp
+              - eventType
+              - exposure
+              - fileCategory
+              - fileCategoryByBytes
+              - fileCategoryByExtension
+              - fileClassificationValues
+              - fileClassificationVendors
+              - fileId
+              - fileName
+              - fileOwner
+              - filePath
+              - fileSize
+              - fileType
+              - insertionTimestamp
+              - md5Checksum
+              - mimeTypeByBytes
+              - mimeTypeByExtension
+              - mimeTypeMismatch
+              - modifyTimestamp
+              - operatingSystemUser
+              - osHostName
+              - outsideActiveHours
+              - printJobName
+              - printedFilesBackupPath
+              - printerName
+              - privateIpAddresses
+              - processName
+              - processOwner
+              - publicIpAddress
+              - remoteActivity
+              - removableMediaBusType
+              - removableMediaCapacity
+              - removableMediaMediaName
+              - removableMediaName
+              - removableMediaPartitionId
+              - removableMediaSerialNumber
+              - removableMediaVendor
+              - removableMediaVolumeName
+              - reportColumnHeaders
+              - reportDescription
+              - reportId
+              - reportName
+              - reportRecordCount
+              - reportType
+              - riskIndicatorNames
+              - riskIndicatorWeights
+              - riskScore
+              - riskSeverity
+              - sha256Checksum
+              - shared
+              - sharedWith
+              - sharingTypeAdded
+              - source
+              - sourceCategory
+              - sourceName
+              - sourceTabTitleErrors
+              - sourceTabTitles
+              - sourceTabUrlErrors
+              - sourceTabUrls
+              - syncDestination
+              - syncDestinationUsername
+              - tabTitleErrors
+              - tabTitles
+              - tabUrl
+              - tabUrlErrors
+              - tabUrls
+              - trustReason
+              - trusted
+              - url
+              - userUid
+              - windowTitle
+        groupClause:
           type: string
+          description: Grouping clause for any specified groups.  Default is `AND`.
+          example: OR
+          enum:
+            - AND
+            - OR
+        groups:
+          type: array
+          description: One or more FilterGroups to be combined in a query.
+          items:
+            $ref: '#/components/schemas/FilterGroup«SearchTermV1»'
+        srtDir:
+          type: string
+          description: Sort direction.  Default is `desc`.
+          example: asc
+          enum:
+            - asc
+            - desc
+        srtKey:
+          type: string
+          description: Search term for sorting.
           enum:
             - actor
             - cloudDriveId
             - createTimestamp
             - destinationCategory
-            - destinationIp
             - destinationName
-            - destinationOperatingSystem
-            - destinationPrivateIps
-            - destinationRemovableMediaBusType
-            - destinationRemovableMediaCapacity
-            - destinationRemovableMediaMediaName
-            - destinationRemovableMediaName
-            - destinationRemovableMediaPartitionId
-            - destinationRemovableMediaSerialNumber
-            - destinationRemovableMediaVendor
-            - destinationRemovableMediaVolumeName
             - detectionSourceAlias
             - deviceUid
             - deviceUserName
@@ -469,7 +526,6 @@ components:
             - emailRecipients
             - emailSender
             - emailSubject
-            - eventAction
             - eventId
             - eventTimestamp
             - eventType
@@ -526,19 +582,7 @@ components:
             - sharingTypeAdded
             - source
             - sourceCategory
-            - sourceDomain
-            - sourceIp
             - sourceName
-            - sourceOperatingSystem
-            - sourcePrivateIps
-            - sourceRemovableMediaBusType
-            - sourceRemovableMediaCapacity
-            - sourceRemovableMediaMediaName
-            - sourceRemovableMediaName
-            - sourceRemovableMediaPartitionId
-            - sourceRemovableMediaSerialNumber
-            - sourceRemovableMediaVendor
-            - sourceRemovableMediaVolumeName
             - sourceTabTitleErrors
             - sourceTabTitles
             - sourceTabUrlErrors
@@ -555,6 +599,106 @@ components:
             - url
             - userUid
             - windowTitle
+    ExportRequest«SearchTermV2»:
+      title: ExportRequest«SearchTermV2»
+      required:
+        - groups
+      type: object
+      properties:
+        columns:
+          type: array
+          description: Which columns to include in the output. If none is provided,
+            all available columnswill be output in an unspecified, not-guaranteed
+            order.
+          example:
+            - fileName
+            - filePath
+          items:
+            type: string
+            enum:
+              - destination.category
+              - destination.email.recipients
+              - destination.email.subject
+              - destination.ip
+              - destination.name
+              - destination.operatingSystem
+              - destination.printJobName
+              - destination.printedFilesBackupPath
+              - destination.printerName
+              - destination.privateIp
+              - destination.removableMedia.busType
+              - destination.removableMedia.capacity
+              - destination.removableMedia.mediaName
+              - destination.removableMedia.name
+              - destination.removableMedia.partitionId
+              - destination.removableMedia.serialNumber
+              - destination.removableMedia.vendor
+              - destination.removableMedia.volumeName
+              - destination.tabs.title
+              - destination.tabs.titleError
+              - destination.tabs.url
+              - destination.tabs.urlError
+              - destination.user.email
+              - event.action
+              - event.id
+              - event.inserted
+              - event.observer
+              - event.shareType
+              - file.category
+              - file.categoryByBytes
+              - file.categoryByExtension
+              - file.classifications
+              - file.cloudDriveId
+              - file.created
+              - file.directory
+              - file.directoryId
+              - file.hash.md5
+              - file.hash.sha256
+              - file.id
+              - file.mimeTypeByBytes
+              - file.mimeTypeByExtension
+              - file.modified
+              - file.name
+              - file.owner
+              - file.sizeInBytes
+              - file.url
+              - process.executable
+              - process.owner
+              - report.count
+              - report.description
+              - report.headers
+              - report.id
+              - report.name
+              - report.type
+              - risk.indicators.name
+              - risk.indicators.weight
+              - risk.score
+              - risk.severity
+              - risk.trustReason
+              - risk.trusted
+              - source.category
+              - source.domain
+              - source.email.from
+              - source.email.sender
+              - source.ip
+              - source.name
+              - source.operatingSystem
+              - source.privateIp
+              - source.removableMedia.busType
+              - source.removableMedia.capacity
+              - source.removableMedia.mediaName
+              - source.removableMedia.name
+              - source.removableMedia.partitionId
+              - source.removableMedia.serialNumber
+              - source.removableMedia.vendor
+              - source.removableMedia.volumeName
+              - source.tabs.title
+              - source.tabs.titleError
+              - source.tabs.url
+              - source.tabs.urlError
+              - user.deviceUid
+              - user.email
+              - user.id
             - "@timestamp"
         groupClause:
           type: string
@@ -567,7 +711,7 @@ components:
           type: array
           description: One or more FilterGroups to be combined in a query.
           items:
-            $ref: '#/components/schemas/FilterGroup'
+            $ref: '#/components/schemas/FilterGroup«SearchTermV2»'
         srtDir:
           type: string
           description: Sort direction.  Default is `desc`.
@@ -579,89 +723,90 @@ components:
           type: string
           description: Search term for sorting.
           enum:
-            - DESTINATION_CATEGORY
-            - DESTINATION_EMAIL_RECIPIENTS
-            - DESTINATION_EMAIL_SUBJECT
-            - DESTINATION_IP
-            - DESTINATION_NAME
-            - DESTINATION_OPERATING_SYSTEM
-            - DESTINATION_PRINTED_FILES_BACKUP_PATH
-            - DESTINATION_PRINTER_NAME
-            - DESTINATION_PRINT_JOB_NAME
-            - DESTINATION_PRIVATE_IP
-            - DESTINATION_REMOVABLE_MEDIA_BUS_TYPE
-            - DESTINATION_REMOVABLE_MEDIA_CAPACITY
-            - DESTINATION_REMOVABLE_MEDIA_MEDIA_NAME
-            - DESTINATION_REMOVABLE_MEDIA_NAME
-            - DESTINATION_REMOVABLE_MEDIA_PARTITION_ID
-            - DESTINATION_REMOVABLE_MEDIA_SERIAL_NUMBER
-            - DESTINATION_REMOVABLE_MEDIA_VENDOR
-            - DESTINATION_REMOVABLE_MEDIA_VOLUME_NAME
-            - DESTINATION_TABS_TITLE
-            - DESTINATION_TABS_TITLE_ERROR
-            - DESTINATION_TABS_URL
-            - DESTINATION_TABS_URL_ERROR
-            - DESTINATION_USER
-            - EVENT_ACTION
-            - EVENT_ID
-            - EVENT_INSERTED
-            - EVENT_OBSERVER
-            - FILE_CATEGORY
-            - FILE_CATEGORY_BY_BYTES
-            - FILE_CATEGORY_BY_EXTENSION
-            - FILE_CLASSIFICATIONS
-            - FILE_CLOUD_DRIVE_ID
-            - FILE_CREATED
-            - FILE_DIRECTORY
-            - FILE_DIRECTORY_ID
-            - FILE_HASH_MD5
-            - FILE_HASH_SHA_256
-            - FILE_ID
-            - FILE_MIME_TTPE_BY_EXTENSIONS
-            - FILE_MIME_TYPE_BY_BYTES
-            - FILE_MODIFIED
-            - FILE_NAME
-            - FILE_OWNER
-            - FILE_SIZE_IN_BYTES
-            - FILE_URL
-            - PROCESS_EXECUTABLE
-            - PROCESS_OWNER
-            - REPORT_COUNT
-            - REPORT_DESCRIPTION
-            - REPORT_HEADERS
-            - REPORT_ID
-            - REPORT_NAME
-            - REPORT_TYPE
-            - RISK_INDICATORS_NAME
-            - RISK_INDICATORS_WEIGHT
-            - RISK_SCORE
-            - RISK_SEVERITY
-            - RISK_TRUSTED
-            - RISK_TRUST_REASON
-            - SOURCE_CATEGORY
-            - SOURCE_DOMAIN
-            - SOURCE_EMAIL_FROM
-            - SOURCE_EMAIL_SENDER
-            - SOURCE_IP
-            - SOURCE_NAME
-            - SOURCE_OPERATING_SYSTEM
-            - SOURCE_PRIVATE_IP
-            - SOURCE_REMOVABLE_MEDIA_BUS_TYPE
-            - SOURCE_REMOVABLE_MEDIA_CAPACITY
-            - SOURCE_REMOVABLE_MEDIA_MEDIA_NAME
-            - SOURCE_REMOVABLE_MEDIA_NAME
-            - SOURCE_REMOVABLE_MEDIA_PARTITION_ID
-            - SOURCE_REMOVABLE_MEDIA_SERIAL_NUMBER
-            - SOURCE_REMOVABLE_MEDIA_VENDOR
-            - SOURCE_REMOVABLE_MEDIA_VOLUME_NAME
-            - SOURCE_TABS_TITLE
-            - SOURCE_TABS_TITLE_ERROR
-            - SOURCE_TABS_URL
-            - SOURCE_TABS_URL_ERROR
-            - TIMESTAMP
-            - USER_DEVICE_UID
-            - USER_EMAIL
-            - USER_ID
+            - '@timestamp'
+            - destination.category
+            - destination.email.recipients
+            - destination.email.subject
+            - destination.ip
+            - destination.name
+            - destination.operatingSystem
+            - destination.printJobName
+            - destination.printedFilesBackupPath
+            - destination.printerName
+            - destination.privateIp
+            - destination.removableMedia.busType
+            - destination.removableMedia.capacity
+            - destination.removableMedia.mediaName
+            - destination.removableMedia.name
+            - destination.removableMedia.partitionId
+            - destination.removableMedia.serialNumber
+            - destination.removableMedia.vendor
+            - destination.removableMedia.volumeName
+            - destination.tabs.title
+            - destination.tabs.titleError
+            - destination.tabs.url
+            - destination.tabs.urlError
+            - destination.user.email
+            - event.action
+            - event.id
+            - event.inserted
+            - event.observer
+            - event.shareType
+            - file.category
+            - file.categoryByBytes
+            - file.categoryByExtension
+            - file.classifications
+            - file.cloudDriveId
+            - file.created
+            - file.directory
+            - file.directoryId
+            - file.hash.md5
+            - file.hash.sha256
+            - file.id
+            - file.mimeTypeByBytes
+            - file.mimeTypeByExtension
+            - file.modified
+            - file.name
+            - file.owner
+            - file.sizeInBytes
+            - file.url
+            - process.executable
+            - process.owner
+            - report.count
+            - report.description
+            - report.headers
+            - report.id
+            - report.name
+            - report.type
+            - risk.indicators.name
+            - risk.indicators.weight
+            - risk.score
+            - risk.severity
+            - risk.trustReason
+            - risk.trusted
+            - source.category
+            - source.domain
+            - source.email.from
+            - source.email.sender
+            - source.ip
+            - source.name
+            - source.operatingSystem
+            - source.privateIp
+            - source.removableMedia.busType
+            - source.removableMedia.capacity
+            - source.removableMedia.mediaName
+            - source.removableMedia.name
+            - source.removableMedia.partitionId
+            - source.removableMedia.serialNumber
+            - source.removableMedia.vendor
+            - source.removableMedia.volumeName
+            - source.tabs.title
+            - source.tabs.titleError
+            - source.tabs.url
+            - source.tabs.urlError
+            - user.deviceUid
+            - user.email
+            - user.id
     FieldError:
       title: FieldError
       type: object
@@ -789,18 +934,17 @@ components:
             $ref: '#/components/schemas/FileEventV1'
         nextPgToken:
           type: string
-          nullable: true
           description: Use as the pgToken value in another request to indicate the
             starting point for additional page results. nextPgToken is null if there
             are no more results or if pgToken was not supplied.
-          example: null
+          example: 0_147e9445-2f30-4a91-8b2a-9455332e880a_973435567569502913_986467523038446097_163
         problems:
           type: array
           description: List of problems in the request.  A problem with a search request
             could be an invalid filter value, an operator that can't be used on a
             term, etc.
           items:
-            $ref: '#/components/schemas/QueryProblem'
+            $ref: '#/components/schemas/QueryProblem«SearchTermV1»'
         totalCount:
           type: integer
           description: Total number of file events in the response.
@@ -817,18 +961,17 @@ components:
             $ref: '#/components/schemas/FileEventV2'
         nextPgToken:
           type: string
-          nullable: true
           description: Use as the pgToken value in another request to indicate the
             starting point for additional page results. nextPgToken is null if there
             are no more results or if pgToken was not supplied.
-          example: null
+          example: 0_147e9445-2f30-4a91-8b2a-9455332e880a_973435567569502913_986467523038446097_163
         problems:
           type: array
           description: List of problems in the request.  A problem with a search request
             could be an invalid filter value, an operator that can't be used on a
             term, etc.
           items:
-            $ref: '#/components/schemas/QueryProblem'
+            $ref: '#/components/schemas/QueryProblem«SearchTermV2»'
         totalCount:
           type: integer
           description: Total number of file events in the response.
@@ -1118,11 +1261,9 @@ components:
         publicIpAddress:
           type: string
           description: The external IP address of the user's device.
-          example: '127.0.0.1'
+          example: 127.0.0.1
         remoteActivity:
-          type: 
-            - string
-            - boolean
+          type: string
           description: For endpoint events, compares the IP address of the file event
             to your defined list of addresses in the Data Preferences section of the
             Code42 console. If the IP address from the file event does not match,
@@ -1249,9 +1390,7 @@ components:
           description: The SHA256 hash of the file contents.
           example: ded96d69c63754472efc4aa86fed68d4e17784b38089851cfa84e699e48b4155
         shared:
-          type: 
-            - string
-            - boolean
+          type: string
           description: Indicates the shared status as reported by the cloud provider
             at the time the event occurred. A shared file indicates that one or more
             users have been granted explicit access to the file. It does not capture
@@ -1266,7 +1405,7 @@ components:
           type: array
           description: Public sharing types that were added by this event.
           example:
-            - RemovableMedia
+            - SharedViaLink
           items:
             type: string
         source:
@@ -1371,8 +1510,8 @@ components:
           $ref: '#/components/schemas/Source'
         user:
           $ref: '#/components/schemas/User'
-    FilterGroup:
-      title: FilterGroup
+    FilterGroup«SearchTermV1»:
+      title: FilterGroup«SearchTermV1»
       required:
         - filters
       type: object
@@ -1388,7 +1527,25 @@ components:
           type: array
           description: One or more SearchFilters to be combined in a query.
           items:
-            $ref: '#/components/schemas/SearchFilter'
+            $ref: '#/components/schemas/SearchFilter«SearchTermV1»'
+    FilterGroup«SearchTermV2»:
+      title: FilterGroup«SearchTermV2»
+      required:
+        - filters
+      type: object
+      properties:
+        filterClause:
+          type: string
+          description: Grouping clause for filters.  Default is `AND`.
+          example: AND
+          enum:
+            - AND
+            - OR
+        filters:
+          type: array
+          description: One or more SearchFilters to be combined in a query.
+          items:
+            $ref: '#/components/schemas/SearchFilter«SearchTermV2»'
     Group:
       title: Group
       type: object
@@ -1403,8 +1560,8 @@ components:
           type: string
           description: The value of the term for this group.
           example: readme.md
-    GroupingRequest:
-      title: GroupingRequest
+    GroupingRequest«SearchTermV1»:
+      title: GroupingRequest«SearchTermV1»
       required:
         - groups
       type: object
@@ -1421,96 +1578,208 @@ components:
           description: The search term to use to form the groups.
           example: eventType
           enum:
-            - DESTINATION_CATEGORY
-            - DESTINATION_EMAIL_RECIPIENTS
-            - DESTINATION_EMAIL_SUBJECT
-            - DESTINATION_IP
-            - DESTINATION_NAME
-            - DESTINATION_OPERATING_SYSTEM
-            - DESTINATION_PRINTED_FILES_BACKUP_PATH
-            - DESTINATION_PRINTER_NAME
-            - DESTINATION_PRINT_JOB_NAME
-            - DESTINATION_PRIVATE_IP
-            - DESTINATION_REMOVABLE_MEDIA_BUS_TYPE
-            - DESTINATION_REMOVABLE_MEDIA_CAPACITY
-            - DESTINATION_REMOVABLE_MEDIA_MEDIA_NAME
-            - DESTINATION_REMOVABLE_MEDIA_NAME
-            - DESTINATION_REMOVABLE_MEDIA_PARTITION_ID
-            - DESTINATION_REMOVABLE_MEDIA_SERIAL_NUMBER
-            - DESTINATION_REMOVABLE_MEDIA_VENDOR
-            - DESTINATION_REMOVABLE_MEDIA_VOLUME_NAME
-            - DESTINATION_TABS_TITLE
-            - DESTINATION_TABS_TITLE_ERROR
-            - DESTINATION_TABS_URL
-            - DESTINATION_TABS_URL_ERROR
-            - DESTINATION_USER
-            - EVENT_ACTION
-            - EVENT_ID
-            - EVENT_INSERTED
-            - EVENT_OBSERVER
-            - FILE_CATEGORY
-            - FILE_CATEGORY_BY_BYTES
-            - FILE_CATEGORY_BY_EXTENSION
-            - FILE_CLASSIFICATIONS
-            - FILE_CLOUD_DRIVE_ID
-            - FILE_CREATED
-            - FILE_DIRECTORY
-            - FILE_DIRECTORY_ID
-            - FILE_HASH_MD5
-            - FILE_HASH_SHA_256
-            - FILE_ID
-            - FILE_MIME_TTPE_BY_EXTENSIONS
-            - FILE_MIME_TYPE_BY_BYTES
-            - FILE_MODIFIED
-            - FILE_NAME
-            - FILE_OWNER
-            - FILE_SIZE_IN_BYTES
-            - FILE_URL
-            - PROCESS_EXECUTABLE
-            - PROCESS_OWNER
-            - REPORT_COUNT
-            - REPORT_DESCRIPTION
-            - REPORT_HEADERS
-            - REPORT_ID
-            - REPORT_NAME
-            - REPORT_TYPE
-            - RISK_INDICATORS_NAME
-            - RISK_INDICATORS_WEIGHT
-            - RISK_SCORE
-            - RISK_SEVERITY
-            - RISK_TRUSTED
-            - RISK_TRUST_REASON
-            - SOURCE_CATEGORY
-            - SOURCE_DOMAIN
-            - SOURCE_EMAIL_FROM
-            - SOURCE_EMAIL_SENDER
-            - SOURCE_IP
-            - SOURCE_NAME
-            - SOURCE_OPERATING_SYSTEM
-            - SOURCE_PRIVATE_IP
-            - SOURCE_REMOVABLE_MEDIA_BUS_TYPE
-            - SOURCE_REMOVABLE_MEDIA_CAPACITY
-            - SOURCE_REMOVABLE_MEDIA_MEDIA_NAME
-            - SOURCE_REMOVABLE_MEDIA_NAME
-            - SOURCE_REMOVABLE_MEDIA_PARTITION_ID
-            - SOURCE_REMOVABLE_MEDIA_SERIAL_NUMBER
-            - SOURCE_REMOVABLE_MEDIA_VENDOR
-            - SOURCE_REMOVABLE_MEDIA_VOLUME_NAME
-            - SOURCE_TABS_TITLE
-            - SOURCE_TABS_TITLE_ERROR
-            - SOURCE_TABS_URL
-            - SOURCE_TABS_URL_ERROR
-            - TIMESTAMP
-            - USER_DEVICE_UID
-            - USER_EMAIL
-            - USER_ID
+            - actor
+            - cloudDriveId
+            - createTimestamp
+            - destinationCategory
+            - destinationName
+            - detectionSourceAlias
+            - deviceUid
+            - deviceUserName
+            - directoryId
+            - domainName
+            - emailDlpPolicyNames
+            - emailFrom
+            - emailRecipients
+            - emailSender
+            - emailSubject
+            - eventId
+            - eventTimestamp
+            - eventType
+            - exposure
+            - fileCategory
+            - fileCategoryByBytes
+            - fileCategoryByExtension
+            - fileClassificationValues
+            - fileClassificationVendors
+            - fileId
+            - fileName
+            - fileOwner
+            - filePath
+            - fileSize
+            - fileType
+            - insertionTimestamp
+            - md5Checksum
+            - mimeTypeByBytes
+            - mimeTypeByExtension
+            - mimeTypeMismatch
+            - modifyTimestamp
+            - operatingSystemUser
+            - osHostName
+            - outsideActiveHours
+            - printJobName
+            - printedFilesBackupPath
+            - printerName
+            - privateIpAddresses
+            - processName
+            - processOwner
+            - publicIpAddress
+            - remoteActivity
+            - removableMediaBusType
+            - removableMediaCapacity
+            - removableMediaMediaName
+            - removableMediaName
+            - removableMediaPartitionId
+            - removableMediaSerialNumber
+            - removableMediaVendor
+            - removableMediaVolumeName
+            - reportColumnHeaders
+            - reportDescription
+            - reportId
+            - reportName
+            - reportRecordCount
+            - reportType
+            - riskIndicatorNames
+            - riskIndicatorWeights
+            - riskScore
+            - riskSeverity
+            - sha256Checksum
+            - shared
+            - sharedWith
+            - sharingTypeAdded
+            - source
+            - sourceCategory
+            - sourceName
+            - sourceTabTitleErrors
+            - sourceTabTitles
+            - sourceTabUrlErrors
+            - sourceTabUrls
+            - syncDestination
+            - syncDestinationUsername
+            - tabTitleErrors
+            - tabTitles
+            - tabUrl
+            - tabUrlErrors
+            - tabUrls
+            - trustReason
+            - trusted
+            - url
+            - userUid
+            - windowTitle
         groups:
           type: array
           description: One or more FilterGroups to be combined in a query.
           items:
-            $ref: '#/components/schemas/FilterGroup'
-    GroupingResponse:
-      title: GroupingResponse
+            $ref: '#/components/schemas/FilterGroup«SearchTermV1»'
+    GroupingRequest«SearchTermV2»:
+      title: GroupingRequest«SearchTermV2»
+      required:
+        - groups
+      type: object
+      properties:
+        groupClause:
+          type: string
+          description: Grouping clause for any specified groups.  Default is `AND`.
+          example: AND
+          enum:
+            - AND
+            - OR
+        groupingTerm:
+          type: string
+          description: The search term to use to form the groups.
+          example: eventType
+          enum:
+            - '@timestamp'
+            - destination.category
+            - destination.email.recipients
+            - destination.email.subject
+            - destination.ip
+            - destination.name
+            - destination.operatingSystem
+            - destination.printJobName
+            - destination.printedFilesBackupPath
+            - destination.printerName
+            - destination.privateIp
+            - destination.removableMedia.busType
+            - destination.removableMedia.capacity
+            - destination.removableMedia.mediaName
+            - destination.removableMedia.name
+            - destination.removableMedia.partitionId
+            - destination.removableMedia.serialNumber
+            - destination.removableMedia.vendor
+            - destination.removableMedia.volumeName
+            - destination.tabs.title
+            - destination.tabs.titleError
+            - destination.tabs.url
+            - destination.tabs.urlError
+            - destination.user.email
+            - event.action
+            - event.id
+            - event.inserted
+            - event.observer
+            - event.shareType
+            - file.category
+            - file.categoryByBytes
+            - file.categoryByExtension
+            - file.classifications
+            - file.cloudDriveId
+            - file.created
+            - file.directory
+            - file.directoryId
+            - file.hash.md5
+            - file.hash.sha256
+            - file.id
+            - file.mimeTypeByBytes
+            - file.mimeTypeByExtension
+            - file.modified
+            - file.name
+            - file.owner
+            - file.sizeInBytes
+            - file.url
+            - process.executable
+            - process.owner
+            - report.count
+            - report.description
+            - report.headers
+            - report.id
+            - report.name
+            - report.type
+            - risk.indicators.name
+            - risk.indicators.weight
+            - risk.score
+            - risk.severity
+            - risk.trustReason
+            - risk.trusted
+            - source.category
+            - source.domain
+            - source.email.from
+            - source.email.sender
+            - source.ip
+            - source.name
+            - source.operatingSystem
+            - source.privateIp
+            - source.removableMedia.busType
+            - source.removableMedia.capacity
+            - source.removableMedia.mediaName
+            - source.removableMedia.name
+            - source.removableMedia.partitionId
+            - source.removableMedia.serialNumber
+            - source.removableMedia.vendor
+            - source.removableMedia.volumeName
+            - source.tabs.title
+            - source.tabs.titleError
+            - source.tabs.url
+            - source.tabs.urlError
+            - user.deviceUid
+            - user.email
+            - user.id
+        groups:
+          type: array
+          description: One or more FilterGroups to be combined in a query.
+          items:
+            $ref: '#/components/schemas/FilterGroup«SearchTermV2»'
+    GroupingResponse«SearchTermV1»:
+      title: GroupingResponse«SearchTermV1»
       type: object
       properties:
         groups:
@@ -1524,7 +1793,23 @@ components:
             could be an invalid filter value, an operator that can't be used on a
             term, etc.
           items:
-            $ref: '#/components/schemas/QueryProblem'
+            $ref: '#/components/schemas/QueryProblem«SearchTermV1»'
+    GroupingResponse«SearchTermV2»:
+      title: GroupingResponse«SearchTermV2»
+      type: object
+      properties:
+        groups:
+          type: array
+          description: The top groups based on the query and group by term.
+          items:
+            $ref: '#/components/schemas/Group'
+        problems:
+          type: array
+          description: List of problems in the request.  A problem with a search request
+            could be an invalid filter value, an operator that can't be used on a
+            term, etc.
+          items:
+            $ref: '#/components/schemas/QueryProblem«SearchTermV2»'
     Hash:
       title: Hash
       type: object
@@ -1553,14 +1838,46 @@ components:
             operating system. Depending on your Code42 product plan, this value may
             be null for some event types.
           example: root
-    QueryProblem:
-      title: QueryProblem
+    QueryProblem«SearchTermV1»:
+      title: QueryProblem«SearchTermV1»
       required:
         - type
       type: object
       properties:
         badFilter:
-          $ref: '#/components/schemas/SearchFilterRes'
+          $ref: '#/components/schemas/SearchFilter«SearchTermV1»Res'
+        description:
+          type: string
+          description: Additional description of the problem.
+          example: Request timed out.  Refine your filter criteria and try again.
+        type:
+          type: string
+          description: The type of problem that occured.
+          example: SEARCH_FAILED
+          enum:
+            - ILLEGAL_GROUP
+            - ILLEGAL_OPERATOR
+            - ILLEGAL_SORT
+            - ILLEGAL_VALUE
+            - INVALID_PAGE_NUMBER
+            - INVALID_PAGE_SIZE
+            - INVALID_PAGE_TOKEN
+            - MAX_FILTERS_EXCEEDED
+            - MAX_LENGTH_EXCEEDED
+            - MISSING_FILTERS
+            - MISSING_GROUPS
+            - MISSING_VALUE
+            - QUERY_TIMEOUT
+            - SEARCH_FAILED
+            - UNEXPECTED_VALUE
+    QueryProblem«SearchTermV2»:
+      title: QueryProblem«SearchTermV2»
+      required:
+        - type
+      type: object
+      properties:
+        badFilter:
+          $ref: '#/components/schemas/SearchFilter«SearchTermV2»Res'
         description:
           type: string
           description: Additional description of the problem.
@@ -1733,8 +2050,8 @@ components:
             was seen.
           format: int32
           example: 5
-    SavedSearchDetail:
-      title: SavedSearchDetail
+    SavedSearchDetail«SearchTermV1»:
+      title: SavedSearchDetail«SearchTermV1»
       type: object
       properties:
         apiVersion:
@@ -1848,7 +2165,7 @@ components:
           type: string
           description: Time at which the saved search was created.
           format: date-time
-          example: 2020-10-27T15:16:05.369203Z
+          example: '2020-10-27T15:16:05.369203Z'
         groupClause:
           type: string
           description: Grouping clause for any specified groups.
@@ -1860,7 +2177,7 @@ components:
           type: array
           description: One or more FilterGroups to be combined in a query.
           items:
-            $ref: '#/components/schemas/FilterGroup'
+            $ref: '#/components/schemas/FilterGroup«SearchTermV1»'
         id:
           type: string
           description: Unique identifier for the saved search.
@@ -1986,17 +2303,507 @@ components:
             - url
             - userUid
             - windowTitle
-    SavedSearchResponse:
-      title: SavedSearchResponse
+    SavedSearchDetail«SearchTermV2»:
+      title: SavedSearchDetail«SearchTermV2»
+      type: object
+      properties:
+        apiVersion:
+          type: integer
+          description: Version of the API used to create the search.
+          format: int32
+          example: 1
+        columns:
+          type: array
+          description: List of columns to be displayed in the web app for the search.
+          items:
+            type: string
+            enum:
+              - '@timestamp'
+              - destination.category
+              - destination.email.recipients
+              - destination.email.subject
+              - destination.ip
+              - destination.name
+              - destination.operatingSystem
+              - destination.printJobName
+              - destination.printedFilesBackupPath
+              - destination.printerName
+              - destination.privateIp
+              - destination.removableMedia.busType
+              - destination.removableMedia.capacity
+              - destination.removableMedia.mediaName
+              - destination.removableMedia.name
+              - destination.removableMedia.partitionId
+              - destination.removableMedia.serialNumber
+              - destination.removableMedia.vendor
+              - destination.removableMedia.volumeName
+              - destination.tabs.title
+              - destination.tabs.titleError
+              - destination.tabs.url
+              - destination.tabs.urlError
+              - destination.user.email
+              - event.action
+              - event.id
+              - event.inserted
+              - event.observer
+              - event.shareType
+              - file.category
+              - file.categoryByBytes
+              - file.categoryByExtension
+              - file.classifications
+              - file.cloudDriveId
+              - file.created
+              - file.directory
+              - file.directoryId
+              - file.hash.md5
+              - file.hash.sha256
+              - file.id
+              - file.mimeTypeByBytes
+              - file.mimeTypeByExtension
+              - file.modified
+              - file.name
+              - file.owner
+              - file.sizeInBytes
+              - file.url
+              - process.executable
+              - process.owner
+              - report.count
+              - report.description
+              - report.headers
+              - report.id
+              - report.name
+              - report.type
+              - risk.indicators.name
+              - risk.indicators.weight
+              - risk.score
+              - risk.severity
+              - risk.trustReason
+              - risk.trusted
+              - source.category
+              - source.domain
+              - source.email.from
+              - source.email.sender
+              - source.ip
+              - source.name
+              - source.operatingSystem
+              - source.privateIp
+              - source.removableMedia.busType
+              - source.removableMedia.capacity
+              - source.removableMedia.mediaName
+              - source.removableMedia.name
+              - source.removableMedia.partitionId
+              - source.removableMedia.serialNumber
+              - source.removableMedia.vendor
+              - source.removableMedia.volumeName
+              - source.tabs.title
+              - source.tabs.titleError
+              - source.tabs.url
+              - source.tabs.urlError
+              - user.deviceUid
+              - user.email
+              - user.id
+        createdByUID:
+          type: string
+          description: User UID of the user who created the saved search.
+          example: "806150685834341100"
+        createdByUsername:
+          type: string
+          description: Username of the user who created the saved search.
+          example: adrian@example.com
+        creationTimestamp:
+          type: string
+          description: Time at which the saved search was created.
+          format: date-time
+          example: '2020-10-27T15:16:05.369203Z'
+        groupClause:
+          type: string
+          description: Grouping clause for any specified groups.
+          example: OR
+          enum:
+            - AND
+            - OR
+        groups:
+          type: array
+          description: One or more FilterGroups to be combined in a query.
+          items:
+            $ref: '#/components/schemas/FilterGroup«SearchTermV2»'
+        id:
+          type: string
+          description: Unique identifier for the saved search.
+          example: cde979fa-d551-4be9-b242-39e75b824089
+        modifiedByUID:
+          type: string
+          description: User UID of the user who last modified the saved search.
+          example: "421380797518239200"
+        modifiedByUsername:
+          type: string
+          description: Username of the user who last modified the saved search.
+          example: ari@example.com
+        modifiedTimestamp:
+          type: string
+          description: Time at which the saved search was last modified.
+          format: date-time
+          example: 2020-10-27T15:20:26.311894Z
+        name:
+          type: string
+          description: Name given to the saved search.
+          example: Example saved search
+        notes:
+          type: string
+          description: Optional notes about the search.
+          example: This search returns all events.
+        srtDir:
+          type: string
+          description: Sort direction.
+          example: asc
+          enum:
+            - asc
+            - desc
+        srtKey:
+          type: string
+          description: Search term for sorting.
+          example: eventId
+          enum:
+            - '@timestamp'
+            - destination.category
+            - destination.email.recipients
+            - destination.email.subject
+            - destination.ip
+            - destination.name
+            - destination.operatingSystem
+            - destination.printJobName
+            - destination.printedFilesBackupPath
+            - destination.printerName
+            - destination.privateIp
+            - destination.removableMedia.busType
+            - destination.removableMedia.capacity
+            - destination.removableMedia.mediaName
+            - destination.removableMedia.name
+            - destination.removableMedia.partitionId
+            - destination.removableMedia.serialNumber
+            - destination.removableMedia.vendor
+            - destination.removableMedia.volumeName
+            - destination.tabs.title
+            - destination.tabs.titleError
+            - destination.tabs.url
+            - destination.tabs.urlError
+            - destination.user.email
+            - event.action
+            - event.id
+            - event.inserted
+            - event.observer
+            - event.shareType
+            - file.category
+            - file.categoryByBytes
+            - file.categoryByExtension
+            - file.classifications
+            - file.cloudDriveId
+            - file.created
+            - file.directory
+            - file.directoryId
+            - file.hash.md5
+            - file.hash.sha256
+            - file.id
+            - file.mimeTypeByBytes
+            - file.mimeTypeByExtension
+            - file.modified
+            - file.name
+            - file.owner
+            - file.sizeInBytes
+            - file.url
+            - process.executable
+            - process.owner
+            - report.count
+            - report.description
+            - report.headers
+            - report.id
+            - report.name
+            - report.type
+            - risk.indicators.name
+            - risk.indicators.weight
+            - risk.score
+            - risk.severity
+            - risk.trustReason
+            - risk.trusted
+            - source.category
+            - source.domain
+            - source.email.from
+            - source.email.sender
+            - source.ip
+            - source.name
+            - source.operatingSystem
+            - source.privateIp
+            - source.removableMedia.busType
+            - source.removableMedia.capacity
+            - source.removableMedia.mediaName
+            - source.removableMedia.name
+            - source.removableMedia.partitionId
+            - source.removableMedia.serialNumber
+            - source.removableMedia.vendor
+            - source.removableMedia.volumeName
+            - source.tabs.title
+            - source.tabs.titleError
+            - source.tabs.url
+            - source.tabs.urlError
+            - user.deviceUid
+            - user.email
+            - user.id
+    SavedSearchResponse«SearchTermV1»:
+      title: SavedSearchResponse«SearchTermV1»
       type: object
       properties:
         searches:
           type: array
           description: List of saved searches in the response.
           items:
-            $ref: '#/components/schemas/SavedSearchDetail'
-    SearchFilter:
-      title: SearchFilter
+            $ref: '#/components/schemas/SavedSearchDetail«SearchTermV1»'
+    SavedSearchResponse«SearchTermV2»:
+      title: SavedSearchResponse«SearchTermV2»
+      type: object
+      properties:
+        searches:
+          type: array
+          description: List of saved searches in the response.
+          items:
+            $ref: '#/components/schemas/SavedSearchDetail«SearchTermV2»'
+    SearchFilter«SearchTermV1»:
+      title: SearchFilter«SearchTermV1»
+      required:
+        - value
+      type: object
+      properties:
+        operator:
+          type: string
+          description: The type of match to perform.  Default value is `IS`.
+          example: IS_NOT
+          enum:
+            - DOES_NOT_EXIST
+            - EXISTS
+            - GREATER_THAN
+            - IS
+            - IS_NOT
+            - LESS_THAN
+            - ON
+            - ON_OR_AFTER
+            - ON_OR_BEFORE
+            - WITHIN_THE_LAST
+        term:
+          type: string
+          description: The field to match.
+          example: actor
+          enum:
+            - actor
+            - cloudDriveId
+            - createTimestamp
+            - destinationCategory
+            - destinationName
+            - detectionSourceAlias
+            - deviceUid
+            - deviceUserName
+            - directoryId
+            - domainName
+            - emailDlpPolicyNames
+            - emailFrom
+            - emailRecipients
+            - emailSender
+            - emailSubject
+            - eventId
+            - eventTimestamp
+            - eventType
+            - exposure
+            - fileCategory
+            - fileCategoryByBytes
+            - fileCategoryByExtension
+            - fileClassificationValues
+            - fileClassificationVendors
+            - fileId
+            - fileName
+            - fileOwner
+            - filePath
+            - fileSize
+            - fileType
+            - insertionTimestamp
+            - md5Checksum
+            - mimeTypeByBytes
+            - mimeTypeByExtension
+            - mimeTypeMismatch
+            - modifyTimestamp
+            - operatingSystemUser
+            - osHostName
+            - outsideActiveHours
+            - printJobName
+            - printedFilesBackupPath
+            - printerName
+            - privateIpAddresses
+            - processName
+            - processOwner
+            - publicIpAddress
+            - remoteActivity
+            - removableMediaBusType
+            - removableMediaCapacity
+            - removableMediaMediaName
+            - removableMediaName
+            - removableMediaPartitionId
+            - removableMediaSerialNumber
+            - removableMediaVendor
+            - removableMediaVolumeName
+            - reportColumnHeaders
+            - reportDescription
+            - reportId
+            - reportName
+            - reportRecordCount
+            - reportType
+            - riskIndicatorNames
+            - riskIndicatorWeights
+            - riskScore
+            - riskSeverity
+            - sha256Checksum
+            - shared
+            - sharedWith
+            - sharingTypeAdded
+            - source
+            - sourceCategory
+            - sourceName
+            - sourceTabTitleErrors
+            - sourceTabTitles
+            - sourceTabUrlErrors
+            - sourceTabUrls
+            - syncDestination
+            - syncDestinationUsername
+            - tabTitleErrors
+            - tabTitles
+            - tabUrl
+            - tabUrlErrors
+            - tabUrls
+            - trustReason
+            - trusted
+            - url
+            - userUid
+            - windowTitle
+        value:
+          type: string
+          description: The input for the search.
+          example: ari@example.com
+    SearchFilter«SearchTermV1»Req:
+      title: SearchFilter«SearchTermV1»Req
+      required:
+        - value
+      type: object
+      properties:
+        operator:
+          type: string
+          description: The type of match to perform.  Default value is `IS`.
+          example: IS_NOT
+          enum:
+            - DOES_NOT_EXIST
+            - EXISTS
+            - GREATER_THAN
+            - IS
+            - IS_NOT
+            - LESS_THAN
+            - ON
+            - ON_OR_AFTER
+            - ON_OR_BEFORE
+            - WITHIN_THE_LAST
+        term:
+          type: string
+          description: The field to match.
+          example: actor
+          enum:
+            - actor
+            - cloudDriveId
+            - createTimestamp
+            - destinationCategory
+            - destinationName
+            - detectionSourceAlias
+            - deviceUid
+            - deviceUserName
+            - directoryId
+            - domainName
+            - emailDlpPolicyNames
+            - emailFrom
+            - emailRecipients
+            - emailSender
+            - emailSubject
+            - eventId
+            - eventTimestamp
+            - eventType
+            - exposure
+            - fileCategory
+            - fileCategoryByBytes
+            - fileCategoryByExtension
+            - fileClassificationValues
+            - fileClassificationVendors
+            - fileId
+            - fileName
+            - fileOwner
+            - filePath
+            - fileSize
+            - fileType
+            - insertionTimestamp
+            - md5Checksum
+            - mimeTypeByBytes
+            - mimeTypeByExtension
+            - mimeTypeMismatch
+            - modifyTimestamp
+            - operatingSystemUser
+            - osHostName
+            - outsideActiveHours
+            - printJobName
+            - printedFilesBackupPath
+            - printerName
+            - privateIpAddresses
+            - processName
+            - processOwner
+            - publicIpAddress
+            - remoteActivity
+            - removableMediaBusType
+            - removableMediaCapacity
+            - removableMediaMediaName
+            - removableMediaName
+            - removableMediaPartitionId
+            - removableMediaSerialNumber
+            - removableMediaVendor
+            - removableMediaVolumeName
+            - reportColumnHeaders
+            - reportDescription
+            - reportId
+            - reportName
+            - reportRecordCount
+            - reportType
+            - riskIndicatorNames
+            - riskIndicatorWeights
+            - riskScore
+            - riskSeverity
+            - sha256Checksum
+            - shared
+            - sharedWith
+            - sharingTypeAdded
+            - source
+            - sourceCategory
+            - sourceName
+            - sourceTabTitleErrors
+            - sourceTabTitles
+            - sourceTabUrlErrors
+            - sourceTabUrls
+            - syncDestination
+            - syncDestinationUsername
+            - tabTitleErrors
+            - tabTitles
+            - tabUrl
+            - tabUrlErrors
+            - tabUrls
+            - trustReason
+            - trusted
+            - url
+            - userUid
+            - windowTitle
+        value:
+          type: string
+          description: The input for the search.
+          example: ari@example.com
+    SearchFilter«SearchTermV1»Res:
+      title: SearchFilter«SearchTermV1»Res
       required:
         - value
       type: object
@@ -2113,11 +2920,10 @@ components:
             - file.hash.sha256
         value:
           type: string
-          nullable: true
           description: The input for the search.
           example: ari@example.com
-    SearchFilterReq:
-      title: SearchFilterReq
+    SearchFilter«SearchTermV2»:
+      title: SearchFilter«SearchTermV2»
       required:
         - value
       type: object
@@ -2142,95 +2948,96 @@ components:
           description: The field to match.
           example: actor
           enum:
-            - DESTINATION_CATEGORY
-            - DESTINATION_EMAIL_RECIPIENTS
-            - DESTINATION_EMAIL_SUBJECT
-            - DESTINATION_IP
-            - DESTINATION_NAME
-            - DESTINATION_OPERATING_SYSTEM
-            - DESTINATION_PRINTED_FILES_BACKUP_PATH
-            - DESTINATION_PRINTER_NAME
-            - DESTINATION_PRINT_JOB_NAME
-            - DESTINATION_PRIVATE_IP
-            - DESTINATION_REMOVABLE_MEDIA_BUS_TYPE
-            - DESTINATION_REMOVABLE_MEDIA_CAPACITY
-            - DESTINATION_REMOVABLE_MEDIA_MEDIA_NAME
-            - DESTINATION_REMOVABLE_MEDIA_NAME
-            - DESTINATION_REMOVABLE_MEDIA_PARTITION_ID
-            - DESTINATION_REMOVABLE_MEDIA_SERIAL_NUMBER
-            - DESTINATION_REMOVABLE_MEDIA_VENDOR
-            - DESTINATION_REMOVABLE_MEDIA_VOLUME_NAME
-            - DESTINATION_TABS_TITLE
-            - DESTINATION_TABS_TITLE_ERROR
-            - DESTINATION_TABS_URL
-            - DESTINATION_TABS_URL_ERROR
-            - DESTINATION_USER
-            - EVENT_ACTION
-            - EVENT_ID
-            - EVENT_INSERTED
-            - EVENT_OBSERVER
-            - FILE_CATEGORY
-            - FILE_CATEGORY_BY_BYTES
-            - FILE_CATEGORY_BY_EXTENSION
-            - FILE_CLASSIFICATIONS
-            - FILE_CLOUD_DRIVE_ID
-            - FILE_CREATED
-            - FILE_DIRECTORY
-            - FILE_DIRECTORY_ID
-            - FILE_HASH_MD5
-            - FILE_HASH_SHA_256
-            - FILE_ID
-            - FILE_MIME_TTPE_BY_EXTENSIONS
-            - FILE_MIME_TYPE_BY_BYTES
-            - FILE_MODIFIED
-            - FILE_NAME
-            - FILE_OWNER
-            - FILE_SIZE_IN_BYTES
-            - FILE_URL
-            - PROCESS_EXECUTABLE
-            - PROCESS_OWNER
-            - REPORT_COUNT
-            - REPORT_DESCRIPTION
-            - REPORT_HEADERS
-            - REPORT_ID
-            - REPORT_NAME
-            - REPORT_TYPE
-            - RISK_INDICATORS_NAME
-            - RISK_INDICATORS_WEIGHT
-            - RISK_SCORE
-            - RISK_SEVERITY
-            - RISK_TRUSTED
-            - RISK_TRUST_REASON
-            - SOURCE_CATEGORY
-            - SOURCE_DOMAIN
-            - SOURCE_EMAIL_FROM
-            - SOURCE_EMAIL_SENDER
-            - SOURCE_IP
-            - SOURCE_NAME
-            - SOURCE_OPERATING_SYSTEM
-            - SOURCE_PRIVATE_IP
-            - SOURCE_REMOVABLE_MEDIA_BUS_TYPE
-            - SOURCE_REMOVABLE_MEDIA_CAPACITY
-            - SOURCE_REMOVABLE_MEDIA_MEDIA_NAME
-            - SOURCE_REMOVABLE_MEDIA_NAME
-            - SOURCE_REMOVABLE_MEDIA_PARTITION_ID
-            - SOURCE_REMOVABLE_MEDIA_SERIAL_NUMBER
-            - SOURCE_REMOVABLE_MEDIA_VENDOR
-            - SOURCE_REMOVABLE_MEDIA_VOLUME_NAME
-            - SOURCE_TABS_TITLE
-            - SOURCE_TABS_TITLE_ERROR
-            - SOURCE_TABS_URL
-            - SOURCE_TABS_URL_ERROR
-            - TIMESTAMP
-            - USER_DEVICE_UID
-            - USER_EMAIL
-            - USER_ID
+            - '@timestamp'
+            - destination.category
+            - destination.email.recipients
+            - destination.email.subject
+            - destination.ip
+            - destination.name
+            - destination.operatingSystem
+            - destination.printJobName
+            - destination.printedFilesBackupPath
+            - destination.printerName
+            - destination.privateIp
+            - destination.removableMedia.busType
+            - destination.removableMedia.capacity
+            - destination.removableMedia.mediaName
+            - destination.removableMedia.name
+            - destination.removableMedia.partitionId
+            - destination.removableMedia.serialNumber
+            - destination.removableMedia.vendor
+            - destination.removableMedia.volumeName
+            - destination.tabs.title
+            - destination.tabs.titleError
+            - destination.tabs.url
+            - destination.tabs.urlError
+            - destination.user.email
+            - event.action
+            - event.id
+            - event.inserted
+            - event.observer
+            - event.shareType
+            - file.category
+            - file.categoryByBytes
+            - file.categoryByExtension
+            - file.classifications
+            - file.cloudDriveId
+            - file.created
+            - file.directory
+            - file.directoryId
+            - file.hash.md5
+            - file.hash.sha256
+            - file.id
+            - file.mimeTypeByBytes
+            - file.mimeTypeByExtension
+            - file.modified
+            - file.name
+            - file.owner
+            - file.sizeInBytes
+            - file.url
+            - process.executable
+            - process.owner
+            - report.count
+            - report.description
+            - report.headers
+            - report.id
+            - report.name
+            - report.type
+            - risk.indicators.name
+            - risk.indicators.weight
+            - risk.score
+            - risk.severity
+            - risk.trustReason
+            - risk.trusted
+            - source.category
+            - source.domain
+            - source.email.from
+            - source.email.sender
+            - source.ip
+            - source.name
+            - source.operatingSystem
+            - source.privateIp
+            - source.removableMedia.busType
+            - source.removableMedia.capacity
+            - source.removableMedia.mediaName
+            - source.removableMedia.name
+            - source.removableMedia.partitionId
+            - source.removableMedia.serialNumber
+            - source.removableMedia.vendor
+            - source.removableMedia.volumeName
+            - source.tabs.title
+            - source.tabs.titleError
+            - source.tabs.url
+            - source.tabs.urlError
+            - user.deviceUid
+            - user.email
+            - user.id
         value:
           type: string
           description: The input for the search.
           example: ari@example.com
-    SearchFilterRes:
-      title: SearchFilterRes
+    SearchFilter«SearchTermV2»Req:
+      title: SearchFilter«SearchTermV2»Req
       required:
         - value
       type: object
@@ -2255,118 +3062,263 @@ components:
           description: The field to match.
           example: actor
           enum:
-            - DESTINATION_CATEGORY
-            - DESTINATION_EMAIL_RECIPIENTS
-            - DESTINATION_EMAIL_SUBJECT
-            - DESTINATION_IP
-            - DESTINATION_NAME
-            - DESTINATION_OPERATING_SYSTEM
-            - DESTINATION_PRINTED_FILES_BACKUP_PATH
-            - DESTINATION_PRINTER_NAME
-            - DESTINATION_PRINT_JOB_NAME
-            - DESTINATION_PRIVATE_IP
-            - DESTINATION_REMOVABLE_MEDIA_BUS_TYPE
-            - DESTINATION_REMOVABLE_MEDIA_CAPACITY
-            - DESTINATION_REMOVABLE_MEDIA_MEDIA_NAME
-            - DESTINATION_REMOVABLE_MEDIA_NAME
-            - DESTINATION_REMOVABLE_MEDIA_PARTITION_ID
-            - DESTINATION_REMOVABLE_MEDIA_SERIAL_NUMBER
-            - DESTINATION_REMOVABLE_MEDIA_VENDOR
-            - DESTINATION_REMOVABLE_MEDIA_VOLUME_NAME
-            - DESTINATION_TABS_TITLE
-            - DESTINATION_TABS_TITLE_ERROR
-            - DESTINATION_TABS_URL
-            - DESTINATION_TABS_URL_ERROR
-            - DESTINATION_USER
-            - EVENT_ACTION
-            - EVENT_ID
-            - EVENT_INSERTED
-            - EVENT_OBSERVER
-            - FILE_CATEGORY
-            - FILE_CATEGORY_BY_BYTES
-            - FILE_CATEGORY_BY_EXTENSION
-            - FILE_CLASSIFICATIONS
-            - FILE_CLOUD_DRIVE_ID
-            - FILE_CREATED
-            - FILE_DIRECTORY
-            - FILE_DIRECTORY_ID
-            - FILE_HASH_MD5
-            - FILE_HASH_SHA_256
-            - FILE_ID
-            - FILE_MIME_TTPE_BY_EXTENSIONS
-            - FILE_MIME_TYPE_BY_BYTES
-            - FILE_MODIFIED
-            - FILE_NAME
-            - FILE_OWNER
-            - FILE_SIZE_IN_BYTES
-            - FILE_URL
-            - PROCESS_EXECUTABLE
-            - PROCESS_OWNER
-            - REPORT_COUNT
-            - REPORT_DESCRIPTION
-            - REPORT_HEADERS
-            - REPORT_ID
-            - REPORT_NAME
-            - REPORT_TYPE
-            - RISK_INDICATORS_NAME
-            - RISK_INDICATORS_WEIGHT
-            - RISK_SCORE
-            - RISK_SEVERITY
-            - RISK_TRUSTED
-            - RISK_TRUST_REASON
-            - SOURCE_CATEGORY
-            - SOURCE_DOMAIN
-            - SOURCE_EMAIL_FROM
-            - SOURCE_EMAIL_SENDER
-            - SOURCE_IP
-            - SOURCE_NAME
-            - SOURCE_OPERATING_SYSTEM
-            - SOURCE_PRIVATE_IP
-            - SOURCE_REMOVABLE_MEDIA_BUS_TYPE
-            - SOURCE_REMOVABLE_MEDIA_CAPACITY
-            - SOURCE_REMOVABLE_MEDIA_MEDIA_NAME
-            - SOURCE_REMOVABLE_MEDIA_NAME
-            - SOURCE_REMOVABLE_MEDIA_PARTITION_ID
-            - SOURCE_REMOVABLE_MEDIA_SERIAL_NUMBER
-            - SOURCE_REMOVABLE_MEDIA_VENDOR
-            - SOURCE_REMOVABLE_MEDIA_VOLUME_NAME
-            - SOURCE_TABS_TITLE
-            - SOURCE_TABS_TITLE_ERROR
-            - SOURCE_TABS_URL
-            - SOURCE_TABS_URL_ERROR
-            - TIMESTAMP
-            - USER_DEVICE_UID
-            - USER_EMAIL
-            - USER_ID
+            - '@timestamp'
+            - destination.category
+            - destination.email.recipients
+            - destination.email.subject
+            - destination.ip
+            - destination.name
+            - destination.operatingSystem
+            - destination.printJobName
+            - destination.printedFilesBackupPath
+            - destination.printerName
+            - destination.privateIp
+            - destination.removableMedia.busType
+            - destination.removableMedia.capacity
+            - destination.removableMedia.mediaName
+            - destination.removableMedia.name
+            - destination.removableMedia.partitionId
+            - destination.removableMedia.serialNumber
+            - destination.removableMedia.vendor
+            - destination.removableMedia.volumeName
+            - destination.tabs.title
+            - destination.tabs.titleError
+            - destination.tabs.url
+            - destination.tabs.urlError
+            - destination.user.email
+            - event.action
+            - event.id
+            - event.inserted
+            - event.observer
+            - event.shareType
+            - file.category
+            - file.categoryByBytes
+            - file.categoryByExtension
+            - file.classifications
+            - file.cloudDriveId
+            - file.created
+            - file.directory
+            - file.directoryId
+            - file.hash.md5
+            - file.hash.sha256
+            - file.id
+            - file.mimeTypeByBytes
+            - file.mimeTypeByExtension
+            - file.modified
+            - file.name
+            - file.owner
+            - file.sizeInBytes
+            - file.url
+            - process.executable
+            - process.owner
+            - report.count
+            - report.description
+            - report.headers
+            - report.id
+            - report.name
+            - report.type
+            - risk.indicators.name
+            - risk.indicators.weight
+            - risk.score
+            - risk.severity
+            - risk.trustReason
+            - risk.trusted
+            - source.category
+            - source.domain
+            - source.email.from
+            - source.email.sender
+            - source.ip
+            - source.name
+            - source.operatingSystem
+            - source.privateIp
+            - source.removableMedia.busType
+            - source.removableMedia.capacity
+            - source.removableMedia.mediaName
+            - source.removableMedia.name
+            - source.removableMedia.partitionId
+            - source.removableMedia.serialNumber
+            - source.removableMedia.vendor
+            - source.removableMedia.volumeName
+            - source.tabs.title
+            - source.tabs.titleError
+            - source.tabs.url
+            - source.tabs.urlError
+            - user.deviceUid
+            - user.email
+            - user.id
         value:
           type: string
           description: The input for the search.
           example: ari@example.com
-    SearchRequest:
-      title: SearchRequest
+    SearchFilter«SearchTermV2»Res:
+      title: SearchFilter«SearchTermV2»Res
+      required:
+        - value
+      type: object
+      properties:
+        operator:
+          type: string
+          description: The type of match to perform.  Default value is `IS`.
+          example: IS_NOT
+          enum:
+            - DOES_NOT_EXIST
+            - EXISTS
+            - GREATER_THAN
+            - IS
+            - IS_NOT
+            - LESS_THAN
+            - ON
+            - ON_OR_AFTER
+            - ON_OR_BEFORE
+            - WITHIN_THE_LAST
+        term:
+          type: string
+          description: The field to match.
+          example: actor
+          enum:
+            - '@timestamp'
+            - destination.category
+            - destination.email.recipients
+            - destination.email.subject
+            - destination.ip
+            - destination.name
+            - destination.operatingSystem
+            - destination.printJobName
+            - destination.printedFilesBackupPath
+            - destination.printerName
+            - destination.privateIp
+            - destination.removableMedia.busType
+            - destination.removableMedia.capacity
+            - destination.removableMedia.mediaName
+            - destination.removableMedia.name
+            - destination.removableMedia.partitionId
+            - destination.removableMedia.serialNumber
+            - destination.removableMedia.vendor
+            - destination.removableMedia.volumeName
+            - destination.tabs.title
+            - destination.tabs.titleError
+            - destination.tabs.url
+            - destination.tabs.urlError
+            - destination.user.email
+            - event.action
+            - event.id
+            - event.inserted
+            - event.observer
+            - event.shareType
+            - file.category
+            - file.categoryByBytes
+            - file.categoryByExtension
+            - file.classifications
+            - file.cloudDriveId
+            - file.created
+            - file.directory
+            - file.directoryId
+            - file.hash.md5
+            - file.hash.sha256
+            - file.id
+            - file.mimeTypeByBytes
+            - file.mimeTypeByExtension
+            - file.modified
+            - file.name
+            - file.owner
+            - file.sizeInBytes
+            - file.url
+            - process.executable
+            - process.owner
+            - report.count
+            - report.description
+            - report.headers
+            - report.id
+            - report.name
+            - report.type
+            - risk.indicators.name
+            - risk.indicators.weight
+            - risk.score
+            - risk.severity
+            - risk.trustReason
+            - risk.trusted
+            - source.category
+            - source.domain
+            - source.email.from
+            - source.email.sender
+            - source.ip
+            - source.name
+            - source.operatingSystem
+            - source.privateIp
+            - source.removableMedia.busType
+            - source.removableMedia.capacity
+            - source.removableMedia.mediaName
+            - source.removableMedia.name
+            - source.removableMedia.partitionId
+            - source.removableMedia.serialNumber
+            - source.removableMedia.vendor
+            - source.removableMedia.volumeName
+            - source.tabs.title
+            - source.tabs.titleError
+            - source.tabs.url
+            - source.tabs.urlError
+            - user.deviceUid
+            - user.email
+            - user.id
+        value:
+          type: string
+          description: The input for the search.
+          example: ari@example.com
+    SearchRequest«SearchTermV1»:
+      title: SearchRequest«SearchTermV1»
       required:
         - groups
       type: object
       properties:
-        defaultSortKey:
+        groupClause:
           type: string
+          description: Grouping clause for any specified groups.  Default is `AND`.
+          example: OR
+          enum:
+            - AND
+            - OR
+        groups:
+          type: array
+          description: One or more FilterGroups to be combined in a query.
+          items:
+            $ref: '#/components/schemas/FilterGroup«SearchTermV1»'
+        pgNum:
+          type: integer
+          description: Page number for search; ignored if pgToken is included.  Default
+            is 1.
+          format: int32
+          example: 1
+        pgSize:
+          type: integer
+          description: Max number of results to return for a page.  Default is 100.
+          format: int32
+          example: 100
+        pgToken:
+          type: string
+          description: A token used to indicate the starting point for additional
+            page results. Typically, you obtain the pgToken value from the nextPgToken
+            provided in a previous request. A pgToken is the only way to page past
+            10,000 results. If pgToken is supplied, pgNum is ignored. Provide empty
+            string to retrieve the 'first page of results and null to use the pgNum
+            value.  Default is null.
+          example: 0_147e9445-2f30-4a91-8b2a-9455332e880a_973435567569502913_986467523038446097_163
+        srtDir:
+          type: string
+          description: Sort direction.  Default is `desc`.
+          example: asc
+          enum:
+            - asc
+            - desc
+        srtKey:
+          type: string
+          description: Search term for sorting.
+          example: eventId
           enum:
             - actor
             - cloudDriveId
             - createTimestamp
             - destinationCategory
-            - destinationIp
             - destinationName
-            - destinationOperatingSystem
-            - destinationPrivateIps
-            - destinationRemovableMediaBusType
-            - destinationRemovableMediaCapacity
-            - destinationRemovableMediaMediaName
-            - destinationRemovableMediaName
-            - destinationRemovableMediaPartitionId
-            - destinationRemovableMediaSerialNumber
-            - destinationRemovableMediaVendor
-            - destinationRemovableMediaVolumeName
             - detectionSourceAlias
             - deviceUid
             - deviceUserName
@@ -2377,7 +3329,6 @@ components:
             - emailRecipients
             - emailSender
             - emailSubject
-            - eventAction
             - eventId
             - eventTimestamp
             - eventType
@@ -2434,19 +3385,7 @@ components:
             - sharingTypeAdded
             - source
             - sourceCategory
-            - sourceDomain
-            - sourceIp
             - sourceName
-            - sourceOperatingSystem
-            - sourcePrivateIps
-            - sourceRemovableMediaBusType
-            - sourceRemovableMediaCapacity
-            - sourceRemovableMediaMediaName
-            - sourceRemovableMediaName
-            - sourceRemovableMediaPartitionId
-            - sourceRemovableMediaSerialNumber
-            - sourceRemovableMediaVendor
-            - sourceRemovableMediaVolumeName
             - sourceTabTitleErrors
             - sourceTabTitles
             - sourceTabUrlErrors
@@ -2463,6 +3402,12 @@ components:
             - url
             - userUid
             - windowTitle
+    SearchRequest«SearchTermV2»:
+      title: SearchRequest«SearchTermV2»
+      required:
+        - groups
+      type: object
+      properties:
         groupClause:
           type: string
           description: Grouping clause for any specified groups.  Default is `AND`.
@@ -2474,7 +3419,7 @@ components:
           type: array
           description: One or more FilterGroups to be combined in a query.
           items:
-            $ref: '#/components/schemas/FilterGroup'
+            $ref: '#/components/schemas/FilterGroup«SearchTermV2»'
         pgNum:
           type: integer
           description: Page number for search; ignored if pgToken is included.  Default
@@ -2488,14 +3433,13 @@ components:
           example: 100
         pgToken:
           type: string
-          nullable: true
           description: A token used to indicate the starting point for additional
             page results. Typically, you obtain the pgToken value from the nextPgToken
             provided in a previous request. A pgToken is the only way to page past
             10,000 results. If pgToken is supplied, pgNum is ignored. Provide empty
             string to retrieve the 'first page of results and null to use the pgNum
             value.  Default is null.
-          example: null
+          example: 0_147e9445-2f30-4a91-8b2a-9455332e880a_973435567569502913_986467523038446097_163
         srtDir:
           type: string
           description: Sort direction.  Default is `desc`.
@@ -2508,156 +3452,90 @@ components:
           description: Search term for sorting.
           example: eventId
           enum:
-            - DESTINATION_CATEGORY
-            - DESTINATION_EMAIL_RECIPIENTS
-            - DESTINATION_EMAIL_SUBJECT
-            - DESTINATION_IP
-            - DESTINATION_NAME
-            - DESTINATION_OPERATING_SYSTEM
-            - DESTINATION_PRINTED_FILES_BACKUP_PATH
-            - DESTINATION_PRINTER_NAME
-            - DESTINATION_PRINT_JOB_NAME
-            - DESTINATION_PRIVATE_IP
-            - DESTINATION_REMOVABLE_MEDIA_BUS_TYPE
-            - DESTINATION_REMOVABLE_MEDIA_CAPACITY
-            - DESTINATION_REMOVABLE_MEDIA_MEDIA_NAME
-            - DESTINATION_REMOVABLE_MEDIA_NAME
-            - DESTINATION_REMOVABLE_MEDIA_PARTITION_ID
-            - DESTINATION_REMOVABLE_MEDIA_SERIAL_NUMBER
-            - DESTINATION_REMOVABLE_MEDIA_VENDOR
-            - DESTINATION_REMOVABLE_MEDIA_VOLUME_NAME
-            - DESTINATION_TABS_TITLE
-            - DESTINATION_TABS_TITLE_ERROR
-            - DESTINATION_TABS_URL
-            - DESTINATION_TABS_URL_ERROR
-            - DESTINATION_USER
-            - EVENT_ACTION
-            - EVENT_ID
-            - EVENT_INSERTED
-            - EVENT_OBSERVER
-            - FILE_CATEGORY
-            - FILE_CATEGORY_BY_BYTES
-            - FILE_CATEGORY_BY_EXTENSION
-            - FILE_CLASSIFICATIONS
-            - FILE_CLOUD_DRIVE_ID
-            - FILE_CREATED
-            - FILE_DIRECTORY
-            - FILE_DIRECTORY_ID
-            - FILE_HASH_MD5
-            - FILE_HASH_SHA_256
-            - FILE_ID
-            - FILE_MIME_TTPE_BY_EXTENSIONS
-            - FILE_MIME_TYPE_BY_BYTES
-            - FILE_MODIFIED
-            - FILE_NAME
-            - FILE_OWNER
-            - FILE_SIZE_IN_BYTES
-            - FILE_URL
-            - PROCESS_EXECUTABLE
-            - PROCESS_OWNER
-            - REPORT_COUNT
-            - REPORT_DESCRIPTION
-            - REPORT_HEADERS
-            - REPORT_ID
-            - REPORT_NAME
-            - REPORT_TYPE
-            - RISK_INDICATORS_NAME
-            - RISK_INDICATORS_WEIGHT
-            - RISK_SCORE
-            - RISK_SEVERITY
-            - RISK_TRUSTED
-            - RISK_TRUST_REASON
-            - SOURCE_CATEGORY
-            - SOURCE_DOMAIN
-            - SOURCE_EMAIL_FROM
-            - SOURCE_EMAIL_SENDER
-            - SOURCE_IP
-            - SOURCE_NAME
-            - SOURCE_OPERATING_SYSTEM
-            - SOURCE_PRIVATE_IP
-            - SOURCE_REMOVABLE_MEDIA_BUS_TYPE
-            - SOURCE_REMOVABLE_MEDIA_CAPACITY
-            - SOURCE_REMOVABLE_MEDIA_MEDIA_NAME
-            - SOURCE_REMOVABLE_MEDIA_NAME
-            - SOURCE_REMOVABLE_MEDIA_PARTITION_ID
-            - SOURCE_REMOVABLE_MEDIA_SERIAL_NUMBER
-            - SOURCE_REMOVABLE_MEDIA_VENDOR
-            - SOURCE_REMOVABLE_MEDIA_VOLUME_NAME
-            - SOURCE_TABS_TITLE
-            - SOURCE_TABS_TITLE_ERROR
-            - SOURCE_TABS_URL
-            - SOURCE_TABS_URL_ERROR
-            - TIMESTAMP
-            - USER_DEVICE_UID
-            - USER_EMAIL
-            - USER_ID
-            - eventId
-            - eventType
-            - eventTimestamp
-            - insertionTimestamp
-            - filePath
-            - fileName
-            - fileType
-            - fileCategory
-            - fileCategoryByBytes
-            - fileCategoryByExtension
-            - fileSize
-            - fileOwner
-            - md5Checksum
-            - sha256Checksum
-            - createTimestamp
-            - modifyTimestamp
-            - deviceUserName
-            - deviceUid
-            - userUid
-            - osHostName
-            - domainName
-            - publicIpAddress
-            - privateIpAddresses
-            - actor
-            - directoryId
-            - source
-            - url
-            - shared
-            - sharedWith
-            - sharingTypeAdded
-            - cloudDriveId
-            - detectionSourceAlias
-            - fileId
-            - exposure
-            - processOwner
-            - processName
-            - windowTitle
-            - tabUrl
-            - removableMediaVendor
-            - removableMediaName
-            - removableMediaSerialNumber
-            - removableMediaCapacity
-            - removableMediaBusType
-            - removableMediaMediaName
-            - removableMediaVolumeName
-            - removableMediaPartitionId
-            - syncDestination
-            - syncDestinationUsername
-            - emailDlpPolicyNames
-            - emailSubject
-            - emailSender
-            - emailFrom
-            - emailRecipients
-            - outsideActiveHours
-            - mimeTypeByBytes
-            - mimeTypeByExtension
-            - mimeTypeMismatch
-            - printJobName
-            - printerName
-            - printedFilesBackupPath
-            - remoteActivity
-            - trusted
-            - operatingSystemUser
-            - destinationCategory
-            - destinationName
+            - destination.category
+            - destination.email.recipients
+            - destination.email.subject
+            - destination.ip
+            - destination.name
+            - destination.operatingSystem
+            - destination.printJobName
+            - destination.printedFilesBackupPath
+            - destination.printerName
+            - destination.privateIp
+            - destination.removableMedia.busType
+            - destination.removableMedia.capacity
+            - destination.removableMedia.mediaName
+            - destination.removableMedia.name
+            - destination.removableMedia.partitionId
+            - destination.removableMedia.serialNumber
+            - destination.removableMedia.vendor
+            - destination.removableMedia.volumeName
+            - destination.tabs.title
+            - destination.tabs.titleError
+            - destination.tabs.url
+            - destination.tabs.urlError
+            - destination.user.email
+            - event.action
+            - event.id
+            - event.inserted
+            - event.observer
+            - event.shareType
+            - file.category
+            - file.categoryByBytes
+            - file.categoryByExtension
+            - file.classifications
+            - file.cloudDriveId
+            - file.created
+            - file.directory
+            - file.directoryId
+            - file.hash.md5
+            - file.hash.sha256
+            - file.id
+            - file.mimeTypeByBytes
+            - file.mimeTypeByExtension
+            - file.modified
+            - file.name
+            - file.owner
+            - file.sizeInBytes
+            - file.url
+            - process.executable
+            - process.owner
+            - report.count
+            - report.description
+            - report.headers
+            - report.id
+            - report.name
+            - report.type
+            - risk.indicators.name
+            - risk.indicators.weight
+            - risk.score
+            - risk.severity
+            - risk.trustReason
+            - risk.trusted
+            - source.category
+            - source.domain
+            - source.email.from
+            - source.email.sender
+            - source.ip
+            - source.name
+            - source.operatingSystem
+            - source.privateIp
+            - source.removableMedia.busType
+            - source.removableMedia.capacity
+            - source.removableMedia.mediaName
+            - source.removableMedia.name
+            - source.removableMedia.partitionId
+            - source.removableMedia.serialNumber
+            - source.removableMedia.vendor
+            - source.removableMedia.volumeName
+            - source.tabs.title
+            - source.tabs.titleError
+            - source.tabs.url
+            - source.tabs.urlError
+            - user.deviceUid
+            - user.email
+            - user.id
             - "@timestamp"
-
     SharedWithUser:
       title: SharedWithUser
       type: object

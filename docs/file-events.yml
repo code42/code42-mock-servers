@@ -699,7 +699,7 @@ components:
               - user.deviceUid
               - user.email
               - user.id
-            - "@timestamp"
+              - "@timestamp"
         groupClause:
           type: string
           description: Grouping clause for any specified groups.  Default is `AND`.

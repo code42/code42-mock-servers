@@ -348,6 +348,195 @@ paths:
               schema:
                 type: object
 
+  # USER - API CLIENTS
+
+  /api/v18/scim-user-data/collated-view:
+    get:
+      tags:
+      - users
+      summary: Get scim user data
+      operationId: UserScim_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                    properties:
+                      date:
+                        type: string
+                      headers:
+                        type: array
+                        items:
+                          type: string
+                      licenseStatus:
+                        type: string
+                  data:
+                    type: object
+                    properties:
+                      userId:
+                        type: string
+                      title:
+                        type: string
+                      division:
+                        type: string
+                      department:
+                        type: string
+                      employmentType:
+                        type: string
+                      managerUserId:
+                        type: string
+                      locality:
+                        type: string
+                      region:
+                        type: string
+                      country:
+                        type: string
+  /api/v3/users/{userUid}/roles:
+    get:
+      tags:
+      - users
+      summary: Get user roles
+      operationId: UserRole_Get
+      parameters:
+      - name: userUid
+        in: path
+        description: The unique Code42 userId of the user.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRolesResponse_core'
+    put:
+      tags:
+      - users
+      summary: Update user roles
+      operationId: UserRole_Put
+      parameters:
+      - name: userUid
+        in: path
+        description: The unique Code42 userId of the user.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema: 
+                type: object
+  /api/v3/users/{userUid}/move:
+    post:
+      tags:
+      - users
+      summary: Assign a user to a different organization
+      operationId: UserMove_Post
+      parameters:
+      - name: userUid
+        in: path
+        description: The unique Code42 userId of the user.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/users/{userUid}/block:
+    parameters:
+    - name: userUid
+      in: path
+      description: The unique Code42 userId of the user.
+      required: true
+      schema:
+        type: string
+    post:
+      tags:
+      - users
+      summary: Block a user
+      operationId: UserBlock_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/v3/users/{userUid}/unblock:
+    parameters:
+    - name: userUid
+      in: path
+      description: The unique Code42 userId of the user.
+      required: true
+      schema:
+        type: string
+    post:
+      tags:
+      - users
+      summary: Unblock a user
+      operationId: UserUnblock_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/users/{userUid}/deactivate:
+    parameters:
+    - name: userUid
+      in: path
+      description: The unique Code42 userId of the user.
+      required: true
+      schema:
+        type: string
+    post:
+      tags:
+      - users
+      summary: Deactivate a user
+      operationId: UserDeactivate_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/users/{userUid}/activate:
+    parameters:
+    - name: userUid
+      in: path
+      description: The unique Code42 userId of the user.
+      required: true
+      schema:
+        type: string
+    post:
+      tags:
+      - users
+      summary: Activate a user
+      operationId: UserActivate_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+
   # CUSTOMER
 
   /api/v1/Diagnostic:

@@ -527,7 +527,7 @@ paths:
     post:
       tags:
       - users
-      summary: Activatae a user
+      summary: Activate a user
       operationId: UserActivate_Post
       responses:
         200:

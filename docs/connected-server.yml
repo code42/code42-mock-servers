@@ -22,7 +22,24 @@ paths:
   /api/WebRestoreSession:
     post:
       tags:
-      - archive
+        - archive
+      summary: Create a web restore session for a connected device
+      operationId: ConnectedWebRestoreSession_Post
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  webRestoreSessionId:
+                    type: string
+                    example: "123WebRestoreSessionId123"
+  /api/v1/WebRestoreSession:
+    post:
+      tags:
+        - archive
       summary: Create a web restore session for a connected device
       operationId: ConnectedWebRestoreSession_Post
       responses:

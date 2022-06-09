@@ -937,7 +937,7 @@ components:
           description: Use as the pgToken value in another request to indicate the
             starting point for additional page results. nextPgToken is null if there
             are no more results or if pgToken was not supplied.
-          example: 0_147e9445-2f30-4a91-8b2a-9455332e880a_973435567569502913_986467523038446097_163
+          example: null
         problems:
           type: array
           description: List of problems in the request.  A problem with a search request
@@ -2681,7 +2681,9 @@ components:
             - userUid
             - windowTitle
         value:
-          type: string
+          type:
+            - string
+            - 'null'
           description: The input for the search.
           example: ari@example.com
     SearchFilter«SearchTermV1»Req:
@@ -2799,7 +2801,9 @@ components:
             - userUid
             - windowTitle
         value:
-          type: string
+          type:
+            - string
+            - 'null'
           description: The input for the search.
           example: ari@example.com
     SearchFilter«SearchTermV1»Res:
@@ -2919,7 +2923,9 @@ components:
             - file.hash.md5
             - file.hash.sha256
         value:
-          type: string
+          type:
+            - string
+            - 'null'
           description: The input for the search.
           example: ari@example.com
     SearchFilter«SearchTermV2»:
@@ -3033,7 +3039,9 @@ components:
             - user.email
             - user.id
         value:
-          type: string
+          type:
+            - string
+            - 'null'
           description: The input for the search.
           example: ari@example.com
     SearchFilter«SearchTermV2»Req:
@@ -3147,7 +3155,9 @@ components:
             - user.email
             - user.id
         value:
-          type: string
+          type:
+            - string
+            - 'null'
           description: The input for the search.
           example: ari@example.com
     SearchFilter«SearchTermV2»Res:
@@ -3261,7 +3271,9 @@ components:
             - user.email
             - user.id
         value:
-          type: string
+          type:
+            - string
+            - 'null'
           description: The input for the search.
           example: ari@example.com
     SearchRequest«SearchTermV1»:

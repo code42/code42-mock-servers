@@ -1274,6 +1274,167 @@ paths:
                         value:
                           type: string
 
+# ORGS - API CLIENTS
+
+  /api/v3/orgs:
+    get:
+      tags:
+      - orgs
+      summary: Get all orgs
+      operationId: OrgList_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      totalCount:
+                        type: integer
+                        format: int32
+                        example: 1
+                      orgs:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/OrgResponse_core'
+    post:
+      tags:
+      - orgs
+      summary: Create an organization
+      operationId: Org_Create
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgResponse_core'
+  /api/v3/orgs/{orgId}:
+    get:
+      tags:
+        - orgs
+      summary: Get an organization
+      operationId: Org_Get
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgGuid of the org to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgResponse_core'
+    put:
+      tags:
+        - orgs
+      summary: Get an organization
+      operationId: Org_Get
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgGuid of the org to update.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/orgs/{orgId}/block:
+    post:
+      tags:
+        - orgs
+      summary: Block an organization
+      operationId: OrgBlock_Post
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgGuid of the org to block.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/orgs/{orgId}/unblock:
+    post:
+      tags:
+        - orgs
+      summary: Unblock an organization
+      operationId: OrgUnblock_Post
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgGuid of the org to unblock.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/orgs/{orgId}/deactivate:
+    post:
+      tags:
+        - orgs
+      summary: Deactivate an organization
+      operationId: OrgDeactivate_Post
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgGuid of the org to deactivate.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/orgs/{orgId}/activate:
+    post:
+      tags:
+        - orgs
+      summary: Reactivate an organization
+      operationId: OrgActivate_Post
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgGuid of the org to activate.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+
+
+
 # LEGAL HOLD
 
   /api/v4/legal-hold-policy/create:
@@ -2025,6 +2186,9 @@ components:
     OrgResponse_core:
       type: object
       properties:
+        orgGuid:
+          type: string
+          example: "01169311-8b02-4902-897f-f9b5cdec2b53"
         orgUid:
           type: string
           example: "98765432123456789"

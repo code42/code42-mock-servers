@@ -1277,6 +1277,30 @@ paths:
 # ORGS - API CLIENTS
 
   /api/v3/orgs:
+    get:
+      tags:
+      - orgs
+      summary: Get all orgs
+      operationId: OrgList_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      totalCount:
+                        type: integer
+                        format: int32
+                        example: 1
+                      orgs:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/OrgResponse_core'
     post:
       tags:
       - orgs
@@ -1289,6 +1313,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrgResponse_core'
+  /api/v3/orgs/{orgId}:
+    get:
+      tags:
+        - orgs
+      summary: Get an organization
+      operationId: Org_Get
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgGuid of the org to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgResponse_core'
+    put:
+      tags:
+        - orgs
+      summary: Get an organization
+      operationId: Org_Get
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgGuid of the org to update.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
   /api/v3/orgs/{orgId}/block:
     post:
       tags:
@@ -1298,7 +1361,7 @@ paths:
       parameters:
         - name: orgId
           in: path
-          description: The unique Code42 orgGuid of the org to return.
+          description: The unique Code42 orgGuid of the org to block.
           required: true
           schema:
             type: string
@@ -1318,7 +1381,7 @@ paths:
       parameters:
         - name: orgId
           in: path
-          description: The unique Code42 orgGuid of the org to return.
+          description: The unique Code42 orgGuid of the org to unblock.
           required: true
           schema:
             type: string
@@ -1338,7 +1401,7 @@ paths:
       parameters:
         - name: orgId
           in: path
-          description: The unique Code42 orgGuid of the org to return.
+          description: The unique Code42 orgGuid of the org to deactivate.
           required: true
           schema:
             type: string
@@ -1358,7 +1421,7 @@ paths:
       parameters:
         - name: orgId
           in: path
-          description: The unique Code42 orgGuid of the org to return.
+          description: The unique Code42 orgGuid of the org to activate.
           required: true
           schema:
             type: string

@@ -1274,6 +1274,176 @@ paths:
                         value:
                           type: string
 
+# ORGS - API CLIENTS
+
+  /api/v3/orgs:
+    get:
+      tags:
+      - orgs
+      summary: Get all orgs
+      operationId: OrgList_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      totalCount:
+                        type: integer
+                        format: int32
+                        example: 1
+                      orgs:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/CreateOrgResponse'
+    post:
+      tags:
+      - orgs
+      summary: Create an organization
+      operationId: Org_Create
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: 
+                    $ref: '#/components/schemas/CreateOrgResponse'
+  /api/v3/orgs/{orgId}:
+    get:
+      tags:
+        - orgs
+      summary: Get an organization
+      operationId: Org_Get
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgGuid of the org to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CreateOrgResponse'
+    put:
+      tags:
+        - orgs
+      summary: Update an organization
+      operationId: Org_Update
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgGuid of the org to update.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                  type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/CreateOrgResponse'
+  /api/v3/orgs/{orgId}/block:
+    post:
+      tags:
+        - orgs
+      summary: Block an organization
+      operationId: OrgBlock_Post
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgGuid of the org to block.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/orgs/{orgId}/unblock:
+    post:
+      tags:
+        - orgs
+      summary: Unblock an organization
+      operationId: OrgUnblock_Post
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgGuid of the org to unblock.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/orgs/{orgId}/deactivate:
+    post:
+      tags:
+        - orgs
+      summary: Deactivate an organization
+      operationId: OrgDeactivate_Post
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgGuid of the org to deactivate.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/v3/orgs/{orgId}/activate:
+    post:
+      tags:
+        - orgs
+      summary: Reactivate an organization
+      operationId: OrgActivate_Post
+      parameters:
+        - name: orgId
+          in: path
+          description: The unique Code42 orgGuid of the org to activate.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+
+
+
 # LEGAL HOLD
 
   /api/v4/legal-hold-policy/create:
@@ -1984,6 +2154,190 @@ components:
         stsBaseUrl:
           type: string
           example: "http://core:4200"
+    CreateOrgResponse:
+      type: object
+      properties: 
+        orgId:
+          type: integer
+          format: int32
+          example: 123
+        orgUid:
+          type: string
+          example: test org uid
+        orgGuid:
+          type: string
+          example: test org guid
+        orgName:
+          type: string
+          example: My Test Org
+        orgExtRef:
+          type: string
+        notes:
+          type: string
+        status:
+          type: string
+        active:
+          type: boolean
+          example: true
+        blocked:
+          type: boolean
+          example: false
+        parentOrgId:
+          type: integer
+          format: int32
+          example: 123456
+        parentOrgUid:
+          type: string
+          example: parent org uid
+        parentOrgGuid:
+          type: string
+          example: parent org guid
+        type:
+          type: string
+        classification:
+          type: string
+        hierarchyCounts:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+        configInheritanceCounts:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+        creationDate:
+          type: string
+          example: Mon Feb 22 08:40:43 UTC 2021
+        modificationDate:
+          type: string
+          example: Mon Feb 22 08:40:43 UTC 2021
+        deactivationDate:
+          type: string
+          example: Mon Feb 22 08:40:43 UTC 2021
+        settings:
+          $ref: "#/components/schemas/OrgSettingsData"
+        settingsInherited:
+          $ref: "#/components/schemas/OrgSettingsData"
+        settingsSummary:
+          $ref: "#/components/schemas/OrgSettingsData"
+        registrationKey:
+          type: string
+        reporting:
+          $ref: "#/components/schemas/OrgReportingData"
+        customConfig:
+          type: boolean
+    OrgReportingData:
+      type: object
+      properties:
+        orgManagers:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+    OrgSettingsData:
+      type: object
+      properties:
+        maxSeats:
+          type: integer
+          format: int32
+        maxBytes:
+          type: integer
+          format: int64
+    TenantUid:
+      type: object
+      properties:
+        defaultSystemTenant:
+          type: boolean
+    User:
+      type: object
+      properties:
+        tenantUid:
+          $ref: "#/components/schemas/TenantUid"
+        principalId:
+          type: string
+        userId:
+          type: integer
+          format: int32
+        orgId:
+          type: integer
+          format: int32
+        username:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        lastFirstName:
+          type: string
+        lastFirstSearch:
+          type: string
+        firstLastSearch:
+          type: string
+        question:
+          type: string
+        answer:
+          type: string
+        passwordResetRequired:
+          type: boolean
+        active:
+          type: boolean
+        blocked:
+          type: boolean
+        maxBytes:
+          type: integer
+          format: int64
+        ssoIdentityProviderUid:
+          type: integer
+          format: int64
+        modificationDate:
+          type: string
+          format: date-time
+        creationDate:
+          type: string
+          format: date-time
+        apiTokenRevocationTime:
+          type: integer
+          format: int64
+        externalReference:
+          type: string
+        localAuthenticationOnly:
+          type: boolean
+        supportUser:
+          type: boolean
+        status:
+          type: string
+        tableName:
+          type: string
+        idColumnName:
+          type: string
+        principalType:
+          type: string
+          enum:
+          - USER
+          - APIKEY
+          - DEVICE
+          - SERVICE
+        invited:
+          type: boolean
+        defaultAdminUser:
+          type: boolean
+        firstNameAndDerivedValues:
+          type: string
+          writeOnly: true
+        lastNameAndDerivedValues:
+          type: string
+          writeOnly: true
+        name:
+          type: string
+        id:
+          type: integer
+          format: int32
+        displayName:
+          type: string
+        system:
+          type: boolean
     OrgResponse_core:
       type: object
       properties:

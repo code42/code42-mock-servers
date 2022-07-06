@@ -434,7 +434,7 @@ paths:
           content:
             application/json:
               schema: 
-                type: object
+                $ref: '#/components/schemas/UserUpdateRolesResponse_core'
   /api/v3/users/{userUid}/move:
     post:
       tags:
@@ -1998,6 +1998,44 @@ components:
                   properties:
                     permission:
                       type: string
+    UserUpdateRolesResponse_core:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            processedRoleIds:
+              type: array
+              items:
+                type: object
+                properties:
+                  value:
+                    type: string
+                    example: 'desktop-user'              
+            newlyAssignedRoleIds:
+              type: array
+              items:
+                type: object
+                properties:
+                  value:
+                    type: string
+                    example: 'desktop-user'              
+            unassignedRoleIds:
+              type: array
+              items:
+                type: object
+                properties:
+                  value:
+                    type: string
+                    example: 'desktop-user'            
+            ignoredRoleIds:
+              type: array
+              items:
+                type: object
+                properties:
+                  value:
+                    type: string
+                    example: 'desktop-user'
     CustomerResponse_core:
       type: object
       properties:
@@ -2341,6 +2379,9 @@ components:
     OrgResponse_core:
       type: object
       properties:
+        orgGuid:
+          type: string
+          example: "01169311-8b02-4902-897f-f9b5cdec2b53"
         orgUid:
           type: string
           example: "98765432123456789"

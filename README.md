@@ -27,7 +27,7 @@ Example:
 # localhost is used to configure the loopback interface
 # when the system is booting.  Do not change this entry.
 ##
-127.0.0.1       localhost core audit-log alerts cases file-events detection-lists alert-rules storage preservation-data-service connected-server
+127.0.0.1       localhost core audit-log alerts cases file-events detection-lists alert-rules storage preservation-data-service connected-server trusted-activities-service exfiltration-data-service
 ```
 
 ## Adding a new service

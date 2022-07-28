@@ -1077,6 +1077,9 @@ paths:
                       nodeGuid:
                         type: string
                         example: '123NodeGuid123'
+                      serverUrl:
+                        type: string
+                        example: 'http://storage:4200'
   /api/v3/SecurityEventsLocation:
     get:
       tags:

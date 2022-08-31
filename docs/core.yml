@@ -2004,38 +2004,26 @@ components:
         data:
           type: object
           properties:
-            processedRoleIds:
+            processedReplacementRoleIds:
               type: array
               items:
-                type: object
-                properties:
-                  value:
-                    type: string
-                    example: 'desktop-user'              
+                type: string
+                example: 'desktop-user'              
             newlyAssignedRoleIds:
               type: array
               items:
-                type: object
-                properties:
-                  value:
-                    type: string
-                    example: 'desktop-user'              
+                type: string
+                example: 'desktop-user'    
             unassignedRoleIds:
               type: array
               items:
-                type: object
-                properties:
-                  value:
-                    type: string
-                    example: 'desktop-user'            
+                type: string
+                example: 'desktop-user'          
             ignoredRoleIds:
               type: array
               items:
-                type: object
-                properties:
-                  value:
-                    type: string
-                    example: 'desktop-user'
+                type: string
+                example: 'desktop-user'    
     CustomerResponse_core:
       type: object
       properties:

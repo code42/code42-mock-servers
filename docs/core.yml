@@ -2192,10 +2192,10 @@ components:
           example: 123
         orgUid:
           type: string
-          example: test org uid
+          example: "98765432123456789"
         orgGuid:
           type: string
-          example: test org guid
+          example: "01169311-8b02-4902-897f-f9b5cdec2b53"
         orgName:
           type: string
           example: My Test Org

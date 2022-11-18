@@ -536,7 +536,46 @@ paths:
             application/json:
               schema:
                 type: object
-
+  # GET ROLES
+  /api/v3/roles:
+    get:
+      tags:
+        - roles
+      summary: Get roles
+      operationId: Roles_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RoleResponse_core'
+  # GET ROLE
+  /api/v3/roles/{roleId}:
+    get:
+      tags:
+        - roles
+      summary: Get a role
+      operationId: Roles_Get
+      parameters:
+        - name: roleId
+          in: path
+          description: The role ID.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleResponse_core'
   # CUSTOMER
 
   /api/v1/Diagnostic:
@@ -1980,9 +2019,8 @@ components:
             type: object
             properties:
               roleId:
-                type: integer
-                format: int32
-                example: 4321
+                type: int
+                example: 'desktop-user'
               roleName:
                 type: string
               locked:
@@ -2023,7 +2061,38 @@ components:
               type: array
               items:
                 type: string
-                example: 'desktop-user'    
+                example: 'desktop-user'
+    RoleResponse_core:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            roleId:
+              type: string
+              example: 'desktop-user'
+            roleName:
+              type: string
+              example: 'Desktop User'
+            numberOfusers:
+              type: integer
+              example: 1
+            creationDate:
+              type: string
+              example: "2021-01-28T18:55:27.285Z"
+            modificationDate:
+              type: string
+              example: "2021-01-28T18:55:27.285Z"
+            permissions:
+              type: array
+              items:
+                type: object
+                properties:
+                  permission:
+                    type: string
+                  description:
+                    type: string
+
     CustomerResponse_core:
       type: object
       properties:

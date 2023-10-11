@@ -1914,7 +1914,7 @@ components:
           properties:
             v3_user_token:
               type: string
-              example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6IjUyYmE4MDUwLTQ0MWYtNGY5MS05MTJiLTE2Mjg0Y2U3MmQzZSIsImlhdCI6MTYxNDAyNTA5OCwiZXhwIjoxNjE0MDI4Njk4fQ.O5oH8870M3ZXVB-1iyUg_tJ1Yke_b2RuwGYz2m_aYYk
+              example: eyJ0eXAiOiJKV1QiLCJjNDJfdmVyIjoidXNlci12MCIsImFsZyI6IkhTMjU2In0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6IjUyYmE4MDUwLTQ0MWYtNGY5MS05MTJiLTE2Mjg0Y2U3MmQzZSIsImlhdCI6MTYxNDAyNTA5OCwiZXhwIjoxNjE0MDI4Njk4fQ.7O4aHGv6VaPUhzFcE4IZGanTn8S8Rptnvbfrerq73Z0
         error:
           type: string
           format: nullable
@@ -1929,7 +1929,7 @@ components:
           properties:
             access_token:
               type: string
-              example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6IjUyYmE4MDUwLTQ0MWYtNGY5MS05MTJiLTE2Mjg0Y2U3MmQzZSIsImlhdCI6MTYxNDAyNTA5OCwiZXhwIjoxNjE0MDI4Njk4fQ.O5oH8870M3ZXVB-1iyUg_tJ1Yke_b2RuwGYz2m_aYYk
+              example: eyJ0eXAiOiJKV1QiLCJjNDJfdmVyIjoidXNlci12MCIsImFsZyI6IkhTMjU2In0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6IjUyYmE4MDUwLTQ0MWYtNGY5MS05MTJiLTE2Mjg0Y2U3MmQzZSIsImlhdCI6MTYxNDAyNTA5OCwiZXhwIjoxNjE0MDI4Njk4fQ.7O4aHGv6VaPUhzFcE4IZGanTn8S8Rptnvbfrerq73Z0
             token_type:
               type: string
               example: bearer

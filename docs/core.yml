@@ -767,6 +767,22 @@ paths:
               schema:
                type: string
                example: http://preservation-data-service:4200
+
+  /v1/EXFILTRATED-DATA-SERVICE_API-URL:
+    get:
+      tags:
+      - keyvaluestore
+      summary: Get the exfiltration data service URL
+      operationId: ExfiltratoinDataServiceUrl_Get
+      responses:
+        200:
+          description: A successful response
+          content:
+            '*/*':
+              schema:
+               type: string
+               example: http://exfiltration-data-service:4200
+
   /v1/TRUSTED-DOMAINS_API-URL:
     get:
       tags:
